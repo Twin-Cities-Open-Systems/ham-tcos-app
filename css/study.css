@@ -294,7 +294,9 @@ button.ham-mcell:hover,button.ham-mcell:focus-visible{outline:3px solid var(--ac
 .hs-exam-dock-n{font-size:.85rem;color:var(--muted)}
 .hs-exam-dock .btn{min-height:44px;min-width:6rem}
 body:has(.hs-exam-dock:not([hidden])) .hs-jump{bottom:calc(max(8px,env(safe-area-inset-bottom)) + 76px)}
-#hs-exam-result{scroll-margin-top:5rem}
+#hs-exam-score .ham-tgroup{scroll-margin-top:5rem}
+#hs-exam-score .hs-tools{margin:0 0 .7rem}
+.ham-xpills{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));align-items:start;gap:.7rem}
 @media print{.hs-exam-dock{display:none!important}}
 .hs-jump{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:15;display:flex;
   max-width:calc(100vw - 24px);border:1px solid var(--edge);border-radius:999px;overflow:hidden;

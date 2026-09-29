@@ -723,10 +723,10 @@
       $("hs-count").textContent = p.exam_size + " exam questions";
       return;
     }
-    $("hs-exam-body").innerHTML = '<ol class="ham-exam">' + ex.items.map(function (it) {
+    $("hs-exam-body").innerHTML = ex.scored ? "" : '<ol class="ham-exam">' + ex.items.map(function (it) {
       var q = state.byId[it.id];
       var picked = ex.answers[it.id] || null;
-      var inner = ex.scored ? choicesHtml(q, picked) : '<div class="ham-radios">' + ["A", "B", "C", "D"].map(function (k) {
+      var inner = '<div class="ham-radios">' + ["A", "B", "C", "D"].map(function (k) {
         return '<label><input type="radio" name="hs-x-' + esc(q.id) + '" value="' + k + '"' + (picked === k ? " checked" : "") +
           '> <span class="mono">' + k + ".</span> " + esc(q.choices[k]) + "</label>";
       }).join("") + "</div>";
@@ -741,39 +741,59 @@
     var ex = state.exam;
     if (!ex || ex.scored) { return; }
     var p = poolObj();
-    var right = 0, per = {}, misses = [];
+    var right = 0, per = {}, misses = [], all = [];
     ex.items.forEach(function (it) {
       var q = state.byId[it.id];
       var a = ex.answers[it.id] || null;
       var ok = a === q.correct;
       per[it.sub] = per[it.sub] || { right: 0, total: 0 };
       per[it.sub].total += 1;
-      if (ok) { right += 1; per[it.sub].right += 1; } else { misses.push({ q: q, a: a }); }
+      var m = { q: q, a: a, ok: ok };
+      all.push(m);
+      if (ok) { right += 1; per[it.sub].right += 1; } else { misses.push(m); }
       record(q.id, ok);
     });
     ex.scored = true;
     var pass = right >= p.passing_score;
-    var h = '<p id="hs-exam-result" role="status">' +
+    var summary = '<p id="hs-exam-result" role="status">' +
       (pass ? chip("good", ICON.good, "pass") : chip("critical", ICON.critical, "not a pass yet")) +
-      ' <b class="mono">' + right + " / " + ex.items.length + '</b> <span class="hint">' + p.passing_score + " to pass</span></p>";
-    h += '<table class="ham-per-sub"><thead><tr><th>subelement</th><th>title</th><th>right</th><th>of</th></tr></thead><tbody>' +
+      ' <b class="mono">' + right + " / " + ex.items.length + '</b> <span class="hint">' + p.passing_score + " to pass</span></p>" +
+      '<div class="tbl"><table class="ham-per-sub"><thead><tr><th>subelement</th><th>title</th><th>right</th><th>of</th></tr></thead><tbody>' +
       p.subelements.map(function (s) {
         var r = per[s.id] || { right: 0, total: 0 };
         return '<tr><td class="mono">' + esc(s.id) + "</td><td>" + esc(s.title) + '</td><td class="mono">' + r.right +
           '</td><td class="mono">' + r.total + "</td></tr>";
-      }).join("") + "</tbody></table>";
-    if (misses.length) {
-      h += '<h3>Missed (' + misses.length + ')</h3><ol class="ham-misses">' + misses.map(function (m) {
-        return '<li><span class="mono">' + esc(m.q.id) + "</span> " + esc(m.q.question) + "<br>" +
-          chip("good", ICON.good, "answer " + m.q.correct) + " " + esc(m.q.choices[m.q.correct]) + " " +
-          (m.a ? chip("critical", ICON.critical, "you chose " + m.a) : chip("neutral", ICON.neutral, "unanswered")) + "</li>";
-      }).join("") + "</ol>";
-    }
-    $("hs-exam-score").innerHTML = h;
+      }).join("") + "</tbody></table></div>";
+    var card = function (m, prefix) {
+      var q = m.q;
+      var mark = m.ok ? " " + chip("good", ICON.good, "right")
+        : " " + (m.a ? chip("critical", ICON.critical, "you chose " + m.a) : chip("neutral", ICON.neutral, "unanswered"));
+      return flipHtml(q, "ham-bcard", prefix + esc(q.id), mark, choicesHtml(q, null, true) + figureHtml(q),
+        choicesHtml(q, m.a) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
+    };
+    var flipTools = function (id) {
+      return '<div class="hs-tools"><div class="hs-seg"><button class="btn secondary" type="button" data-flipall="answers" data-target="' + id + '">Show all answers</button> ' +
+        '<button class="btn secondary" type="button" data-flipall="questions" data-target="' + id + '">Show all questions</button></div></div>';
+    };
+    var section = function (id, title, count, inner) {
+      return '<section class="ham-tgroup" id="hs-exam-' + id + '" data-tc-collapse="exam-' + id + '"><h4 data-tc-collapse-toggle>' + title +
+        '<span class="count">' + count + '</span></h4><div data-tc-collapse-body>' + inner + "</div></section>";
+    };
+    var h = section("summary", "Summary", right + " of " + ex.items.length, summary);
+    h += section("missed", "Missed", misses.length + " question" + (misses.length === 1 ? "" : "s"),
+      misses.length ? flipTools("hs-exam-missed") + '<ol class="ham-pills ham-xpills" id="hs-exam-missed">' + misses.map(function (m) { return card(m, "hs-xm-"); }).join("") + "</ol>"
+        : "<p>" + chip("good", ICON.good, "none missed") + "</p>");
+    h += section("review", "Review", ex.items.length + " questions",
+      flipTools("hs-exam-review") + '<ol class="ham-pills ham-xpills" id="hs-exam-review">' + all.map(function (m) { return card(m, "hs-xr-"); }).join("") + "</ol>");
+    var box = $("hs-exam-score");
+    box.innerHTML = h;
+    initCollapse(box);
+    setOpen($("hs-exam-summary"), true);
+    setOpen($("hs-exam-missed"), true);
+    setOpen($("hs-exam-review"), false);
     renderExam();
     renderProgress();
-    var res = $("hs-exam-result");
-    if (res) { res.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+    $("hs-exam-summary").scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
   /* --- progress ----------------------------------------------------------- */
