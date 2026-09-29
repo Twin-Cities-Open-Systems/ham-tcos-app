@@ -20,7 +20,7 @@ PAGES=(index.html)
 ASSET_DIRS=(css)
 ASSET_FILES=(robots.txt)
 HOST=ham.tcos.app
-LAB_HOST=ham.app.lab.tcos.us
+LAB_HOST=ham-app.lab.tcos.us
 
 cd "$HERE"
 if [ "$cmd" = promote ]; then
