@@ -44,7 +44,7 @@
   var state = {
     groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0, browse: 0 },
     data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
-    deck: [], card: 0, shuffled: false, answered: null, exam: null, showAnswer: true
+    deck: [], card: 0, shuffled: false, answered: null, exam: null, fmode: "memorize"
   };
 
   function esc(s) {
@@ -65,13 +65,18 @@
   }
   function saveProgress() { try { window.localStorage.setItem(STORE, JSON.stringify(progress)); } catch (e) { /* forgets */ } }
   var progress = loadProgress();
-  /* Memorize mode: show the correct answer on every flashcard without
-     asking first. On unless the reader turned it off ("0"). */
-  function loadShowAnswer() {
-    try { return window.localStorage.getItem(SHOW_KEY) !== "0"; } catch (e) { return true; }
+  /* Flashcard mode: memorize (the answer is shown), quiz (pick one) or flip (the
+     question on the front, the answer on the back). Memorize unless the reader chose
+     otherwise; an older "0" in the key meant quiz. */
+  var FMODES = ["memorize", "quiz", "flip"];
+  function loadFmode() {
+    try {
+      var v = window.localStorage.getItem(SHOW_KEY);
+      return v === "0" ? "quiz" : FMODES.indexOf(v) >= 0 ? v : "memorize";
+    } catch (e) { return "memorize"; }
   }
-  function saveShowAnswer(on) { try { window.localStorage.setItem(SHOW_KEY, on ? "1" : "0"); } catch (e) { /* forgets */ } }
-  state.showAnswer = loadShowAnswer();
+  function saveFmode(m) { try { window.localStorage.setItem(SHOW_KEY, m); } catch (e) { /* forgets */ } }
+  state.fmode = loadFmode();
   Object.keys(GROUP_MODES).forEach(function (panel) { state.groupBy[panel] = loadGroupBy(panel); });
   Object.keys(state.cols).forEach(function (panel) { state.cols[panel] = loadCols(panel); });
   /* "Missed" means the LAST answer was wrong: a question answered right since
@@ -372,6 +377,16 @@
       '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
       esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
   }
+  /* The same two-faced card for a glossary term or a formula: its name on the front,
+     what it means on the back. */
+  function flipNamedHtml(cls, domId, famAttr, key, dot, name, tag, cue, back) {
+    return '<li class="' + cls + ' ham-flip" id="' + domId + '"' + famAttr + ' data-flipped="false"><div class="ham-flip-in">' +
+      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + esc(key) + '" aria-label="' + esc(name) + ". Show the " + cue + '.">' +
+      '<span class="ham-fq">' + dot + esc(name) + "</span></button>" + (tag || "") +
+      '<span class="ham-flip-cue" aria-hidden="true">Show ' + cue + " &#8635;</span></div>" +
+      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + esc(key) + '" aria-label="' + esc(name) + " " + cue + '. Show the name again.">' +
+      dot + esc(name) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
+  }
   function guideCardHtml(q) {
     var tick = '<span class="ham-tick" aria-hidden="true">' + ICON.good + "</span>";
     var ansHtml = q.answers
@@ -401,10 +416,8 @@
      and how many columns; each group is itself a collapsible card. */
   function termPill(term, tag) {
     var f = famStyle(term.ids);
-    return '<li class="ham-term ham-pill"' + f.style + ' id="hs-term-' + esc(term.key) + '" data-tc-collapse="term-' + esc(term.key) +
-      '" data-tc-collapse-default="collapsed"><h3 data-tc-collapse-toggle>' + f.dot + esc(term.term) + (tag || "") +
-      '</h3><div data-tc-collapse-body><p>' + esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) +
-      "</p></div></li>";
+    return flipNamedHtml("ham-term", "hs-term-" + esc(term.key), f.style, term.key, f.dot, term.term, tag, "definition",
+      "<p>" + esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) + "</p>");
   }
   function termFamilies(term) {
     var seen = [];
@@ -508,13 +521,11 @@
       var vars = f.variables.length ? '<table class="ham-formula-vars"><tbody>' + f.variables.map(function (v) {
         return "<tr><td>" + esc(v.name) + "</td><td>" + esc(v.text) + "</td></tr>";
       }).join("") + "</tbody></table>" : "";
-      return '<li class="ham-formula ham-pill"' + fam.style + ' id="hs-formula-' + esc(f.key) + '" data-tc-collapse="formula-' + esc(f.key) +
-        '"><h3 data-tc-collapse-toggle>' + fam.dot + esc(f.name) +
-        '</h3><div data-tc-collapse-body><p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
+      return flipNamedHtml("ham-formula", "hs-formula-" + esc(f.key), fam.style, f.key, fam.dot, f.name, "", "formula",
+        '<p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
         "</p>" + tri + vars + '<p class="ham-example"><b>Example</b> ' + esc(f.example) + '</p><p class="ham-refqs">Used in: ' +
-        qButtons(f.ids) + "</p></div></li>";
+        qButtons(f.ids) + "</p>");
     }).join(""));
-    initCollapse($("hs-formulas"));
   }
 
   /* --- mastery map -------------------------------------------------------------
@@ -625,11 +636,23 @@
     var q = state.byId[state.deck[state.card]];
     /* Memorize and quiz look different at a glance: a solid green rail and a star
        versus a dashed blue rail and a question mark, each named in words. */
-    box.className = "ham-flash " + (state.showAnswer ? "is-memorize" : "is-quiz");
-    var h = '<p class="ham-mode"><span aria-hidden="true">' + (state.showAnswer ? "\u2605" : "?") + "</span> " +
-      (state.showAnswer ? "Memorize: answers shown" : "Quiz: pick an answer") + "</p>" +
+    Array.prototype.forEach.call(document.querySelectorAll("[data-fmode]"), function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-fmode") === state.fmode));
+    });
+    $("hs-flash-pos").textContent = (state.card + 1) + " / " + state.deck.length;
+    if (state.fmode === "flip") {
+      box.className = "ham-flash is-flip";
+      box.innerHTML = '<p class="ham-mode"><span aria-hidden="true">\u21BB</span> Flip: question, then answer</p>' +
+        '<ul class="ham-flipone">' + flipHtml(q, "ham-fcard", "hs-flash-card", "", choicesHtml(q, null, true) + figureHtml(q),
+          choicesHtml(q, null) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "")) + "</ul>";
+      return;
+    }
+    var memorize = state.fmode === "memorize";
+    box.className = "ham-flash " + (memorize ? "is-memorize" : "is-quiz");
+    var h = '<p class="ham-mode"><span aria-hidden="true">' + (memorize ? "\u2605" : "?") + "</span> " +
+      (memorize ? "Memorize: answers shown" : "Quiz: pick an answer") + "</p>" +
       '<p class="ham-flash-q"><span class="mono">' + esc(q.id) + "</span> " + esc(q.question) + "</p>" + figureHtml(q);
-    if (state.showAnswer) {
+    if (memorize) {
       h += '<p id="hs-flash-result" role="status">' + chip("good", ICON.good, "answer " + q.correct) + "</p>" +
         choicesHtml(q, null);
     } else if (state.answered === null) {
@@ -647,7 +670,7 @@
     $("hs-flash-pos").textContent = (state.card + 1) + " / " + state.deck.length;
   }
   function pick(k) {
-    if (state.showAnswer || state.answered !== null || !state.deck.length) { return; }
+    if (state.fmode !== "quiz" || state.answered !== null || !state.deck.length) { return; }
     var q = state.byId[state.deck[state.card]];
     state.answered = k;
     record(q.id, k === q.correct);
@@ -832,7 +855,10 @@
     });
     document.addEventListener("click", function (e) {
       var f = e.target.closest("[data-flip]");
-      if (!f && !e.target.closest("a, button, input, select, textarea")) { f = e.target.closest(".ham-front"); }
+      if (!f && !e.target.closest("a, button, input, select, textarea")) {
+        f = e.target.closest(".ham-front");
+        if (!f && !String(window.getSelection && window.getSelection()).length) { f = e.target.closest(".ham-back"); }
+      }
       if (f) { flipCard(f.closest(".ham-flip"), !f.closest(".ham-back"), true); return; }
       var fa = e.target.closest("[data-flipall]");
       if (fa) { flipAll($(fa.getAttribute("data-target")), fa.getAttribute("data-flipall") === "answers"); return; }
@@ -853,13 +879,13 @@
       var b = e.target.closest(".ham-pick");
       if (b) { pick(b.getAttribute("data-pick")); }
     });
-    var showBox = $("hs-flash-show");
-    showBox.checked = state.showAnswer;
-    showBox.addEventListener("change", function () {
-      state.showAnswer = this.checked;
-      saveShowAnswer(this.checked);
-      state.answered = null;
-      renderFlash();
+    Array.prototype.forEach.call(document.querySelectorAll("[data-fmode]"), function (b) {
+      b.addEventListener("click", function () {
+        state.fmode = b.getAttribute("data-fmode");
+        saveFmode(state.fmode);
+        state.answered = null;
+        renderFlash();
+      });
     });
     $("hs-flash-prev").addEventListener("click", function () { move(-1); });
     $("hs-flash-next").addEventListener("click", function () { move(1); });
@@ -874,7 +900,11 @@
       var tag = (e.target.tagName || "").toLowerCase();
       if (tag === "input" || tag === "select" || tag === "textarea") { return; }
       var n = ["1", "2", "3", "4"].indexOf(e.key);
-      if (n >= 0) { e.preventDefault(); pick("ABCD".charAt(n)); }
+      if (state.fmode === "flip" && (e.key === "f" || (e.key === " " && tag !== "button"))) {
+        e.preventDefault();
+        var fc = $("hs-flash-card");
+        if (fc) { flipCard(fc, fc.getAttribute("data-flipped") !== "true", false); }
+      } else if (n >= 0) { e.preventDefault(); pick("ABCD".charAt(n)); }
       else if (e.key === "ArrowRight") { e.preventDefault(); move(1); }
       else if (e.key === "ArrowLeft") { e.preventDefault(); move(-1); }
     });

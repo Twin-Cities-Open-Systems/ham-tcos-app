@@ -60,9 +60,9 @@ class Collapsible(unittest.TestCase):
 
     def test_rendered_pills_are_handed_to_collapse_js(self):
         js = (ROOT / "js" / "study.js").read_text()
-        for kind in ("fam-", "sub-", "grp-", "term-", "formula-"):
+        for kind in ("fam-", "sub-", "grp-"):
             self.assertIn(f'data-tc-collapse="{kind}', js, kind)
-        self.assertGreaterEqual(js.count("initCollapse("), 4)
+        self.assertGreaterEqual(js.count("initCollapse("), 3)
         self.assertIn("openAncestors(el)", js)
 
 
