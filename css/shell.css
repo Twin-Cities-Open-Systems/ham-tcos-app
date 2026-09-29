@@ -92,6 +92,19 @@ input,select,textarea,button{font-family:inherit;font-variant-numeric:slashed-ze
 .top nav a:hover,.top nav a:focus-visible,.top nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
 .top nav a.ext::after{content:"\2197";margin-left:.25em;font-size:.85em}
 @media (max-width:30rem){.top nav{flex-wrap:wrap}}
+/* Small screens: the header is a brand and a menu button; nav, text size and theme fold
+   into the panel. shell.js adds .tc-menu (and the button), so with no script it all stays visible. */
+.menu-btn{display:none}
+@media (max-width:40rem){
+  .top.tc-menu .menu-btn{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;
+    background:var(--sunk);border:1px solid var(--edge);color:var(--ink);border-radius:8px;font:inherit;font-size:1.25rem;line-height:1;cursor:pointer}
+  .top.tc-menu .menu-btn[aria-expanded="true"]{background:var(--accent-soft);color:var(--accent)}
+  .top.tc-menu:not([data-open]) > :not(.brand):not(.menu-btn){display:none}
+  .top.tc-menu[data-open] > nav,.top.tc-menu[data-open] > .fontsize-toggle,.top.tc-menu[data-open] > .theme-toggle{flex:1 1 100%}
+  .top.tc-menu[data-open] > nav{flex-direction:column}
+  .top.tc-menu[data-open] > .fontsize-toggle{flex-wrap:wrap}
+  .top.tc-menu[data-open]{max-height:100vh;max-height:100dvh;overflow-y:auto}
+}
 .theme-select{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);border-radius:6px;padding:.22rem .5rem;font:inherit;font-size:.85rem;min-height:44px;cursor:pointer}
 .fontsize-toggle,.theme-toggle{display:flex;gap:.15rem;align-items:center}
 .fontsize-btn,.theme-btn{background:var(--sunk);border:1px solid var(--edge);color:var(--muted);
