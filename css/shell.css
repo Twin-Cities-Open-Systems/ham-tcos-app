@@ -233,6 +233,77 @@ thead th[aria-sort="ascending"],thead th[aria-sort="descending"]{color:var(--acc
 
 /* print / Save as PDF: the page as it looks on screen minus the controls. */
 @page{margin:12mm}
+/* flip card ---------------------------------------------------------------
+ * A card with two faces, front and back, in one grid cell, so the card is as tall as its
+ * taller face and a grid of them never reflows on a flip. The hidden face is
+ * visibility:hidden, so it cannot take focus. shell.js (TC.flip) sets data-flipped.
+ *   <li class="tc-flip" data-flipped="false"><div class="tc-flip-in">
+ *     <div class="tc-face tc-front"><button class="tc-flipbtn" data-tc-flip>...</button></div>
+ *     <div class="tc-face tc-back"><button class="tc-backq" data-tc-flip>...</button>...</div>
+ *   </div></li>
+ * .tc-fit makes the card only as tall as the face showing. --fam colors the left edge. */
+.tc-flip{list-style:none;perspective:1200px;scroll-margin-top:5rem}
+.tc-flip.is-jumped{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.tc-flip-in{display:grid;transition:transform .3s;transform-style:preserve-3d}
+.tc-flip[data-flipped="true"] .tc-flip-in{transform:rotateY(180deg)}
+.tc-face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:left;
+  border:1px solid var(--edge);border-left:5px solid var(--fam,var(--accent));border-radius:8px;background:var(--surface);
+  padding:.6rem .85rem;font:inherit;color:inherit;transition:visibility 0s .15s}
+.tc-front{display:flex;flex-direction:column;gap:.5rem;cursor:pointer;line-height:1.4;font-size:.95rem}
+.tc-flipbtn{all:unset;box-sizing:border-box;display:block;cursor:pointer}
+.tc-flipbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tc-front .tc-flip-cue{margin-top:auto}
+.tc-front:hover,.tc-backq:hover .tc-flip-cue{border-color:var(--accent)}
+.tc-flip-cue{display:block;margin-top:.4rem;font-size:.8rem;color:var(--accent);font-weight:600}
+.tc-back{transform:rotateY(180deg);display:flex;flex-direction:column;gap:.5rem;background:var(--sunk)}
+.tc-backq{all:unset;box-sizing:border-box;display:block;cursor:pointer;font-size:.85rem;line-height:1.4;color:var(--muted)}
+.tc-backq:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tc-flip[data-flipped="false"] .tc-back,.tc-flip[data-flipped="true"] .tc-front{visibility:hidden}
+@media (prefers-reduced-motion:reduce){.tc-flip-in,.tc-face{transition:none}}
+@media print{
+  .tc-flip-in{transform:none!important}
+  .tc-face{grid-area:auto;transform:none;visibility:visible!important;position:static!important;break-inside:avoid;margin-bottom:.3rem}
+  .tc-flip-in{display:block}.tc-flip-cue{display:none}
+}
+.tc-fit .tc-flip-in{position:relative}
+.tc-fit[data-flipped="false"] .tc-back,.tc-fit[data-flipped="true"] .tc-front{position:absolute;top:0;left:0;right:0}
+.tc-fit .tc-front .tc-flip-cue{margin-top:.15rem}
+
+/* way back ------------------------------------------------------------------
+ * A small pill fixed to the corner that names what is above the reader and scrolls
+ * back to it. shell.js (TC.wayback.init) fills and shows it. */
+.tc-jump{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:15;display:flex;
+  max-width:calc(100vw - 24px);border:1px solid var(--edge);border-radius:999px;overflow:hidden;
+  background:color-mix(in srgb,var(--surface) 90%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:0 2px 12px rgba(0,0,0,.2);opacity:.9;transition:opacity .2s,transform .2s,visibility 0s}
+.tc-jump:hover,.tc-jump:focus-within{opacity:1}
+.tc-jump[data-show="false"]{opacity:0;visibility:hidden;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s,visibility 0s .2s}
+.tc-jump button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:.4rem;min-height:44px;min-width:44px;
+  padding:0 .8rem;font:600 .85rem/1 inherit;color:var(--ink);justify-content:center}
+.tc-jump button[hidden]{display:none}
+.tc-jump button+button{border-left:1px solid var(--edge)}
+.tc-jump button:hover{color:var(--accent);background:var(--sunk)}
+.tc-jump button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.tc-jump-l{max-width:11rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tc-jump-l::before{content:"\2191\00a0";color:var(--accent)}
+@media (max-width:40rem){.tc-jump-l{max-width:38vw}.tc-jump[data-has-group="true"] [data-tc-to="panel"]{display:none}}
+@media (prefers-reduced-motion:reduce){.tc-jump,.tc-jump[data-show="false"]{transition:none}}
+@media print{.tc-jump{display:none!important}}
+
+/* dock ----------------------------------------------------------------------
+ * A bar that rides the bottom edge of the screen while its section is on screen (a
+ * primary action and a status line, e.g. Score and "12 / 35 answered"). It must come
+ * after the content it serves; position:sticky needs the card around it not to clip. */
+.tc-dock{position:sticky;bottom:max(8px,env(safe-area-inset-bottom));z-index:14;display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  margin-top:.8rem;padding:.5rem .5rem .5rem .9rem;border:1px solid var(--edge);border-radius:999px;background:color-mix(in srgb,var(--surface) 88%,transparent);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.tc-dock[hidden]{display:none}
+.tc-dock-n{font-size:.85rem;color:var(--muted)}
+.tc-dock .btn{min-height:44px;min-width:6rem}
+.card:has(.tc-dock){overflow:visible}
+body:has(.tc-dock:not([hidden])) .tc-jump{bottom:calc(max(8px,env(safe-area-inset-bottom)) + 76px)}
+@media print{.tc-dock{display:none!important}}
+
 @media print{
   html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   :root,:root[data-theme]{--bg:#fff;--surface:#fff;--sunk:#f3f3f3;--ink:#000;--muted:#333;--edge:#555;--accent:#0b3a70}

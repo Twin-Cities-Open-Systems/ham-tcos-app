@@ -232,86 +232,28 @@ button.ham-mcell:hover,button.ham-mcell:focus-visible{outline:3px solid var(--ac
 .ham-ggrid .ham-gcard h6 .mono{margin-right:.35rem}
 .ham-ggrid .ham-ggroup h5,.ham-bgrid .ham-group>summary h2{font-weight:500}
 
-/* Guide cards flip: the question on the front, the answer on the back. Both faces
-   share one grid cell, so a card is as tall as its taller face and the grid never
-   reflows on a flip. The hidden face is visibility:hidden, so it cannot be focused. */
-.ham-flip{list-style:none;perspective:1200px;scroll-margin-top:5rem}
-.ham-flip.is-jumped{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
-.ham-flip-in{display:grid;transition:transform .3s;transform-style:preserve-3d}
-.ham-flip[data-flipped="true"] .ham-flip-in{transform:rotateY(180deg)}
-.ham-face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:left;
-  border:1px solid var(--edge);border-left:5px solid var(--fam,var(--accent));border-radius:8px;background:var(--surface);
-  padding:.6rem .85rem;font:inherit;color:inherit;transition:visibility 0s .15s}
-.ham-front{display:flex;flex-direction:column;gap:.5rem;cursor:pointer;line-height:1.4;font-size:.95rem}
-.ham-flipbtn{all:unset;box-sizing:border-box;display:block;cursor:pointer}
-.ham-flipbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ham-choice.is-plain{background:var(--sunk);border-color:var(--edge)}
-.ham-front .ham-choices{margin:0}
-.ham-front .ham-flip-cue{margin-top:auto}
-.ham-front:hover,.ham-backq:hover .ham-flip-cue{border-color:var(--accent)}
-.ham-fq .mono,.ham-backq .mono{color:var(--muted);font-size:.85em;font-weight:600;margin-right:.35rem;white-space:nowrap}
-.ham-flip-cue{display:block;margin-top:.4rem;font-size:.8rem;color:var(--accent);font-weight:600}
-.ham-back{transform:rotateY(180deg);display:flex;flex-direction:column;gap:.5rem;background:var(--sunk)}
-.ham-backq{all:unset;box-sizing:border-box;display:block;cursor:pointer;font-size:.85rem;line-height:1.4;color:var(--muted)}
-.ham-backq:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.ham-flip[data-flipped="false"] .ham-back,.ham-flip[data-flipped="true"] .ham-front{visibility:hidden}
-@media (prefers-reduced-motion:reduce){.ham-flip-in,.ham-face{transition:none}}
-@media print{
-  .ham-flip-in{transform:none!important}
-  .ham-face{grid-area:auto;transform:none;visibility:visible!important;position:static!important;break-inside:avoid;margin-bottom:.3rem}
-  .ham-flip-in{display:block}.ham-flip-cue{display:none}
-}
-.ham-gcard.ham-flip{border:0;background:none;padding:0}
-.ham-gcards>.ham-flip{margin:0 0 .6rem}
+.tc-front .ham-choices{margin:0}
+.ham-fq .mono,.tc-backq .mono{color:var(--muted);font-size:.85em;font-weight:600;margin-right:.35rem;white-space:nowrap}
+.ham-gcard.tc-flip{border:0;background:none;padding:0}
+.ham-gcards>.tc-flip{margin:0 0 .6rem}
 .ham-flash.is-flip{border:1px solid var(--edge)}
 .ham-flipone{margin:0;padding:0;list-style:none}
-.ham-fcard .ham-face{font-size:1rem}
-.ham-fcard .ham-flip-cue{font-size:.9rem}
-.ham-term.ham-flip,.ham-formula.ham-flip{list-style:none;border:0}
-.ham-term .ham-fq,.ham-formula .ham-fq,.ham-term .ham-backq,.ham-formula .ham-backq{font-weight:600;color:var(--ink);font-size:.95rem}
-.ham-term .ham-backq .ham-flip-cue,.ham-formula .ham-backq .ham-flip-cue{font-weight:600}
+.ham-fcard .tc-face{font-size:1rem}
+.ham-fcard .tc-flip-cue{font-size:.9rem}
+.ham-term.tc-flip,.ham-formula.tc-flip{list-style:none;border:0}
+.ham-term .ham-fq,.ham-formula .ham-fq,.ham-term .tc-backq,.ham-formula .tc-backq{font-weight:600;color:var(--ink);font-size:.95rem}
+.ham-term .tc-backq .tc-flip-cue,.ham-formula .tc-backq .tc-flip-cue{font-weight:600}
 .ham-term .ham-famtag,.ham-formula .ham-famtag{margin-left:0;align-self:flex-start}
-.ham-fit .ham-flip-in{position:relative}
-.ham-fit[data-flipped="false"] .ham-back,.ham-fit[data-flipped="true"] .ham-front{position:absolute;top:0;left:0;right:0}
 .ham-use{margin:0;font-size:.9rem;line-height:1.45;color:var(--muted)}
 .ham-use-l{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-.ham-fit .ham-front .ham-flip-cue{margin-top:.15rem}
 .ham-more{display:inline}
 .ham-more summary{display:inline;cursor:pointer;color:var(--accent);padding:.6rem .35rem;min-height:44px}
 .ham-terms.ham-grid[data-cols="0"],.ham-formulas.ham-grid[data-cols="0"]{--cols:1}
 @media (min-width:32rem){.ham-terms.ham-grid[data-cols="0"],.ham-formulas.ham-grid[data-cols="0"]{--cols:2}}
 .ham-formula .ham-formula-vars{table-layout:fixed;width:100%}
 .ham-formula .ham-formula-vars td:first-child{white-space:normal;width:38%;overflow-wrap:anywhere}
-/* The way back: a quiet pill in the corner that names what is above the reader. */
-/* The exam's Score button rides the bottom edge of the screen from the first question
-   to the last: it sits after the questions, so sticky-bottom holds it in view until
-   the page reaches it. */
-.hs-exam-dock{position:sticky;bottom:max(8px,env(safe-area-inset-bottom));z-index:14;display:flex;align-items:center;justify-content:space-between;gap:.75rem;
-  margin-top:.8rem;padding:.5rem .5rem .5rem .9rem;border:1px solid var(--edge);border-radius:999px;background:color-mix(in srgb,var(--surface) 88%,transparent);
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,.18)}
-#hs-panel-exam{overflow:visible}
-.hs-exam-dock[hidden]{display:none}
-.hs-exam-dock-n{font-size:.85rem;color:var(--muted)}
-.hs-exam-dock .btn{min-height:44px;min-width:6rem}
-body:has(.hs-exam-dock:not([hidden])) .hs-jump{bottom:calc(max(8px,env(safe-area-inset-bottom)) + 76px)}
+/* Scored results: the flip cards, dock and way-back pill are the shell's (css/shell.css). */
 #hs-exam-score .ham-tgroup{scroll-margin-top:5rem}
 #hs-exam-score .hs-tools{margin:0 0 .7rem}
 .ham-xpills{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));align-items:start;gap:.7rem}
-@media print{.hs-exam-dock{display:none!important}}
-.hs-jump{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:15;display:flex;
-  max-width:calc(100vw - 24px);border:1px solid var(--edge);border-radius:999px;overflow:hidden;
-  background:color-mix(in srgb,var(--surface) 90%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  box-shadow:0 2px 12px rgba(0,0,0,.2);opacity:.9;transition:opacity .2s,transform .2s,visibility 0s}
-.hs-jump:hover,.hs-jump:focus-within{opacity:1}
-.hs-jump[data-show="false"]{opacity:0;visibility:hidden;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s,visibility 0s .2s}
-.hs-jump button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:.4rem;min-height:44px;min-width:44px;
-  padding:0 .8rem;font:600 .85rem/1 inherit;color:var(--ink);justify-content:center}
-.hs-jump button[hidden]{display:none}
-.hs-jump button+button{border-left:1px solid var(--edge)}
-.hs-jump button:hover{color:var(--accent);background:var(--sunk)}
-.hs-jump button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-.hs-jump-l{max-width:11rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hs-jump-l::before{content:"\2191\00a0";color:var(--accent)}
-@media (max-width:40rem){.hs-jump-l{max-width:38vw}.hs-jump[data-has-group="true"] [data-hs-to="panel"]{display:none}}
-@media (prefers-reduced-motion:reduce){.hs-jump,.hs-jump[data-show="false"]{transition:none}}
-@media print{.hs-jump{display:none!important}}
