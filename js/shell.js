@@ -1,4 +1,5 @@
-/* shell.js: the text-size and theme toggles, on every page.
+/* shell.js: the text-size and theme toggles, on every page. OWNED by tcos-app;
+ * children copy it, never edit the copy (tcos-app CLAUDE.md, "How a child app inherits").
  *
  * Choices persist in localStorage and are applied before paint by the inline
  * bootstrap in each page's <head>; this file only wires the controls. A

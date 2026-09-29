@@ -9,7 +9,7 @@
 # Identity color is eight hues in a fixed order, never cycled. Color is never
 # the only signal: the family name is always printed beside its swatch.
 #
-# Contrast, measured against the page surfaces (css/site.css): the dark hues
+# Contrast, measured against the page surfaces (css/shell.css): the dark hues
 # pass on all five checks (lightness, chroma, color-vision, normal-vision,
 # 3:1 contrast). On the light surface the aqua, yellow and magenta hues fall
 # under 3:1 contrast, which the icon-plus-label rule covers structurally.
@@ -21,7 +21,7 @@ families:
     id: rules
     title: "Rules"
     hue: blue
-    color: {light: "#2a78d6", dark: "#3987e5"}
+    color: {light: "#2570cf", dark: "#3987e5"}
   - slot: 2
     id: operating
     title: "Operating"
