@@ -240,6 +240,8 @@ def attach_notes(pool, questions, doc):
         seen.add(key)
         if not t.get("definition") or not t.get("match"):
             raise Mismatch(f"{name}: term {t['term']!r} needs a definition and at least one match pattern")
+        if not str(t.get("use") or "").strip():
+            raise Mismatch(f"{name}: term {t['term']!r} needs a real-world use")
         try:
             pats = [re.compile(m, re.I) for m in t["match"]]
         except re.error as exc:
@@ -248,7 +250,8 @@ def attach_notes(pool, questions, doc):
                 if any(p.search(q["question"] or "") or any(p.search(c) for c in q["choices"].values()) for p in pats)]
         if not used:
             raise Mismatch(f"{name}: term {t['term']!r} matches no question")
-        terms.append({"key": key, "term": t["term"], "definition": t["definition"], "ids": used})
+        terms.append({"key": key, "term": t["term"], "definition": t["definition"],
+                      "use": str(t["use"]).strip(), "ids": used})
     terms.sort(key=lambda t: t["term"].lower())
     formulas, seen = [], set()
     for f in doc.get("formulas") or []:
@@ -259,12 +262,12 @@ def attach_notes(pool, questions, doc):
         missing = sorted(set(f.get("ids") or []) - ids)
         if missing:
             raise Mismatch(f"{name}: formula {key} lists questions the pool does not have: {missing[:5]}")
-        for need in ("name", "forms", "variables", "ids"):
+        for need in ("name", "use", "forms", "variables", "ids"):
             if not f.get(need):
                 raise Mismatch(f"{name}: formula {key} has no {need}")
         if not (f.get("example") or {}).get("text"):
             raise Mismatch(f"{name}: formula {key} has no worked example")
-        formulas.append({"key": key, "name": f["name"], "forms": list(f["forms"]),
+        formulas.append({"key": key, "name": f["name"], "use": str(f["use"]).strip(), "forms": list(f["forms"]),
                          "variables": [{"name": str(k), "text": str(v)} for k, v in f["variables"].items()],
                          "example": f["example"]["text"], "ids": list(f["ids"])})
     pool["terms"], pool["formulas"] = terms, formulas
