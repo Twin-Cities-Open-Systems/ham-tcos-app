@@ -96,7 +96,9 @@ body{font-variant-numeric:slashed-zero}
 .ham-formula-forms{font-family:ui-monospace,monospace;font-size:1.05rem;display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;margin:.4rem 0}
 .ham-formula-vars{margin:.4rem 0}
 .ham-formula-vars td:first-child{font-family:ui-monospace,monospace;padding-right:1rem;white-space:nowrap}
-.ham-formula-tri{margin:.5rem 0}
+.ham-formula-tri{position:relative;display:block;width:160px;height:140px;margin:.5rem 0}
+.ham-formula-tri svg{display:block}
+.ham-tri-l{position:absolute;width:2rem;margin-left:-1rem;text-align:center;font-size:22px;line-height:1.2;color:var(--ink)}
 .ham-example{margin:.5rem 0 .25rem;padding:.4rem .7rem;border-left:3px solid var(--edge);color:var(--ink)}
 .ham-example b{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:.4em}
 .ham-refqs{margin:.4rem 0 0;font-size:.9rem;color:var(--muted)}
