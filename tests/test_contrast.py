@@ -35,11 +35,21 @@ PAIRS = [
     ("edge", "sunk", EDGE, "border of a control inside a pill"),
     ("ink", "surface", EDGE, "family mark outline on a card"),
     ("ink", "sunk", EDGE, "family mark outline on a pill"),
+    ("critical-ink", "surface", EDGE, "missed-last-time mark on a card"),
+    ("ink", "sunk", BODY, "count on a seen-but-none-right mastery square"),
 ]
+RAMP = ["m1", "m2", "m3", "m4", "m5"]
+STEP = 1.3  # adjacent ramp steps differ by at least this contrast ratio, so every step can be told apart
+for _m in RAMP:
+    PAIRS += [
+        (f"{_m}-ink", _m, UI, f"count on mastery step {_m[1]}"),
+        (_m, "surface", EDGE, f"mastery step {_m[1]} against a card"),
+        (_m, "sunk", EDGE, f"mastery step {_m[1]} against a pill"),
+    ]
 
 
 def tokens(text):
-    return dict(re.findall(r"--([a-z-]+):\s*(#[0-9a-fA-F]{3,6})", text))
+    return dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{3,6})", text))
 
 
 def themes():
@@ -90,6 +100,19 @@ class Contrast(unittest.TestCase):
         tags = [title[:2] for _fid, title, _l, _d in families()]
         self.assertEqual(len(set(tags)), len(tags), tags)
 
+    def test_mastery_ramp_steps_are_distinguishable_and_monotonic(self):
+        for name, t in themes().items():
+            lums = [lum(t[m]) for m in RAMP]
+            self.assertEqual(lums, sorted(lums, reverse=(name == "light")), f"{name}: ramp must move away from the card")
+            for a, b in zip(RAMP, RAMP[1:]):
+                r = ratio(t[a], t[b])
+                self.assertGreaterEqual(r, STEP, f"{name}: {a} vs {b} is {r:.2f}, needs {STEP}")
+
+    def test_mastery_ramp_is_the_same_in_both_dark_blocks(self):
+        dark_auto = re.search(r'prefers-color-scheme:dark\)\{:root:not\(\[data-theme="light"\]\)\{(.*?)\}\}', STUDY, re.DOTALL).group(1)
+        dark_set = re.search(r':root\[data-theme="dark"\]\{(.*?)\}', STUDY, re.DOTALL).group(1)
+        self.assertEqual(tokens(dark_auto), tokens(dark_set))
+
     def test_js_and_test_share_the_letter_inks(self):
         js = (ROOT / "js" / "study.js").read_text()
         self.assertIn(f'INK_LIGHT = "{INK_LIGHT}", INK_DARK = "{INK_DARK}"', js)
@@ -100,6 +123,14 @@ def table():
     print("| pair | use | target | light | dark |\n|---|---|---|---|---|")
     for fg, bg, target, use in PAIRS:
         print(f"| `{fg}` on `{bg}` | {use} | {target:g}:1 | {ratio(by['light'][fg], by['light'][bg]):.2f} | {ratio(by['dark'][fg], by['dark'][bg]):.2f} |")
+    print("\n| step | light fill | ink | ink ratio | vs card | vs pill | step | dark fill | ink | ink ratio | vs card | vs pill | step |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    for i, m in enumerate(RAMP):
+        cells = []
+        for th in ("light", "dark"):
+            t = by[th]
+            step = f"{ratio(t[RAMP[i - 1]], t[m]):.2f}" if i else "-"
+            cells.append(f"`{t[m]}` | `{t[m + '-ink']}` | {ratio(t[m + '-ink'], t[m]):.2f} | {ratio(t[m], t['surface']):.2f} | {ratio(t[m], t['sunk']):.2f} | {step}")
+        print(f"| {i + 1} | " + " | ".join(cells) + " |")
     print("\n| family | light hue | letters | ratio | dark hue | letters | ratio |\n|---|---|---|---|---|---|---|")
     for fid, title, light, dark in families():
         li, di = best_ink(light), best_ink(dark)

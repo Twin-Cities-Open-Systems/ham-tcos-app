@@ -103,29 +103,40 @@ body{font-variant-numeric:slashed-zero}
 .ham-refqs button{font:inherit;font-size:inherit;color:var(--accent);background:none;border:0;padding:.6rem .35rem;min-height:44px;min-width:44px;
   text-decoration:underline;cursor:pointer}
 
-/* Mastery map: one square per question, sequential blue by times answered
-   right, grouped by family. Never the only signal -- the exact counts are
-   the Progress card's table, and a missed-last-time icon overlays the fill
-   (dataviz: relief for a sequential channel, status never color alone). */
-.ham-mastery-fam{margin:0 0 1rem}
-.ham-mastery-fam h3{margin:0 0 .4rem;font-size:.92rem;display:flex;align-items:center;gap:.4rem}
-.ham-mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(1.15rem,1fr));gap:2px}
-.ham-mcell{position:relative;aspect-ratio:1;border-radius:2px;border:1px solid var(--edge);background:var(--sunk);
-  cursor:pointer;padding:0}
-.ham-mcell:hover,.ham-mcell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.ham-mcell .ham-mmiss{position:absolute;top:-4px;right:-4px;font-size:.6rem;line-height:1}
-.ham-mlegend{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:.8rem;font-size:.8rem;color:var(--muted)}
-.ham-mlegend .ham-mswatch{display:inline-flex;align-items:center;gap:.3rem}
-.ham-mlegend i{display:inline-block;width:.9em;height:.9em;border-radius:2px;border:1px solid var(--edge)}
+/* Mastery map: one square per question inside the same family cards as the
+   Guide. Fill is a one-hue ramp (--m1..--m5, below) by times answered right;
+   the square prints its count, so color is never the only channel, and a corner
+   mark says "missed last time". Squares are 44px, the comfortable tap size. */
+.ham-mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr));gap:.3rem}
+.ham-mcell{position:relative;display:inline-flex;align-items:center;justify-content:center;aspect-ratio:1;min-width:2.75rem;
+  border-radius:8px;border:2px solid var(--edge);background:var(--sunk);color:var(--ink);
+  font:700 .95rem/1 ui-monospace,monospace;padding:0;cursor:pointer}
+button.ham-mcell:hover,button.ham-mcell:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ham-mcell[data-n="1"]{background:var(--m1);color:var(--m1-ink);border-color:var(--m1)}
+.ham-mcell[data-n="2"]{background:var(--m2);color:var(--m2-ink);border-color:var(--m2)}
+.ham-mcell[data-n="3"]{background:var(--m3);color:var(--m3-ink);border-color:var(--m3)}
+.ham-mcell[data-n="4"]{background:var(--m4);color:var(--m4-ink);border-color:var(--m4)}
+.ham-mcell[data-n="5"]{background:var(--m5);color:var(--m5-ink);border-color:var(--m5)}
+.ham-mmiss,.ham-mmark{display:inline-flex;align-items:center;justify-content:center;width:1.15rem;height:1.15rem;border-radius:50%;
+  background:var(--surface);color:var(--critical-ink);border:2px solid var(--critical-ink);font:700 .6rem/1 system-ui,sans-serif}
+.ham-mmiss{position:absolute;top:-.45rem;right:-.45rem}
+.ham-mlegend{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin:.6rem 0 1rem;font-size:.85rem;color:var(--muted)}
+.ham-mlegend-h{font-weight:700;color:var(--ink)}
+.ham-mlegend .ham-mswatch{display:inline-flex;align-items:center;gap:.4rem}
+.ham-msample{min-width:0;width:1.9rem;height:1.9rem;aspect-ratio:auto;border-radius:6px;font-size:.72rem;cursor:default}
+@media (max-width:30rem){.ham-mgrid{grid-template-columns:repeat(auto-fill,minmax(2.5rem,1fr))}.ham-mcell{min-width:2.5rem}}
 
 /* Answer palette. Green is reserved for "correct" and everything else is pushed
    back: the right answer is the one saturated, heavy, light-filled thing in a
    list; a wrong one is plain and lighter. Still tick + word, never color alone.
    Ratios are gated by tests/test_contrast.py: ink on fill >= 7:1, the edge
    against the card >= 3:1, the quieter distractor text >= 4.5:1. */
-:root{--ans-bg:#d6f5d6;--ans-ink:#053d05;--ans-edge:#0a6f0a;--dim-ink:#4d5b68}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}}
-:root[data-theme="dark"]{--ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}
+:root{--m1:#4087d2;--m2:#2c72bc;--m3:#235b96;--m4:#1a4470;--m5:#112d4b;--m1-ink:#10161c;--m2-ink:#fcfbf9;--m3-ink:#fcfbf9;--m4-ink:#fcfbf9;--m5-ink:#fcfbf9;
+  --ans-bg:#d6f5d6;--ans-ink:#053d05;--ans-edge:#0a6f0a;--dim-ink:#4d5b68}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fcfbf9;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
+  --ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}}
+:root[data-theme="dark"]{--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fcfbf9;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
+  --ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}
 .hs-flash-show{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink);cursor:pointer;flex-wrap:wrap}
 .hs-flash-show small{color:var(--muted)}
 .hs-flash-show input{width:1.1rem;height:1.1rem;accent-color:var(--good)}

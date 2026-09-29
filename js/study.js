@@ -184,24 +184,6 @@
     var f = familyMap()[famId];
     return '<span class="ham-fam-dot" aria-hidden="true" style="--fam:var(--fam-' + esc(famId) + ');--fam-ink:var(--fam-ink-' + esc(famId) + ')">' + esc(f ? f.title.slice(0, 2) : "") + "</span>";
   }
-  /* Mastery map fill: the dataviz skill's single sequential blue ramp, steps
-   * 100..700 (one hue, light -> dark). It is one ramp reused by both themes,
-   * not a separate light/dark pair: on a light surface the near-zero end must
-   * be no lighter than step 250 to clear 2:1, so magnitude runs light -> dark
-   * (250, 350, 450, 550, 650); on a dark surface the near-zero end must be no
-   * darker than step 600, so the same five steps run the other way (600, 500,
-   * 400, 300, 200) -- magnitude always moves away from the surface, toward
-   * more contrast, in both themes. */
-  function injectMasteryColors() {
-    var light = ["--m1:#86b6ef", "--m2:#5598e7", "--m3:#2a78d6", "--m4:#1c5cab", "--m5:#104281"].join(";");
-    var dark = ["--m1:#184f95", "--m2:#256abf", "--m3:#3987e5", "--m4:#6da7ec", "--m5:#9ec5f4"].join(";");
-    var css = ":root{" + light + "}\n" +
-      '@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){' + dark + "}}\n" +
-      ':root[data-theme="dark"]{' + dark + "}\n";
-    var style = document.createElement("style");
-    style.textContent = css;
-    document.head.appendChild(style);
-  }
   /* --- collapsible cards ------------------------------------------------------
    * collapse.js (the shared shell) binds [data-tc-collapse] markup once, at DOM
    * ready, so a card written later by innerHTML has to be handed to it. It has
@@ -512,26 +494,29 @@
   }
 
   /* --- mastery map -------------------------------------------------------------
-   * One square per question, grouped by family. Fill is a sequential blue ramp
-   * by times answered right -- the same ramp both themes draw from, its usable
-   * span reversed per theme so magnitude always moves away from the surface
-   * (dataviz's ordinal-ramp floor: on light nothing lighter than step 250, on
-   * dark nothing darker than step 600, both >= 2:1). A missed-last-time icon
-   * overlays the fill so status is never color alone, and the exact numbers
-   * are the Progress card's table below -- the fill's relief channel. */
-  function masteryBucket(id) {
+   * One square per question, grouped into the same collapsible family cards as
+   * the Guide. The fill is a one-hue ramp by times answered right, tokens
+   * --m1..--m5 in css/study.css, designed per theme (magnitude always moves away
+   * from the card: darker on light, lighter on dark). Color is never alone: each
+   * square prints its count (0 = seen, none right yet; blank = not seen), and a
+   * corner mark says "missed last time". tests/test_contrast.py holds the ramp. */
+  function masteryCount(id) {
     var r = progress[id];
-    return r && r.correct ? Math.min(r.correct, 5) : 0;
+    if (!r || !r.seen) { return -1; }
+    return Math.min(r.correct || 0, 5);
   }
   function masteryCellHtml(q) {
-    var n = masteryBucket(q.id);
-    var style = n ? ' style="background:var(--m' + n + ');border-color:var(--m' + n + ')"' : "";
+    var n = masteryCount(q.id);
     var r = progress[q.id];
-    var miss = r && r.last === "missed" ? '<span class="ham-mmiss" aria-hidden="true">' + ICON.critical + "</span>" : "";
+    var missed = r && r.last === "missed";
     var ans = q.answers ? "all of the above" : q.answer;
-    var title = q.id + " -- " + ans + (r ? " (" + r.correct + "/" + r.seen + " right)" : " (not yet seen)");
-    return '<button type="button" class="ham-mcell" data-jump="question" data-key="' + esc(q.id) + '"' + style +
-      ' title="' + esc(title) + '" aria-label="' + esc(title) + '">' + miss + "</button>";
+    var title = q.id + " -- " + ans + (r ? " (" + r.correct + "/" + r.seen + " right" + (missed ? ", missed last time" : "") + ")" : " (not yet seen)");
+    return '<button type="button" class="ham-mcell" data-jump="question" data-key="' + esc(q.id) + '" data-n="' + n + '"' +
+      ' title="' + esc(title) + '" aria-label="' + esc(title) + '"><span aria-hidden="true">' + (n < 0 ? "" : n === 5 ? "5+" : n) + "</span>" +
+      (missed ? '<span class="ham-mmiss" aria-hidden="true">' + ICON.critical + "</span>" : "") + "</button>";
+  }
+  function masterySample(n, label) {
+    return '<span class="ham-mswatch"><span class="ham-mcell ham-msample" data-n="' + n + '" aria-hidden="true">' + (n < 0 ? "" : n === 5 ? "5+" : n) + "</span> " + label + "</span>";
   }
   function renderMastery() {
     var p = poolObj();
@@ -547,15 +532,19 @@
         s.groups.forEach(function (g) { (byGroup[g.id] || []).forEach(function (q) { cells.push(q); }); });
       });
       if (!cells.length) { return; }
-      out.push('<div class="ham-mastery-fam"><h3>' + famDot(fam.id) + esc(fam.title) +
-        '<span class="hint">' + cells.length + " questions</span></h3><div class=\"ham-mgrid\">" +
-        cells.map(masteryCellHtml).join("") + "</div></div>");
+      var right = cells.filter(function (q) { return masteryCount(q.id) > 0; }).length;
+      out.push('<section class="ham-fam" data-tc-collapse="mfam-' + esc(fam.id) + '" style="--fam:var(--fam-' + esc(fam.id) + ')">' +
+        '<div class="ham-fam-head" data-tc-collapse-toggle>' + famDot(fam.id) + "<h3>" + esc(fam.title) + "</h3>" +
+        '<span class="count">' + right + " of " + plural(cells.length, "question") + ' right</span></div>' +
+        '<div class="ham-fam-body" data-tc-collapse-body><div class="ham-mgrid">' + cells.map(masteryCellHtml).join("") + "</div></div></section>");
     });
-    $("hs-mastery").innerHTML = (out.length ? out.join("") : "<p>" + chip("neutral", ICON.neutral, "no questions") + "</p>") +
-      '<div class="ham-mlegend"><span class="ham-mswatch"><i style="background:var(--sunk)"></i> not yet right</span>' +
-      [1, 2, 3, 4, 5].map(function (n) {
-        return '<span class="ham-mswatch"><i style="background:var(--m' + n + ')"></i> ' + n + (n === 5 ? "+" : "") + " time" + (n === 1 ? "" : "s") + " right</span>";
-      }).join("") + '<span class="ham-mswatch">' + chip("critical", ICON.critical, "missed last time") + "</span></div>";
+    var legend = '<div class="ham-mlegend"><span class="ham-mlegend-h">Times answered right</span>' +
+      masterySample(-1, "not seen") + masterySample(0, "seen, none right") +
+      [1, 2, 3, 4, 5].map(function (n) { return masterySample(n, n === 5 ? "5 or more" : String(n)); }).join("") +
+      '<span class="ham-mswatch"><span class="ham-mmark" aria-hidden="true">' + ICON.critical + "</span> missed last time</span></div>";
+    $("hs-mastery").innerHTML = (out.length ? '<div class="hs-tools"><div class="hs-seg"><button class="btn secondary" type="button" data-expand="all" data-target="hs-mastery">Expand all</button> ' +
+      '<button class="btn secondary" type="button" data-expand="none" data-target="hs-mastery">Collapse all</button></div></div>' + legend + out.join("") : "<p>" + chip("neutral", ICON.neutral, "no questions") + "</p>");
+    initCollapse($("hs-mastery"));
     $("hs-count").textContent = qs.length + " questions";
   }
 
@@ -910,7 +899,6 @@
       state.data = data;
       data.questions.forEach(function (q) { state.byId[q.id] = q; });
       injectFamilyColors(data.families);
-      injectMasteryColors();
       indexRefs(data.pools);
       $("hs-pool").innerHTML = data.pools.map(function (p) {
         return '<option value="' + esc(p.pool) + '">' + esc(p.title) + " (" + p.questions + ")</option>";
