@@ -32,6 +32,37 @@
     });
   });
 
+  /* Small screens: fold nav, text size and theme behind one menu button. The button is made
+     here, not in each page, so a page needs no markup change and no script leaves it all visible. */
+  var top = document.querySelector("header.top");
+  if (top && !top.querySelector(".menu-btn")) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "menu-btn";
+    btn.setAttribute("aria-label", "Menu");
+    btn.setAttribute("aria-expanded", "false");
+    btn.textContent = "\u2630";
+    var brand = top.querySelector(".brand");
+    top.insertBefore(btn, brand ? brand.nextSibling : top.firstChild);
+    top.classList.add("tc-menu");
+    var shut = function () {
+      top.removeAttribute("data-open");
+      btn.setAttribute("aria-expanded", "false");
+      btn.textContent = "\u2630";
+    };
+    btn.addEventListener("click", function () {
+      var open = !top.hasAttribute("data-open");
+      if (!open) { shut(); return; }
+      top.setAttribute("data-open", "");
+      btn.setAttribute("aria-expanded", "true");
+      btn.textContent = "\u2715";
+    });
+    top.querySelectorAll("nav a").forEach(function (a) { a.addEventListener("click", shut); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && top.hasAttribute("data-open")) { shut(); btn.focus(); }
+    });
+  }
+
   /* "auto" removes the stamps entirely, so the page falls back to
      prefers-color-scheme, the unstamped state the CSS is built for. A named
      theme is a light or dark base plus a skin; keep KIND in step with the
