@@ -62,7 +62,9 @@ if __name__ == "__main__":
 
         cases = {
             "a term matching no question": lambda n: n["terms"].append(
-                {"term": "Zzz", "definition": "Nothing uses this.", "match": ["zzzqqq"]}),
+                {"term": "Zzz", "definition": "Nothing uses this.", "use": "Never.", "match": ["zzzqqq"]}),
+            "a term with no real-world use": lambda n: n["terms"][0].pop("use"),
+            "a formula with no real-world use": lambda n: n["formulas"][0].pop("use"),
             "a formula listing an unknown question": lambda n: n["formulas"][0]["ids"].append("X9X99"),
             "a repeated term": lambda n: n["terms"].append(dict(n["terms"][0])),
         }
