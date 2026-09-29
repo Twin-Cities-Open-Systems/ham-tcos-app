@@ -122,10 +122,11 @@
   }
 
   /* --- shared pieces ------------------------------------------------------ */
-  function choicesHtml(q, picked) {
+  function choicesHtml(q, picked, plain) {
     return '<ul class="ham-choices">' + ["A", "B", "C", "D"].map(function (k) {
       var cls = "", tag = "";
-      if (k === q.correct) { cls = " is-correct"; tag = " " + chip("good", ICON.good, "correct"); }
+      if (plain) { cls = " is-plain"; }
+      else if (k === q.correct) { cls = " is-correct"; tag = " " + chip("good", ICON.good, "correct"); }
       else if (picked === k) { cls = " is-wrong"; tag = " " + chip("critical", ICON.critical, "your answer"); }
       else { cls = " is-other"; }
       return '<li class="ham-choice' + cls + '"><span class="mono">' + k + ".</span> " + esc(q.choices[k]) + tag + "</li>";
@@ -201,7 +202,7 @@
   function flipCard(card, toAnswer, moveFocus) {
     if (!card) { return; }
     card.setAttribute("data-flipped", String(toAnswer));
-    if (moveFocus) { var n = card.querySelector(toAnswer ? ".ham-backq" : ".ham-front"); if (n) { n.focus({ preventScroll: true }); } }
+    if (moveFocus) { var n = card.querySelector(toAnswer ? ".ham-backq" : ".ham-flipbtn"); if (n) { n.focus({ preventScroll: true }); } }
   }
   function flipAll(box, toAnswer) {
     Array.prototype.forEach.call(box.querySelectorAll(".ham-flip"), function (c) { flipCard(c, toAnswer, false); });
@@ -360,19 +361,25 @@
   /* A collapsed question is its id and stem, nothing else; the correct answer is
      the first thing inside, filled and ticked, then the terms and formulas it
      uses. The family hue rides on the left edge and the family letter tag. */
+  /* One flip card for the Guide and for Browse: the question on the front, its
+     answer on the back, the same turn in both. */
+  function flipHtml(q, cls, domId, mark, front, back) {
+    var id = esc(q.id);
+    return '<li class="' + cls + ' ham-flip" id="' + domId + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-flipped="false"><div class="ham-flip-in">' +
+      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + id + '" aria-label="' + id + ": " + esc(q.question) + ' Show the answer.">' +
+      '<span class="ham-fq"><span class="mono">' + id + '</span> ' + esc(q.question) + mark + '</span></button>' + front +
+      '<span class="ham-flip-cue" aria-hidden="true">Show answer &#8635;</span></div>' +
+      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
+      esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
+  }
   function guideCardHtml(q) {
     var tick = '<span class="ham-tick" aria-hidden="true">' + ICON.good + "</span>";
     var ansHtml = q.answers
       ? '<p class="ham-gans">' + tick + ' <span class="ham-gans-lead">All of these are correct:</span></p>' +
         '<ul class="ham-gall">' + q.answers.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ul>"
       : '<p class="ham-gans">' + tick + " " + esc(q.answer) + "</p>";
-    var id = esc(q.id);
-    return '<li class="ham-gcard ham-flip" id="hs-guide-' + id + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-flipped="false"><div class="ham-flip-in">' +
-      '<button type="button" class="ham-face ham-front" data-flip="' + id + '" aria-label="' + id + ": " + esc(q.question) + ' Show the answer.">' +
-      '<span class="ham-fq"><span class="mono">' + id + '</span> ' + esc(q.question) + '</span><span class="ham-flip-cue" aria-hidden="true">Show answer &#8635;</span></button>' +
-      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
-      esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + ansHtml + chipsHtml(q) + figureHtml(q) +
-      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</div></div></li>";
+    return flipHtml(q, "ham-gcard", "hs-guide-" + esc(q.id), "", "",
+      ansHtml + chipsHtml(q) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
   }
 
   /* --- glossary and formulas ---------------------------------------------------
@@ -592,10 +599,8 @@
     $("hs-count").textContent = qs.length + " of " + poolQuestions().length + " questions";
   }
   function pillHtml(q) {
-    return '<li class="ham-pill" data-id="' + esc(q.id) + '"><button type="button" class="ham-q" aria-expanded="false" ' +
-      'aria-controls="hs-a-' + esc(q.id) + '"><span class="mono">' + esc(q.id) + "</span> " + esc(q.question) + "</button>" +
-      lastMark(q.id) + '<div class="ham-a" id="hs-a-' + esc(q.id) + '" hidden>' + choicesHtml(q, null) + figureHtml(q) +
-      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</div></li>";
+    return flipHtml(q, "ham-bcard", "hs-q-" + esc(q.id), lastMark(q.id), choicesHtml(q, null, true) + figureHtml(q),
+      choicesHtml(q, null) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
   }
 
   /* --- flashcards --------------------------------------------------------- */
@@ -827,7 +832,8 @@
     });
     document.addEventListener("click", function (e) {
       var f = e.target.closest("[data-flip]");
-      if (f) { flipCard(f.closest(".ham-flip"), f.classList.contains("ham-front"), true); return; }
+      if (!f && !e.target.closest("a, button, input, select, textarea")) { f = e.target.closest(".ham-front"); }
+      if (f) { flipCard(f.closest(".ham-flip"), !f.closest(".ham-back"), true); return; }
       var fa = e.target.closest("[data-flipall]");
       if (fa) { flipAll($(fa.getAttribute("data-target")), fa.getAttribute("data-flipall") === "answers"); return; }
       var x = e.target.closest("[data-expand]");
@@ -842,14 +848,6 @@
       if (kind === "term") { jumpTo("glossary", "hs-term-" + key); }
       if (kind === "formula") { jumpTo("formulas", "hs-formula-" + key); }
       if (kind === "question") { jumpTo("guide", "hs-guide-" + key, key); }
-    });
-    $("hs-browse").addEventListener("click", function (e) {
-      var b = e.target.closest(".ham-q");
-      if (!b) { return; }
-      var a = $(b.getAttribute("aria-controls"));
-      var open = a.hidden;
-      a.hidden = !open;
-      b.setAttribute("aria-expanded", String(open));
     });
     $("hs-flash-body").addEventListener("click", function (e) {
       var b = e.target.closest(".ham-pick");

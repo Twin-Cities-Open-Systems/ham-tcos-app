@@ -97,17 +97,27 @@ class Grid(unittest.TestCase):
         self.assertIn('.ham-gcards>.ham-gcard[data-tc-collapsed="false"]', css)
         self.assertIn("grid-column:1/-1", css)
 
-    def test_a_guide_question_flips_between_its_stem_and_the_answer(self):
-        i = self.js.index("function guideCardHtml")
-        card = self.js[i:i + 1800]
+    def test_a_question_flips_between_its_stem_and_the_answer(self):
+        i = self.js.index("function flipHtml")
+        card = self.js[i:self.js.index("function guideCardHtml")]
         self.assertNotIn("data-tc-collapse", card)
         self.assertLess(card.index("ham-front"), card.index("ham-back"))
-        self.assertLess(card.index("ansHtml"), card.index("chipsHtml(q)"))
         self.assertIn('data-flipped="false"', card)
+        g = self.js.index("function guideCardHtml")
+        guide = self.js[g:self.js.index("/* --- glossary and formulas")]
+        self.assertLess(guide.index("ansHtml"), guide.index("chipsHtml(q)"))
         css = (ROOT / "css" / "study.css").read_text()
         self.assertIn("backface-visibility:hidden", css)
         self.assertIn('.ham-flip[data-flipped="false"] .ham-back', css)
         self.assertIn("prefers-reduced-motion", css)
+
+    def test_browse_questions_flip_like_the_guide_and_do_not_expand(self):
+        i = self.js.index("function pillHtml")
+        card = self.js[i:i + 500]
+        self.assertIn("flipHtml(", card)
+        self.assertIn("choicesHtml(q, null, true)", card)
+        self.assertNotIn("aria-expanded", card)
+        self.assertNotIn('closest(".ham-q")', self.js)
 
     def test_prefs_are_guarded_and_motion_is_respected(self):
         self.assertIn("try { return window.localStorage.getItem", self.js)
