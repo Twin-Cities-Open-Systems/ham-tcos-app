@@ -38,5 +38,13 @@ class OpenGraph(unittest.TestCase):
             self.assertIn("Just Another Ham Study", (ROOT / page).read_text(), page)
 
 
+class Formulas(unittest.TestCase):
+    def test_each_form_of_a_formula_sits_on_its_own_line(self):
+        css = (ROOT / "css" / "study.css").read_text()
+        rule = re.search(r"\.ham-formula-forms\{([^}]*)\}", css).group(1)
+        self.assertIn("flex-direction:column", rule)
+        self.assertNotIn("flex-wrap", rule)
+
+
 if __name__ == "__main__":
     unittest.main()
