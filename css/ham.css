@@ -1,0 +1,3 @@
+/* ham.css -- what only this app adds on top of the shared shell (css/shell.css). */
+.credit{max-width:64rem;margin:0 auto;padding:0 1rem 3rem}
+.credit p+p{margin-top:.5rem}

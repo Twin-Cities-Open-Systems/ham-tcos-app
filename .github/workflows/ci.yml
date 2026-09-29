@@ -39,6 +39,15 @@ jobs:
           ref: stable
           path: human-execution-engine
 
+      # tcos-app owns the shared shell (css/shell.css, js/*). The copies here are
+      # derived; sync-shell.sh --check below fails when they drift.
+      - name: Checkout tcos-app (owns the shared shell)
+        uses: actions/checkout@v4
+        with:
+          repository: Twin-Cities-Open-Systems/tcos-app
+          ref: main
+          path: tcos-app
+
       # BLOCKING, and verified green before this workflow was added:
       # hee-check boundary and refs both exit 0 on this repo today.
       # It catches broken file references, hardcoded /home/<user>/ paths,
@@ -48,8 +57,13 @@ jobs:
 
       # The committed data/ is what ships (promote never rebuilds), so it must
       # be exactly what build.py produces from ham/pools and ham/families.yaml.
+      - name: Shared shell has not drifted from tcos-app
+        run: sh ham-tcos-app/sync-shell.sh --check tcos-app
+
       - name: Generated data is current, and the generator's tests pass
         working-directory: ham-tcos-app
+        env:
+          TCOS_APP_DIR: ${{ github.workspace }}/tcos-app
         run: |
           set -eu
           python3 -c 'import yaml' 2>/dev/null || { sudo apt-get update -qq; sudo apt-get install -y -qq python3-yaml; }
@@ -87,7 +101,7 @@ jobs:
           # with no rebuild.
           tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html study.html robots.txt sitemap.xml og.jpg css js data
           mv "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" .
-          for f in index.html study.html robots.txt sitemap.xml og.jpg css/site.css css/study.css js/study.js data/ham-study.json; do
+          for f in index.html study.html robots.txt sitemap.xml og.jpg css/shell.css css/ham.css css/study.css js/shell.js js/collapse.js js/arrange.js js/table.js js/links.js js/freshness.js js/study.js data/ham-study.json; do
             tar -tzf ham-tcos-app-www.tar.gz | grep -qx "$f" \
               || { echo "payload is missing $f -- refusing to publish"; exit 1; }
           done

@@ -21,7 +21,8 @@
 <meta name="twitter:title" content="Study guide &middot; Just Another Ham Study">
 <meta name="twitter:description" content="Study for the US amateur radio exams. Every question in the Technician, General and Extra pools with the answer first, flashcards, and a practice exam.">
 <meta name="twitter:image" content="https://ham.tcos.app/og.jpg">
-<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/shell.css">
+<link rel="stylesheet" href="/css/ham.css">
 <link rel="stylesheet" href="/css/study.css">
 <script>(function(){var d=document.documentElement;
 try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
@@ -86,28 +87,30 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     </div>
   </section>
 
-  <section class="card" id="hs-panel-guide" aria-labelledby="guide-h">
+  <section class="card" id="hs-panel-guide" data-tc-collapse="panel-guide" aria-labelledby="guide-h">
     <header>
-      <h2 id="guide-h">Guide</h2>
+      <h2 id="guide-h" data-tc-collapse-toggle>Guide</h2>
       <span class="count">the answer first, colored by topic family</span>
     </header>
-    <div class="body"><div id="hs-guide"></div></div>
+    <div class="body" data-tc-collapse-body>
+      <div class="hs-tools"><div class="hs-seg" role="group" aria-label="Group questions by"><span class="hs-seg-label">Group by</span><button type="button" class="hs-seg-btn" data-groupby-target="guide" data-groupby="fam" aria-pressed="true">Family</button><button type="button" class="hs-seg-btn" data-groupby-target="guide" data-groupby="sub" aria-pressed="false">Subelement</button><button type="button" class="hs-seg-btn" data-groupby-target="guide" data-groupby="none" aria-pressed="false">None</button></div><div class="hs-seg" role="group" aria-label="Columns"><span class="hs-seg-label">Columns</span><button type="button" class="hs-seg-btn" data-cols-target="guide" data-cols="0" aria-pressed="true">Auto</button><button type="button" class="hs-seg-btn" data-cols-target="guide" data-cols="1" aria-pressed="false" aria-label="1 column">1</button><button type="button" class="hs-seg-btn" data-cols-target="guide" data-cols="2" aria-pressed="false" aria-label="2 columns">2</button><button type="button" class="hs-seg-btn" data-cols-target="guide" data-cols="3" aria-pressed="false" aria-label="3 columns">3</button><button type="button" class="hs-seg-btn" data-cols-target="guide" data-cols="4" aria-pressed="false" aria-label="4 columns">4</button></div><div class="hs-seg"><button class="btn secondary" type="button" data-expand="all" data-target="hs-guide">Expand all</button> <button class="btn secondary" type="button" data-expand="none" data-target="hs-guide">Collapse all</button></div></div>
+      <div id="hs-guide"></div></div>
   </section>
 
-  <section class="card" id="hs-panel-browse" aria-labelledby="browse-h" hidden>
+  <section class="card" id="hs-panel-browse" data-tc-collapse="panel-browse" aria-labelledby="browse-h" hidden>
     <header>
-      <h2 id="browse-h">Browse</h2>
+      <h2 id="browse-h" data-tc-collapse-toggle>Browse</h2>
       <span class="count">a group is a card; open a question for its answer</span>
     </header>
-    <div class="body"><div class="ham-groups" id="hs-browse"></div></div>
+    <div class="body" data-tc-collapse-body><div class="ham-groups" id="hs-browse"></div></div>
   </section>
 
-  <section class="card" id="hs-panel-flash" aria-labelledby="flash-h" hidden>
+  <section class="card" id="hs-panel-flash" data-tc-collapse="panel-flash" aria-labelledby="flash-h" hidden>
     <header>
-      <h2 id="flash-h">Flashcards</h2>
+      <h2 id="flash-h" data-tc-collapse-toggle>Flashcards</h2>
       <span class="count mono" id="hs-flash-pos">0 / 0</span>
     </header>
-    <div class="body">
+    <div class="body" data-tc-collapse-body>
       <label class="hs-check hs-flash-show"><input type="checkbox" id="hs-flash-show" checked>
         Show the correct answer by default <small>(memorize mode; turn off to quiz yourself)</small></label>
       <div id="hs-flash-body" aria-live="polite"></div>
@@ -121,12 +124,12 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     </div>
   </section>
 
-  <section class="card" id="hs-panel-exam" aria-labelledby="exam-h" hidden>
+  <section class="card" id="hs-panel-exam" data-tc-collapse="panel-exam" aria-labelledby="exam-h" hidden>
     <header>
-      <h2 id="exam-h">Practice exam</h2>
+      <h2 id="exam-h" data-tc-collapse-toggle>Practice exam</h2>
       <span class="count">the whole pool, not the filter</span>
     </header>
-    <div class="body">
+    <div class="body" data-tc-collapse-body>
       <div class="bar">
         <button class="btn secondary" type="button" id="hs-exam-new">New exam</button>
         <button class="btn" type="button" id="hs-exam-scorebtn" disabled>Score</button>
@@ -136,54 +139,61 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     </div>
   </section>
 
-  <section class="card" id="hs-panel-glossary" aria-labelledby="glossary-h" hidden>
+  <section class="card" id="hs-panel-glossary" data-tc-collapse="panel-glossary" aria-labelledby="glossary-h" hidden>
     <header>
-      <h2 id="glossary-h">Glossary</h2>
+      <h2 id="glossary-h" data-tc-collapse-toggle>Glossary</h2>
       <span class="count" id="hs-glossary-count"></span>
     </header>
-    <div class="body">
+    <div class="body" data-tc-collapse-body>
       <p class="hs-ref-controls"><label>Search terms <input type="search" id="hs-gloss-search" placeholder="ampere" autocomplete="off"></label></p>
+      <div class="hs-tools"><div class="hs-seg" role="group" aria-label="Group terms by"><span class="hs-seg-label">Group by</span><button type="button" class="hs-seg-btn" data-groupby-target="glossary" data-groupby="az" aria-pressed="true">A&ndash;Z</button><button type="button" class="hs-seg-btn" data-groupby-target="glossary" data-groupby="cat" aria-pressed="false">Category</button><button type="button" class="hs-seg-btn" data-groupby-target="glossary" data-groupby="none" aria-pressed="false">None</button></div><div class="hs-seg" role="group" aria-label="Columns"><span class="hs-seg-label">Columns</span><button type="button" class="hs-seg-btn" data-cols-target="glossary" data-cols="0" aria-pressed="true">Auto</button><button type="button" class="hs-seg-btn" data-cols-target="glossary" data-cols="1" aria-pressed="false" aria-label="1 column">1</button><button type="button" class="hs-seg-btn" data-cols-target="glossary" data-cols="2" aria-pressed="false" aria-label="2 columns">2</button><button type="button" class="hs-seg-btn" data-cols-target="glossary" data-cols="3" aria-pressed="false" aria-label="3 columns">3</button><button type="button" class="hs-seg-btn" data-cols-target="glossary" data-cols="4" aria-pressed="false" aria-label="4 columns">4</button></div><div class="hs-seg"><button class="btn secondary" type="button" data-expand="all" data-target="hs-glossary">Expand all</button> <button class="btn secondary" type="button" data-expand="none" data-target="hs-glossary">Collapse all</button></div></div>
       <div id="hs-glossary"></div>
     </div>
   </section>
 
-  <section class="card" id="hs-panel-formulas" aria-labelledby="formulas-h" hidden>
+  <section class="card" id="hs-panel-formulas" data-tc-collapse="panel-formulas" aria-labelledby="formulas-h" hidden>
     <header>
-      <h2 id="formulas-h">Formulas</h2>
+      <h2 id="formulas-h" data-tc-collapse-toggle>Formulas</h2>
       <span class="count" id="hs-formulas-count"></span>
     </header>
-    <div class="body"><div id="hs-formulas"></div></div>
+    <div class="body" data-tc-collapse-body>
+      <div class="hs-tools"><div class="hs-seg" role="group" aria-label="Columns"><span class="hs-seg-label">Columns</span><button type="button" class="hs-seg-btn" data-cols-target="formulas" data-cols="0" aria-pressed="true">Auto</button><button type="button" class="hs-seg-btn" data-cols-target="formulas" data-cols="1" aria-pressed="false" aria-label="1 column">1</button><button type="button" class="hs-seg-btn" data-cols-target="formulas" data-cols="2" aria-pressed="false" aria-label="2 columns">2</button><button type="button" class="hs-seg-btn" data-cols-target="formulas" data-cols="3" aria-pressed="false" aria-label="3 columns">3</button><button type="button" class="hs-seg-btn" data-cols-target="formulas" data-cols="4" aria-pressed="false" aria-label="4 columns">4</button></div><div class="hs-seg"><button class="btn secondary" type="button" data-expand="all" data-target="hs-formulas">Expand all</button> <button class="btn secondary" type="button" data-expand="none" data-target="hs-formulas">Collapse all</button></div></div>
+      <div id="hs-formulas"></div></div>
   </section>
 
-  <section class="card" id="hs-panel-mastery" aria-labelledby="mastery-h" hidden>
+  <section class="card" id="hs-panel-mastery" data-tc-collapse="panel-mastery" aria-labelledby="mastery-h" hidden>
     <header>
-      <h2 id="mastery-h">Mastery map</h2>
+      <h2 id="mastery-h" data-tc-collapse-toggle>Mastery map</h2>
       <span class="count">one square per question, this pool</span>
     </header>
-    <div class="body"><div id="hs-mastery"></div></div>
+    <div class="body" data-tc-collapse-body><div id="hs-mastery"></div></div>
   </section>
 
-  <section class="card" id="card-progress" aria-labelledby="progress-h">
+  <div class="cards" data-tc-arrange="study-more">
+  <section class="card" id="card-progress" data-tc-arrange-item="progress" data-tc-collapse="progress" aria-labelledby="progress-h">
     <header>
-      <h2 id="progress-h">Progress</h2>
+      <span class="grip" data-tc-arrange-handle tabindex="0" role="button" aria-label="Reorder Progress" title="Drag to reorder">&#10303;</span>
+      <h2 id="progress-h" data-tc-collapse-toggle>Progress</h2>
       <span class="count">this pool, this browser</span>
     </header>
-    <div class="body">
+    <div class="body" data-tc-collapse-body>
       <div id="hs-progress"></div>
       <div class="bar"><button class="btn secondary" type="button" id="hs-reset">Forget my answers</button></div>
     </div>
   </section>
 
-  <section class="card" id="card-pools" aria-labelledby="pools-h">
+  <section class="card" id="card-pools" data-tc-arrange-item="pools" data-tc-collapse="pools" aria-labelledby="pools-h">
     <header>
-      <h2 id="pools-h">The question pools</h2>
+      <span class="grip" data-tc-arrange-handle tabindex="0" role="button" aria-label="Reorder The question pools" title="Drag to reorder">&#10303;</span>
+      <h2 id="pools-h" data-tc-collapse-toggle>The question pools</h2>
       <span class="count">NCVEC, public domain</span>
     </header>
-    <div class="body"><div id="hs-pools"></div>
+    <div class="body" data-tc-collapse-body><div id="hs-pools"></div>
       <p class="hint">Each pool is valid for a fixed window. The practice exam draws one question from each group, which is how the
         pool sets the exam&rsquo;s subject mix.</p></div>
   </section>
 
+  </div>
   </div>
 </main>
 <footer class="hint credit">
@@ -195,6 +205,11 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
 </footer>
 <script src="/js/shell.js"></script>
+<script src="/js/links.js"></script>
+<script src="/js/collapse.js"></script>
+<script src="/js/arrange.js"></script>
+<script src="/js/table.js"></script>
+<script src="/js/freshness.js"></script>
 <script src="/js/study.js" defer></script>
 </body>
 </html>

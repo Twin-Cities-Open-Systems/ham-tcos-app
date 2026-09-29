@@ -2,14 +2,14 @@
 body{font-variant-numeric:slashed-zero}
 .mono,.stat b,.tc-table td{font-variant-numeric:tabular-nums slashed-zero}
 .hs-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.7rem 1rem;margin-bottom:.9rem}
-.hs-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.82rem;color:var(--muted)}
+.hs-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.9rem;color:var(--muted)}
 .hs-controls label.wide{grid-column:1/-1}
 .hs-controls label.hs-check{flex-direction:row;align-items:center;gap:.45rem;color:var(--ink)}
-.hs-controls input[type="search"],.hs-controls select{font:inherit;font-size:.9rem;padding:.4rem .5rem;color:var(--ink);
-  background:var(--sunk);border:1px solid var(--rule);border-radius:6px;font-variant-numeric:slashed-zero}
+.hs-controls input[type="search"],.hs-controls select{min-height:44px;font:inherit;font-size:.95rem;padding:.4rem .5rem;color:var(--ink);
+  background:var(--sunk);border:1px solid var(--edge);border-radius:6px;font-variant-numeric:slashed-zero}
 .hs-controls :focus-visible,.ham-q:focus-visible,.ham-radios input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hs-modes{padding:.55rem 0 0;margin:0 0 .6rem}
-.btn.secondary{background:var(--sunk);color:var(--ink);border:1px solid var(--rule)}
+.btn.secondary{background:var(--sunk);color:var(--ink);border:1px solid var(--edge)}
 .ham-groups{display:flex;flex-direction:column;gap:1rem}
 .ham-group>summary{list-style:none;cursor:pointer;padding:.75rem 1rem;background:var(--sunk);
   display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
@@ -20,11 +20,11 @@ body{font-variant-numeric:slashed-zero}
 .ham-group>summary h2{font-size:.95rem;margin:0}
 .ham-group>summary .count{margin-left:auto;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--muted)}
 .ham-pills{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
-.ham-pill{border:1px solid var(--rule);border-radius:8px;padding:.55rem .75rem;background:var(--sunk)}
+.ham-pill{border:1px solid var(--edge);border-radius:8px;padding:.35rem .85rem;background:var(--sunk)}
 .ham-q{font:inherit;text-align:left;background:none;border:0;color:var(--ink);cursor:pointer;padding:0;line-height:1.45}
 .ham-choices{list-style:none;margin:.55rem 0 0;padding:0;display:flex;flex-direction:column;gap:.3rem}
 .ham-fig{margin:.6rem 0 0}
-.ham-fig img{display:block;max-width:100%;height:auto;background:#fff;border:1px solid var(--rule);border-radius:6px;padding:.4rem}
+.ham-fig img{display:block;max-width:100%;height:auto;background:#fff;border:1px solid var(--edge);border-radius:6px;padding:.4rem}
 .ham-flash-q{font-size:1.08rem;line-height:1.5;margin:.2rem 0 .4rem}
 .ham-answers{display:flex;flex-direction:column;gap:.45rem;margin-top:.7rem}
 .ham-answers .btn{text-align:left;font-weight:400;line-height:1.4}
@@ -41,30 +41,42 @@ body{font-variant-numeric:slashed-zero}
    ham/families.yaml. The family hue is a 4px left border and a 12% tint on
    the header only -- text never wears the family color, the name is always
    printed beside its swatch (dataviz: identity is never color alone). */
-.ham-fam{border:1px solid var(--rule);border-left:4px solid var(--fam,var(--accent));border-radius:10px;
+.ham-fam{border:1px solid var(--edge);border-left:6px solid var(--fam,var(--accent));border-radius:10px;
   background:var(--surface);overflow:hidden;margin-bottom:1rem}
 .ham-fam>.ham-fam-head{padding:.7rem 1rem;background:color-mix(in srgb,var(--fam,var(--accent)) 12%,var(--surface));
   display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.ham-fam-dot{width:.85em;height:.85em;border-radius:50%;background:var(--fam,var(--accent));flex:none;
-  border:1px solid color-mix(in srgb,var(--fam,var(--accent)) 60%,#000 15%)}
-.ham-fam-head h3{margin:0;font-size:1rem}
-.ham-fam-head .count{margin-left:auto;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--muted)}
+/* The family mark is a hue, an outline and two letters: the outline carries the
+   3:1 against the card, the letters carry the 4.5:1 against the hue (--fam-ink is
+   whichever of light or dark ink reads better on it, set in study.js), and the
+   family name is printed beside it wherever there is room. */
+.ham-fam-dot{display:inline-flex;align-items:center;justify-content:center;min-width:1.9em;height:1.5em;border-radius:.45em;
+  background:var(--fam,var(--accent));color:var(--fam-ink,var(--ink));flex:none;border:2px solid var(--ink);
+  font:700 .7rem/1 ui-monospace,monospace;letter-spacing:.02em}
+.ham-fam-head h3{margin:0;font-size:1.15rem}
+.ham-fam-head .count,.ham-ggroup h5 .count{margin-left:auto;font-family:ui-monospace,monospace;font-size:.78rem;font-weight:400;color:var(--muted)}
 .ham-fam-body{padding:.8rem 1rem}
 .ham-gsub{margin:0 0 1.1rem}
 .ham-gsub:last-child{margin-bottom:0}
-.ham-gsub h4{margin:0 0 .1rem;font-size:.86rem;color:var(--muted)}
-.ham-ggroup{margin:.5rem 0 0}
-.ham-ggroup h5{margin:0 0 .4rem;font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.ham-gcards{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
-.ham-gcard{border:1px solid var(--rule);border-radius:8px;padding:.6rem .8rem;background:var(--sunk);scroll-margin-top:5rem}
-.ham-gcard.is-jumped{outline:2px solid var(--accent);outline-offset:2px}
-.ham-gans{font-size:1.04rem;line-height:1.4;margin:0}
-.ham-gans .mono{color:var(--muted);font-size:.82em;margin-right:.4em}
-.ham-gall{list-style:none;margin:.3rem 0 0;padding:0;display:flex;flex-direction:column;gap:.15rem;font-weight:600}
-.ham-gq{color:var(--muted);margin:.35rem 0 0;line-height:1.45}
-.ham-gchips{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0 0}
-.ham-gchip{font:inherit;font-size:.78rem;background:var(--surface);color:var(--accent);border:1px solid var(--rule);
-  border-radius:999px;padding:.2rem .65rem;cursor:pointer}
+.ham-gsub h4{margin:0 0 .3rem;font-size:1rem;font-weight:600;color:var(--ink)}
+.ham-ggroup{margin:.5rem 0 0;padding:.35rem .85rem .6rem}
+.ham-ggroup h5{margin:0;font-size:1.02rem;font-weight:650;color:var(--ink);display:flex;align-items:center}
+.ham-gcards{list-style:none;margin:0;padding:0}
+.ham-gcard{border-left:5px solid var(--fam,var(--accent));background:var(--surface);scroll-margin-top:5rem}
+.ham-gcard.is-jumped{outline:3px solid var(--accent);outline-offset:2px}
+.ham-gcard h6{margin:0;font-size:.95rem;font-weight:500;line-height:1.4;padding:.15rem 0}
+.ham-gcard h6 .mono{color:var(--muted);font-size:.85em;font-weight:600;white-space:nowrap}
+.ham-gcard [data-tc-collapse-body]{padding:.3rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+/* The answer is the first thing in an open question, and the loudest: a filled
+   block with a tick, the way the flashcards fill the right choice. */
+.ham-gans{font-size:1.05rem;line-height:1.45;margin:0;padding:.55rem .75rem;border-radius:8px;background:var(--ans-bg);color:var(--ans-ink);
+  border:2px solid var(--ans-edge);font-weight:700}
+.ham-gans .ham-tick{margin-right:.35em}
+.ham-gans .ham-gans-lead{font-weight:600}
+.ham-gall{list-style:none;margin:-.2rem 0 0;padding:.4rem .75rem .55rem 2rem;background:var(--ans-bg);color:var(--ans-ink);
+  border:2px solid var(--ans-edge);border-top:0;border-radius:0 0 8px 8px;display:flex;flex-direction:column;gap:.2rem;font-weight:700}
+.ham-gchips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0}
+.ham-gchip{font:inherit;font-size:.85rem;background:var(--surface);color:var(--accent);border:1px solid var(--edge);
+  border-radius:999px;padding:.2rem .8rem;min-height:44px;cursor:pointer}
 .ham-gchip.is-formula{font-family:ui-monospace,monospace}
 .ham-gchip:hover,.ham-gchip:focus-visible{background:var(--accent-soft)}
 
@@ -72,24 +84,23 @@ body{font-variant-numeric:slashed-zero}
    term/formula's first question (a pointer back into the Guide, not a new
    identity channel of its own). */
 .hs-ref-controls{margin:0 0 .8rem}
-.hs-ref-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.82rem;color:color-mix(in srgb,var(--ink) 75%,var(--muted))}
-.hs-ref-controls input{width:100%;max-width:24rem;font:inherit;font-size:.9rem;padding:.4rem .5rem;color:var(--ink);
-  background:var(--sunk);border:1px solid var(--rule);border-radius:6px}
+.hs-ref-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.9rem;color:var(--muted)}
+.hs-ref-controls input{width:100%;max-width:24rem;min-height:44px;font:inherit;font-size:.95rem;padding:.4rem .5rem;color:var(--ink);
+  background:var(--sunk);border:1px solid var(--edge);border-radius:6px}
 .hs-ref-controls :focus-visible,.ham-refqs button:focus-visible,.ham-gchip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.ham-terms,.ham-formulas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem}
-.ham-term,.ham-formula{border:1px solid var(--rule);border-left:4px solid var(--fam,var(--accent));border-radius:8px;
-  padding:.65rem .85rem;background:var(--surface);scroll-margin-top:5rem}
-.ham-term.is-jumped,.ham-formula.is-jumped{outline:2px solid var(--accent);outline-offset:2px}
-.ham-term h3,.ham-formula h3{margin:0 0 .25rem;font-size:1rem;display:flex;align-items:center;gap:.4rem}
+.ham-terms,.ham-formulas{list-style:none;margin:0;padding:0}
+.ham-term,.ham-formula{border-left:5px solid var(--fam,var(--accent));scroll-margin-top:5rem}
+.ham-term.is-jumped,.ham-formula.is-jumped{outline:3px solid var(--accent);outline-offset:2px}
+.ham-term h3,.ham-formula h3{margin:0 0 .25rem;font-size:.95rem;font-weight:500;line-height:1.4;display:flex;align-items:center;gap:.4rem}
 .ham-term p,.ham-formula p{margin:.25rem 0}
 .ham-formula-forms{font-family:ui-monospace,monospace;font-size:1.05rem;display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;margin:.4rem 0}
 .ham-formula-vars{margin:.4rem 0}
 .ham-formula-vars td:first-child{font-family:ui-monospace,monospace;padding-right:1rem;white-space:nowrap}
 .ham-formula-tri{margin:.5rem 0}
-.ham-example{margin:.5rem 0 .25rem;padding:.4rem .7rem;border-left:3px solid var(--rule);color:var(--ink)}
+.ham-example{margin:.5rem 0 .25rem;padding:.4rem .7rem;border-left:3px solid var(--edge);color:var(--ink)}
 .ham-example b{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:.4em}
-.ham-refqs{margin:.4rem 0 0;font-size:.85rem;color:var(--muted)}
-.ham-refqs button{font:inherit;font-size:inherit;color:var(--accent);background:none;border:0;padding:0;
+.ham-refqs{margin:.4rem 0 0;font-size:.9rem;color:var(--muted)}
+.ham-refqs button{font:inherit;font-size:inherit;color:var(--accent);background:none;border:0;padding:.6rem .35rem;min-height:44px;min-width:44px;
   text-decoration:underline;cursor:pointer}
 
 /* Mastery map: one square per question, sequential blue by times answered
@@ -99,35 +110,100 @@ body{font-variant-numeric:slashed-zero}
 .ham-mastery-fam{margin:0 0 1rem}
 .ham-mastery-fam h3{margin:0 0 .4rem;font-size:.92rem;display:flex;align-items:center;gap:.4rem}
 .ham-mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(1.15rem,1fr));gap:2px}
-.ham-mcell{position:relative;aspect-ratio:1;border-radius:2px;border:1px solid var(--rule);background:var(--sunk);
+.ham-mcell{position:relative;aspect-ratio:1;border-radius:2px;border:1px solid var(--edge);background:var(--sunk);
   cursor:pointer;padding:0}
 .ham-mcell:hover,.ham-mcell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .ham-mcell .ham-mmiss{position:absolute;top:-4px;right:-4px;font-size:.6rem;line-height:1}
 .ham-mlegend{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:.8rem;font-size:.8rem;color:var(--muted)}
 .ham-mlegend .ham-mswatch{display:inline-flex;align-items:center;gap:.3rem}
-.ham-mlegend i{display:inline-block;width:.9em;height:.9em;border-radius:2px;border:1px solid var(--rule)}
+.ham-mlegend i{display:inline-block;width:.9em;height:.9em;border-radius:2px;border:1px solid var(--edge)}
 
-/* Contrast + color theory. Palette is blue (accent) on neutral slate, with
-   green reserved for "correct" and everything else pushed back. The correct
-   answer is the only saturated, heavy, light-backed thing in a choice list;
-   wrong answers are desaturated and lighter in weight, so the eye lands on
-   what is to be memorized. Still icon + word, never color alone. */
-:root{--ans-bg:#d6f5d6;--ans-ink:#053d05;--ans-edge:#0a8a0a;--dim-ink:#6b7c8c;--dim-bg:transparent}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ans-bg:#c9f2c9;--ans-ink:#032b03;--ans-edge:#4bd04b;--dim-ink:#7f92a4}}
-:root[data-theme="dark"]{--ans-bg:#c9f2c9;--ans-ink:#032b03;--ans-edge:#4bd04b;--dim-ink:#7f92a4}
+/* Answer palette. Green is reserved for "correct" and everything else is pushed
+   back: the right answer is the one saturated, heavy, light-filled thing in a
+   list; a wrong one is plain and lighter. Still tick + word, never color alone.
+   Ratios are gated by tests/test_contrast.py: ink on fill >= 7:1, the edge
+   against the card >= 3:1, the quieter distractor text >= 4.5:1. */
+:root{--ans-bg:#d6f5d6;--ans-ink:#053d05;--ans-edge:#0a6f0a;--dim-ink:#4d5b68}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}}
+:root[data-theme="dark"]{--ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}
 .hs-flash-show{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink);cursor:pointer;flex-wrap:wrap}
 .hs-flash-show small{color:var(--muted)}
 .hs-flash-show input{width:1.1rem;height:1.1rem;accent-color:var(--good)}
 .ham-flash-q{font-size:1.2rem;font-weight:600;color:var(--ink)}
 .ham-choices{gap:.4rem}
 .ham-choice{padding:.5rem .75rem;border-radius:8px;border:1px solid transparent;line-height:1.4}
-.ham-choice.is-other{color:var(--dim-ink);font-weight:400;font-size:.92em;opacity:.85}
+.ham-choice.is-other{color:var(--dim-ink);font-weight:400;font-size:.92em}
 .ham-choice.is-other .mono{color:inherit}
 .ham-choice.is-correct{background:var(--ans-bg);color:var(--ans-ink);border:2px solid var(--ans-edge);
   font-weight:800;font-size:1.12em;padding:.65rem .85rem;box-shadow:0 2px 10px color-mix(in srgb,var(--ans-edge) 30%,transparent)}
-.ham-choice.is-correct .chip.good{background:var(--ans-edge);color:#fff}
+.ham-choice.is-correct .chip.good{background:var(--ans-edge);color:var(--ans-bg)}
 .ham-choice.is-wrong{background:var(--critical-bg);color:var(--ink);border:1px solid var(--critical);font-weight:600}
 #hs-flash-result{margin:.2rem 0 .5rem}
-.ham-pill{border-color:color-mix(in srgb,var(--ink) 22%,var(--rule))}
-.hs-controls label{color:color-mix(in srgb,var(--ink) 75%,var(--muted))}
 .tab[aria-selected="true"]{border-bottom:3px solid var(--accent)}
+.tab{font-size:.95rem}
+
+/* Collapsible cards (collapse.js, from the shared shell). A panel is a card, and
+   a formula, term, family or group is a pill inside it, the way Browse draws a
+   question. A closed one is its heading alone. */
+.hs-expander,.hs-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.2rem;margin:0 0 .8rem}
+.hs-expander .btn,.hs-seg .btn{font-size:.85rem;padding:.25rem .8rem}
+.ham-term.ham-pill,.ham-formula.ham-pill{background:var(--sunk);border-left:5px solid var(--fam,var(--accent))}
+.ham-ggroup.ham-pill{background:var(--surface)}
+.ham-gcard.ham-pill{background:var(--surface)}
+.ham-fam-head .tc-collapse-marker{color:var(--muted)}
+[data-tc-collapse-head]:hover .tc-collapse-marker{color:var(--accent)}
+.ham-ggroup h5[data-tc-collapse-head]:hover,.ham-term h3[data-tc-collapse-head]:hover,.ham-formula h3[data-tc-collapse-head]:hover,.ham-gcard h6[data-tc-collapse-head]:hover{color:var(--accent)}
+.ham-ggroup h5,.ham-term h3,.ham-formula h3,.ham-gcard h6{margin-bottom:0}
+.ham-ggroup[data-tc-collapsed="false"] h5,.ham-term[data-tc-collapsed="false"] h3,.ham-formula[data-tc-collapsed="false"] h3,.ham-gcard[data-tc-collapsed="false"] h6{margin-bottom:.4rem}
+.card[data-tc-collapsed="true"]>header{border-bottom:0}
+
+/* Terms and formulas sit in a grid. Auto is one column on a phone, two on a
+   tablet, three on a desktop; a reader's 1-4 (data-cols) overrides it. */
+.ham-grid{--cols:1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:.7rem;align-items:start}
+@media (min-width:40rem){.ham-grid{--cols:2}}
+@media (min-width:60rem){.ham-grid{--cols:3}}
+.ham-grid[data-cols="1"]{--cols:1}.ham-grid[data-cols="2"]{--cols:2}
+.card .body .ham-grid>li{max-width:none}
+.ham-grid[data-cols="3"]{--cols:3}.ham-grid[data-cols="4"]{--cols:4}
+/* An open term needs the width to read its definition; it returns to its cell when closed. */
+.ham-terms>.ham-term[data-tc-collapsed="false"],.ham-gcards>.ham-gcard[data-tc-collapsed="false"]{grid-column:1/-1}
+.hs-seg{display:flex;align-items:center;gap:.2rem}
+.hs-seg-label{font-size:.9rem;color:var(--muted);margin-right:.3rem}
+.hs-seg-btn{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);border-radius:6px;padding:.22rem .7rem;
+  min-height:44px;min-width:44px;font:inherit;font-size:.9rem;cursor:pointer}
+.hs-seg-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.ham-tgroup{border:1px solid var(--edge);border-radius:10px;background:var(--surface);padding:.6rem .8rem;margin-bottom:.8rem}
+.ham-tgroup>h4{margin:0;font-size:1.05rem;font-weight:650;display:flex;align-items:center;gap:.4rem}
+.ham-tgroup>h4 .count{margin-left:auto;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--muted);font-weight:400}
+.ham-tgroup>h4:hover{color:var(--accent)}
+.ham-tgroup[data-tc-collapsed="false"]>h4{margin-bottom:.6rem}
+.ham-famtag{margin-left:auto;font-size:.78rem;font-weight:400;color:var(--muted);border:1px solid var(--edge);border-radius:999px;
+  padding:.05rem .45rem;white-space:nowrap}
+
+/* Memorize (answers shown) and quiz (pick one) must not look alike. */
+.ham-flash{padding:.6rem .9rem .8rem;border-radius:8px;background:var(--sunk)}
+.ham-flash.is-memorize{border-left:8px solid var(--ans-edge);border-top:1px solid var(--edge);border-right:1px solid var(--edge);border-bottom:1px solid var(--edge)}
+.ham-flash.is-quiz{border:2px dashed var(--accent)}
+.ham-mode{margin:0 0 .4rem;font:700 .82rem/1.2 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.ham-flash.is-memorize .ham-mode{color:var(--ans-ink);background:var(--ans-bg);display:inline-block;padding:.25rem .6rem;border-radius:999px}
+.ham-flash.is-quiz .ham-mode{color:var(--accent)}
+.ham-flash-q{max-width:70ch}
+/* Print: every panel opens, the toolbars go, the ink is black on white. */
+@media print{
+  .hs-tools,.hs-expander,.hs-modes,.hs-controls,.tabs{display:none!important}
+  .ham-pill,.ham-fam,.ham-tgroup{break-inside:avoid;box-shadow:none}
+  [data-tc-collapsed="true"][data-tc-collapse] [data-tc-collapse-body]{display:block!important}
+  .ham-grid{--cols:2!important}
+  .ham-gans,.ham-gall{background:#fff;color:#000}
+}
+.ham-ggroup h5{font-weight:600;font-size:.98rem;line-height:1.4}
+.ham-ggroup h5 .count,.ham-fam-head .count,.ham-tgroup>h4 .count{white-space:nowrap;flex:none;padding-left:.6rem}
+
+.ham-ggroup h5{align-items:flex-start}
+@media (max-width:40rem){.ham-ggroup h5{flex-wrap:wrap}.ham-ggroup h5 .count{margin-left:0;padding-left:0;flex-basis:100%}}
+.ham-pick{display:flex;align-items:baseline;justify-content:flex-start;gap:.6rem;text-align:left;width:100%;line-height:1.4}
+.ham-pick .mono{flex:none;color:var(--muted)}
+.ham-choice .chip.good{margin-left:.5rem;vertical-align:middle}
+.ham-formulas>.ham-formula[data-tc-collapsed="false"]{grid-column:1/-1}
+.ham-formula-vars{max-width:100%}
+.ham-formula td{overflow-wrap:anywhere}

@@ -29,8 +29,20 @@
   var SHOW_KEY = "ham-study-show-answer-v1";
   var ICON = { good: "✔", critical: "✖", neutral: "○", warning: "▲" };
 
+  var GROUPBY_KEY = "ham-groupby-";
+  var COLS_KEY = "ham-cols-";
+  /* The first mode of each panel is its default. */
+  var GROUP_MODES = { glossary: ["az", "cat", "none"], guide: ["fam", "sub", "none"] };
   var $ = function (id) { return document.getElementById(id); };
+  function pref(key, fallback) { try { return window.localStorage.getItem(key) || fallback; } catch (e) { return fallback; } }
+  function setPref(key, value) { try { window.localStorage.setItem(key, value); } catch (e) { /* forgets */ } }
+  function loadCols(panel) { var n = parseInt(pref(COLS_KEY + panel, "0"), 10); return n >= 1 && n <= 4 ? n : 0; }
+  function loadGroupBy(panel) {
+    var modes = GROUP_MODES[panel], g = pref(GROUPBY_KEY + panel, modes[0]);
+    return modes.indexOf(g) >= 0 ? g : modes[0];
+  }
   var state = {
+    groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0 },
     data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
     deck: [], card: 0, shuffled: false, answered: null, exam: null, showAnswer: true
   };
@@ -60,6 +72,8 @@
   }
   function saveShowAnswer(on) { try { window.localStorage.setItem(SHOW_KEY, on ? "1" : "0"); } catch (e) { /* forgets */ } }
   state.showAnswer = loadShowAnswer();
+  Object.keys(GROUP_MODES).forEach(function (panel) { state.groupBy[panel] = loadGroupBy(panel); });
+  Object.keys(state.cols).forEach(function (panel) { state.cols[panel] = loadCols(panel); });
   /* "Missed" means the LAST answer was wrong: a question answered right since
      is no longer in the missed-only deck, which is the point of drilling it. */
   function record(id, ok) {
@@ -130,7 +144,7 @@
 
   /* --- families: identity color, never alone --------------------------------
    * ham/families.yaml carries {light, dark} per family; the page turns that
-   * into one --fam-<id> custom property per family, following css/site.css's own
+   * into one --fam-<id> custom property per family, following css/shell.css's own
    * theming pattern (a media query for the OS setting, a [data-theme] scope
    * for the toggle, the toggle winning both ways) so the light/dark swap
    * lives in one place, and every use below references the role, not a hex. */
@@ -139,10 +153,24 @@
     (state.data.families || []).forEach(function (f) { m[f.id] = f; });
     return m;
   }
+  /* The letters on a family mark are whichever of the two inks reads better on
+     its hue, by WCAG contrast; tests/test_contrast.py holds the same rule to 4.5:1. */
+  var INK_LIGHT = "#fcfbf9", INK_DARK = "#10161c";
+  function luminance(hex) {
+    var c = [1, 3, 5].map(function (i) {
+      var v = parseInt(hex.substr(i, 2), 16) / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function inkOn(hex) {
+    var l = luminance(hex);
+    return (luminance(INK_LIGHT) + 0.05) / (l + 0.05) >= (l + 0.05) / (luminance(INK_DARK) + 0.05) ? INK_LIGHT : INK_DARK;
+  }
   function injectFamilyColors(families) {
     if (!families || !families.length) { return; }
-    var light = families.map(function (f) { return "--fam-" + f.id + ":" + f.color.light; }).join(";");
-    var dark = families.map(function (f) { return "--fam-" + f.id + ":" + f.color.dark; }).join(";");
+    var light = families.map(function (f) { return "--fam-" + f.id + ":" + f.color.light + ";--fam-ink-" + f.id + ":" + inkOn(f.color.light); }).join(";");
+    var dark = families.map(function (f) { return "--fam-" + f.id + ":" + f.color.dark + ";--fam-ink-" + f.id + ":" + inkOn(f.color.dark); }).join(";");
     var css = ":root{" + light + "}\n" +
       '@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){' + dark + "}}\n" +
       ':root[data-theme="dark"]{' + dark + "}\n";
@@ -150,8 +178,11 @@
     style.textContent = css;
     document.head.appendChild(style);
   }
+  /* The dot carries a two-letter tag (Ru, Op, Wa ...), so a family is a shape
+     and letters as well as a hue -- color is never the only channel. */
   function famDot(famId) {
-    return '<span class="ham-fam-dot" aria-hidden="true" style="--fam:var(--fam-' + esc(famId) + ')"></span>';
+    var f = familyMap()[famId];
+    return '<span class="ham-fam-dot" aria-hidden="true" style="--fam:var(--fam-' + esc(famId) + ');--fam-ink:var(--fam-ink-' + esc(famId) + ')">' + esc(f ? f.title.slice(0, 2) : "") + "</span>";
   }
   /* Mastery map fill: the dataviz skill's single sequential blue ramp, steps
    * 100..700 (one hue, light -> dark). It is one ramp reused by both themes,
@@ -171,6 +202,46 @@
     style.textContent = css;
     document.head.appendChild(style);
   }
+  /* --- collapsible cards ------------------------------------------------------
+   * collapse.js (the shared shell) binds [data-tc-collapse] markup once, at DOM
+   * ready, so a card written later by innerHTML has to be handed to it. It has
+   * no single-card call, so opening a card for a jump or a search is the same
+   * two attributes it writes itself; that is not persisted, on purpose -- a
+   * search result or a jump is not a choice to keep a card open. */
+  function initCollapse(box) { if (window.TC && window.TC.collapse) { window.TC.collapse.init(box); } }
+  function setOpen(card, open) {
+    card.setAttribute("data-tc-collapsed", open ? "false" : "true");
+    var head = card.querySelector("[data-tc-collapse-head]");
+    if (head) { head.setAttribute("aria-expanded", String(open)); }
+  }
+  function openAll(box) {
+    Array.prototype.forEach.call(box.querySelectorAll("[data-tc-collapse]"), function (c) { setOpen(c, true); });
+  }
+  function openAncestors(el) {
+    for (var c = el.closest("[data-tc-collapse]"); c; c = c.parentElement && c.parentElement.closest("[data-tc-collapse]")) {
+      setOpen(c, true);
+    }
+  }
+
+  /* --- one grid for Guide, Glossary and Formulas --------------------------------
+   * Every panel that lays pills out in columns builds its list with gridHtml and
+   * reads its toolbar back with syncTools, so the column control is one piece of
+   * code, not three. Auto (0) is CSS: one column on a phone, two on a tablet,
+   * three on a desktop. */
+  function gridHtml(panel, cls, inner, bodyAttr) {
+    return '<ul class="' + cls + ' ham-grid" data-cols="' + state.cols[panel] + '"' + (bodyAttr ? " data-tc-collapse-body" : "") + ">" + inner + "</ul>";
+  }
+  function pressGroup(selector, value, attr) {
+    Array.prototype.forEach.call(document.querySelectorAll(selector), function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-" + attr) === value));
+    });
+  }
+  function syncTools(panel) {
+    pressGroup('[data-cols-target="' + panel + '"]', String(state.cols[panel]), "cols");
+    if (GROUP_MODES[panel]) { pressGroup('[data-groupby-target="' + panel + '"]', state.groupBy[panel], "groupby"); }
+  }
+  var RENDER = {};
+
   /* --- jumping between panels ------------------------------------------------
    * A cell in the Mastery map opens the question it names: switch panel, clear whatever filter would hide it,
    * render, then scroll the target into view and flash it once. */
@@ -185,7 +256,9 @@
     requestAnimationFrame(function () {
       var el = $(elId);
       if (!el) { return; }
-      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      openAncestors(el);
+      var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ block: "center", behavior: still ? "auto" : "smooth" });
       el.classList.add("is-jumped");
       setTimeout(function () { el.classList.remove("is-jumped"); }, 1600);
     });
@@ -196,40 +269,70 @@
    * answer(s) from build.py (families.yaml + the "all of the above"
    * rule); this only lays them out, family by family in
    * the fixed slot order, subelement by subelement, group by group. */
+  function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
+  function guideGroup(g, list) {
+    return '<div class="ham-ggroup ham-pill" data-tc-collapse="grp-' + esc(g.id) + '"><h5 data-tc-collapse-toggle><span class="mono">' +
+      esc(g.id) + "</span> " + esc(g.title) + '<span class="count">' + plural(list.length, "question") + "</span></h5>" +
+      gridHtml("guide", "ham-gcards", list.map(guideCardHtml).join(""), true) + "</div>";
+  }
+  /* The Guide is one tree -- family > subelement > group > question -- read
+     three ways. Family (default) is the tree as authored; Subelement drops the
+     family level and leads with the exam's own T1..T9 order; None is a single
+     grid of every question in id order. Whatever survives the filters is what
+     is drawn, so a group with no match is never an empty heading. */
   function renderGuide() {
     var box = $("hs-guide");
     var qs = filtered();
     var p = poolObj();
+    var mode = state.groupBy.guide;
+    syncTools("guide");
     var byGroup = {};
     qs.forEach(function (q) { (byGroup[q.group] = byGroup[q.group] || []).push(q); });
     var byFamily = {};
     p.subelements.forEach(function (s) { (byFamily[s.family] = byFamily[s.family] || []).push(s); });
-    var out = [];
-    (state.data.families || []).forEach(function (fam) {
-      var subs = (byFamily[fam.id] || []).filter(function (s) { return !state.sub || s.id === state.sub; });
-      var famQs = 0, subsHtml = [];
-      subs.forEach(function (s) {
-        var groupsHtml = [];
-        s.groups.forEach(function (g) {
-          var list = byGroup[g.id];
-          if (!list || !list.length) { return; }
-          famQs += list.length;
-          groupsHtml.push('<div class="ham-ggroup"><h5><span class="mono">' + esc(g.id) + "</span> " + esc(g.title) + "</h5>" +
-            '<ul class="ham-gcards">' + list.map(guideCardHtml).join("") + "</ul></div>");
-        });
-        if (groupsHtml.length) {
-          subsHtml.push('<div class="ham-gsub"><h4><span class="mono">' + esc(s.id) + "</span> " + esc(s.title) + "</h4>" +
-            groupsHtml.join("") + "</div>");
-        }
+    function subGroups(s) {
+      var html = [], n = 0;
+      s.groups.forEach(function (g) {
+        var list = byGroup[g.id];
+        if (!list || !list.length) { return; }
+        n += list.length;
+        html.push(guideGroup(g, list));
       });
-      if (!subsHtml.length) { return; }
-      out.push('<section class="ham-fam" style="--fam:var(--fam-' + esc(fam.id) + ')">' +
-        '<div class="ham-fam-head">' + famDot(fam.id) + "<h3>" + esc(fam.title) + "</h3>" +
-        '<span class="count">' + famQs + " question" + (famQs === 1 ? "" : "s") + "</span></div>" +
-        '<div class="ham-fam-body">' + subsHtml.join("") + "</div></section>");
-    });
+      return { html: html.join(""), n: n };
+    }
+    var out = [];
+    if (mode === "none") {
+      if (qs.length) {
+        out.push(gridHtml("guide", "ham-gcards", qs.slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; }).map(guideCardHtml).join("")));
+      }
+    } else if (mode === "sub") {
+      p.subelements.filter(function (s) { return !state.sub || s.id === state.sub; }).forEach(function (s) {
+        var g = subGroups(s);
+        if (!g.n) { return; }
+        out.push('<section class="ham-fam ham-subsec" data-tc-collapse="sub-' + esc(s.id) + '" style="--fam:var(--fam-' + esc(s.family) + ')">' +
+          '<div class="ham-fam-head" data-tc-collapse-toggle>' + famDot(s.family) + "<h3><span class=\"mono\">" + esc(s.id) + "</span> " + esc(s.title) + "</h3>" +
+          '<span class="count">' + plural(g.n, "question") + '</span></div><div class="ham-fam-body" data-tc-collapse-body>' + g.html + "</div></section>");
+      });
+    } else {
+      (state.data.families || []).forEach(function (fam) {
+        var famQs = 0, subsHtml = [];
+        (byFamily[fam.id] || []).filter(function (s) { return !state.sub || s.id === state.sub; }).forEach(function (s) {
+          var g = subGroups(s);
+          if (!g.n) { return; }
+          famQs += g.n;
+          subsHtml.push('<div class="ham-gsub"><h4><span class="mono">' + esc(s.id) + "</span> " + esc(s.title) + "</h4>" + g.html + "</div>");
+        });
+        if (!subsHtml.length) { return; }
+        out.push('<section class="ham-fam" data-tc-collapse="fam-' + esc(fam.id) + '" style="--fam:var(--fam-' + esc(fam.id) + ')">' +
+          '<div class="ham-fam-head" data-tc-collapse-toggle>' + famDot(fam.id) + "<h3>" + esc(fam.title) + "</h3>" +
+          '<span class="count">' + plural(famQs, "question") + '</span></div><div class="ham-fam-body" data-tc-collapse-body>' + subsHtml.join("") + "</div></section>");
+      });
+    }
     box.innerHTML = out.length ? out.join("") : "<p>" + chip("neutral", ICON.neutral, "no questions match") + "</p>";
     $("hs-count").textContent = qs.length + " of " + poolQuestions().length + " questions";
+    initCollapse(box);
+    /* A search, group or missed-only filter is asking to see matches, not a row of closed headings. */
+    if (state.q.trim() || state.group || state.missedOnly) { openAll(box); }
   }
   /* Terms and formulas per question, derived from each pool's own lists, so the
    * data file states every link once (term.ids, formula.ids) and the Guide
@@ -260,14 +363,19 @@
     }));
     return out.length ? '<p class="ham-gchips" aria-label="Terms and formulas for ' + esc(q.id) + '">' + out.join("") + "</p>" : "";
   }
+  /* A collapsed question is its id and stem, nothing else; the correct answer is
+     the first thing inside, filled and ticked, then the terms and formulas it
+     uses. The family hue rides on the left edge and the family letter tag. */
   function guideCardHtml(q) {
+    var tick = '<span class="ham-tick" aria-hidden="true">' + ICON.good + "</span>";
     var ansHtml = q.answers
-      ? '<p class="ham-gans"><span class="mono">' + esc(q.id) + "</span> All of these are correct:</p>" +
+      ? '<p class="ham-gans">' + tick + ' <span class="ham-gans-lead">All of these are correct:</span></p>' +
         '<ul class="ham-gall">' + q.answers.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ul>"
-      : '<p class="ham-gans"><span class="mono">' + esc(q.id) + "</span> " + esc(q.answer) + "</p>";
-    return '<li class="ham-gcard" id="hs-guide-' + esc(q.id) + '">' + ansHtml + '<p class="ham-gq">' + esc(q.question) + "</p>" + chipsHtml(q) +
-      figureHtml(q) +
-      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</li>";
+      : '<p class="ham-gans">' + tick + " " + esc(q.answer) + "</p>";
+    return '<li class="ham-gcard ham-pill" id="hs-guide-' + esc(q.id) + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-tc-collapse="q-' + esc(q.id) +
+      '" data-tc-collapse-default="collapsed"><h6 data-tc-collapse-toggle><span class="mono">' + esc(q.id) + '</span> <span class="ham-gq">' +
+      esc(q.question) + '</span></h6><div data-tc-collapse-body>' + ansHtml + chipsHtml(q) + figureHtml(q) +
+      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</div></li>";
   }
 
   /* --- glossary and formulas ---------------------------------------------------
@@ -284,6 +392,65 @@
     var q = state.byId[ids[0]];
     return q ? { dot: famDot(q.family), style: ' style="--fam:var(--fam-' + esc(q.family) + ')"' } : { dot: "", style: "" };
   }
+  /* Every term is a pill (same look as a Browse question) in a CSS grid. The
+     reader picks how they are grouped -- A-Z, by topic family, or not at all --
+     and how many columns; each group is itself a collapsible card. */
+  function termPill(term, tag) {
+    var f = famStyle(term.ids);
+    return '<li class="ham-term ham-pill"' + f.style + ' id="hs-term-' + esc(term.key) + '" data-tc-collapse="term-' + esc(term.key) +
+      '" data-tc-collapse-default="collapsed"><h3 data-tc-collapse-toggle>' + f.dot + esc(term.term) + (tag || "") +
+      '</h3><div data-tc-collapse-body><p>' + esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) +
+      "</p></div></li>";
+  }
+  function termFamilies(term) {
+    var seen = [];
+    term.ids.forEach(function (id) {
+      var q = state.byId[id];
+      if (q && seen.indexOf(q.family) < 0) { seen.push(q.family); }
+    });
+    return seen;
+  }
+  function famTag(term) {
+    var fams = termFamilies(term), fm = familyMap();
+    if (!fams.length || !fm[fams[0]]) { return ""; }
+    var also = fams.slice(1).filter(function (id) { return fm[id]; }).map(function (id) { return fm[id].title; });
+    return '<span class="ham-famtag"' + (also.length ? ' title="Also used in: ' + esc(also.join(", ")) + '"' : "") + ">" +
+      esc(fm[fams[0]].title) + (also.length ? " +" + also.length : "") + "</span>";
+  }
+  function groupCard(id, headHtml, count, inner) {
+    return '<section class="ham-tgroup" data-tc-collapse="' + esc(id) + '"><h4 data-tc-collapse-toggle>' + headHtml +
+      '<span class="count">' + count + " term" + (count === 1 ? "" : "s") + "</span></h4>" +
+      gridHtml("glossary", "ham-terms", inner, true) + "</section>";
+  }
+  function groupTerms(terms) {
+    var mode = state.groupBy.glossary, fm = familyMap();
+    if (mode === "none") { return null; }
+    var buckets = {}, order = [];
+    terms.forEach(function (term) {
+      var key;
+      if (mode === "cat") {
+        var q = state.byId[term.ids[0]];
+        key = q && fm[q.family] ? q.family : "other";
+      } else {
+        var ch = term.term.charAt(0).toUpperCase();
+        key = /[A-Z]/.test(ch) ? ch : "#";
+      }
+      if (!buckets[key]) { buckets[key] = []; order.push(key); }
+      buckets[key].push(term);
+    });
+    if (mode === "cat") {
+      var rank = {};
+      (state.data.families || []).forEach(function (f, i) { rank[f.id] = i; });
+      order.sort(function (x, y) { return (x in rank ? rank[x] : 99) - (y in rank ? rank[y] : 99); });
+    } else {
+      order.sort();
+    }
+    return order.map(function (key) {
+      var head = mode === "cat" ? (key === "other" ? "Other" : famDot(key) + esc(fm[key].title)) : esc(key);
+      return groupCard("tg-" + mode + "-" + key, head, buckets[key].length,
+        buckets[key].map(function (term) { return termPill(term, mode === "cat" ? famTag(term) : ""); }).join(""));
+    }).join("");
+  }
   function renderGlossary() {
     var all = poolObj().terms || [];
     var t = (state.glossQ || "").trim().toLowerCase();
@@ -292,15 +459,17 @@
     }) : all).slice().sort(function (a, b) { return a.term.localeCompare(b.term); });
     $("hs-glossary-count").textContent = terms.length + " of " + all.length + " terms";
     $("hs-count").textContent = all.length + " terms";
+    syncTools("glossary");
     if (!terms.length) {
       $("hs-glossary").innerHTML = "<p>" + chip("neutral", ICON.neutral, all.length ? "no terms match" : "no terms for this pool") + "</p>";
       return;
     }
-    $("hs-glossary").innerHTML = '<ul class="ham-terms">' + terms.map(function (term) {
-      var f = famStyle(term.ids);
-      return '<li class="ham-term"' + f.style + ' id="hs-term-' + esc(term.key) + '"><h3>' + f.dot + esc(term.term) + "</h3><p>" +
-        esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) + "</p></li>";
-    }).join("") + "</ul>";
+    var grouped = groupTerms(terms);
+    $("hs-glossary").innerHTML = grouped !== null ? grouped :
+      gridHtml("glossary", "ham-terms", terms.map(function (term) { return termPill(term, ""); }).join(""));
+    initCollapse($("hs-glossary"));
+    /* A search shows its matches: every group that survived the filter holds one, so open them all. */
+    if (t) { openAll($("hs-glossary")); }
   }
   /* Ohm's law and the power law get the classic triangle, plain inline SVG:
      the only figure this page draws. Only where the formula's variables are
@@ -309,9 +478,9 @@
   function triangleSvg(top, left, right) {
     return '<svg class="ham-formula-tri" viewBox="0 0 160 140" width="160" height="140" role="img" aria-label="Triangle: ' +
       esc(top) + " over " + esc(left) + " and " + esc(right) + '">' +
-      '<polygon points="80,8 8,132 152,132" fill="none" stroke="var(--rule)" stroke-width="2"/>' +
-      '<line x1="8" y1="70" x2="152" y2="70" stroke="var(--rule)" stroke-width="2"/>' +
-      '<line x1="80" y1="8" x2="80" y2="132" stroke="var(--rule)" stroke-width="2"/>' +
+      '<polygon points="80,8 8,132 152,132" fill="none" stroke="var(--edge)" stroke-width="2"/>' +
+      '<line x1="8" y1="70" x2="152" y2="70" stroke="var(--edge)" stroke-width="2"/>' +
+      '<line x1="80" y1="8" x2="80" y2="132" stroke="var(--edge)" stroke-width="2"/>' +
       '<text x="80" y="52" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(top) + "</text>" +
       '<text x="44" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(left) + "</text>" +
       '<text x="116" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(right) + "</text></svg>";
@@ -324,7 +493,8 @@
       $("hs-formulas").innerHTML = "<p>" + chip("neutral", ICON.neutral, "no formulas for this pool") + "</p>";
       return;
     }
-    $("hs-formulas").innerHTML = '<ul class="ham-formulas">' + formulas.map(function (f) {
+    syncTools("formulas");
+    $("hs-formulas").innerHTML = gridHtml("formulas", "ham-formulas", formulas.map(function (f) {
       var fam = famStyle(f.ids);
       var names = f.variables.map(function (v) { return v.name; });
       var tri = TRIANGLES[f.key] && TRIANGLES[f.key].every(function (v) { return names.indexOf(v) >= 0; })
@@ -332,11 +502,13 @@
       var vars = f.variables.length ? '<table class="ham-formula-vars"><tbody>' + f.variables.map(function (v) {
         return "<tr><td>" + esc(v.name) + "</td><td>" + esc(v.text) + "</td></tr>";
       }).join("") + "</tbody></table>" : "";
-      return '<li class="ham-formula"' + fam.style + ' id="hs-formula-' + esc(f.key) + '"><h3>' + fam.dot + esc(f.name) +
-        '</h3><p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
+      return '<li class="ham-formula ham-pill"' + fam.style + ' id="hs-formula-' + esc(f.key) + '" data-tc-collapse="formula-' + esc(f.key) +
+        '"><h3 data-tc-collapse-toggle>' + fam.dot + esc(f.name) +
+        '</h3><div data-tc-collapse-body><p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
         "</p>" + tri + vars + '<p class="ham-example"><b>Example</b> ' + esc(f.example) + '</p><p class="ham-refqs">Used in: ' +
-        qButtons(f.ids) + "</p></li>";
-    }).join("") + "</ul>";
+        qButtons(f.ids) + "</p></div></li>";
+    }).join(""));
+    initCollapse($("hs-formulas"));
   }
 
   /* --- mastery map -------------------------------------------------------------
@@ -439,7 +611,12 @@
       return;
     }
     var q = state.byId[state.deck[state.card]];
-    var h = '<p class="ham-flash-q"><span class="mono">' + esc(q.id) + "</span> " + esc(q.question) + "</p>" + figureHtml(q);
+    /* Memorize and quiz look different at a glance: a solid green rail and a star
+       versus a dashed blue rail and a question mark, each named in words. */
+    box.className = "ham-flash " + (state.showAnswer ? "is-memorize" : "is-quiz");
+    var h = '<p class="ham-mode"><span aria-hidden="true">' + (state.showAnswer ? "\u2605" : "?") + "</span> " +
+      (state.showAnswer ? "Memorize: answers shown" : "Quiz: pick an answer") + "</p>" +
+      '<p class="ham-flash-q"><span class="mono">' + esc(q.id) + "</span> " + esc(q.question) + "</p>" + figureHtml(q);
     if (state.showAnswer) {
       h += '<p id="hs-flash-result" role="status">' + chip("good", ICON.good, "answer " + q.correct) + "</p>" +
         choicesHtml(q, null);
@@ -584,6 +761,7 @@
     if (state.group && !groups.some(function (g) { return g.id === state.group; })) { state.group = ""; }
     fillSelect($("hs-group"), groups, state.group, "all groups");
   }
+  RENDER.guide = renderGuide; RENDER.glossary = renderGlossary; RENDER.formulas = renderFormulas;
   function render() {
     ["guide", "browse", "flash", "exam", "glossary", "formulas", "mastery"].forEach(function (m) {
       $("hs-panel-" + m).hidden = m !== state.mode;
@@ -615,7 +793,11 @@
     });
     $("hs-missed").addEventListener("change", function () { state.missedOnly = this.checked; render(); });
     Array.prototype.forEach.call(document.querySelectorAll(".tab[data-mode]"), function (t) {
-      t.addEventListener("click", function () { state.mode = t.getAttribute("data-mode"); render(); });
+      t.addEventListener("click", function () {
+        state.mode = t.getAttribute("data-mode"); render();
+        /* Choosing a tab is asking to see it, whatever the panel was last left as. */
+        setOpen($("hs-panel-" + state.mode), true);
+      });
     });
     var glossTimer = null;
     $("hs-gloss-search").addEventListener("input", function () {
@@ -623,7 +805,26 @@
       clearTimeout(glossTimer);
       glossTimer = setTimeout(function () { state.glossQ = v; renderGlossary(); }, 180);
     });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-groupby-target]"), function (b) {
+      b.addEventListener("click", function () {
+        var panel = b.getAttribute("data-groupby-target");
+        state.groupBy[panel] = b.getAttribute("data-groupby"); setPref(GROUPBY_KEY + panel, state.groupBy[panel]); RENDER[panel]();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-cols-target]"), function (b) {
+      b.addEventListener("click", function () {
+        var panel = b.getAttribute("data-cols-target"), n = parseInt(b.getAttribute("data-cols"), 10);
+        state.cols[panel] = n; setPref(COLS_KEY + panel, String(n));
+        RENDER[panel]();
+      });
+    });
     document.addEventListener("click", function (e) {
+      var x = e.target.closest("[data-expand]");
+      if (x && window.TC && window.TC.collapse) {
+        var target = $(x.getAttribute("data-target"));
+        if (x.getAttribute("data-expand") === "all") { window.TC.collapse.expandAll(target); } else { window.TC.collapse.collapseAll(target); }
+        return;
+      }
       var b = e.target.closest("[data-jump]");
       if (!b) { return; }
       var kind = b.getAttribute("data-jump"), key = b.getAttribute("data-key");

@@ -21,7 +21,8 @@
 <meta name="twitter:title" content="Just Another Ham Study">
 <meta name="twitter:description" content="A free study guide for the US amateur radio exams, built from the public-domain NCVEC question pools: Technician, General and Extra.">
 <meta name="twitter:image" content="https://ham.tcos.app/og.jpg">
-<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/shell.css">
+<link rel="stylesheet" href="/css/ham.css">
 <style>
 .hi-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
 .hi-tile{display:block;text-decoration:none;color:inherit;border:1px solid var(--rule);border-radius:10px;
@@ -64,9 +65,9 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
   </div>
 
   <div class="cards">
-  <section class="card" aria-labelledby="tiles-h">
-    <header><h2 id="tiles-h">Start here</h2></header>
-    <div class="body">
+  <section class="card" data-tc-collapse="start" aria-labelledby="tiles-h">
+    <header><h2 id="tiles-h" data-tc-collapse-toggle>Start here</h2></header>
+    <div class="body" data-tc-collapse-body>
       <div class="hi-tiles">
         <a class="hi-tile" href="/study.html">
           <h2>Study guide</h2>
@@ -88,6 +89,11 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
 </footer>
 <script src="/js/shell.js"></script>
+<script src="/js/links.js"></script>
+<script src="/js/collapse.js"></script>
+<script src="/js/arrange.js"></script>
+<script src="/js/table.js"></script>
+<script src="/js/freshness.js"></script>
 <script src="/js/index.js" defer></script>
 </body>
 </html>
