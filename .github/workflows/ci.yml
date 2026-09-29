@@ -1,0 +1,104 @@
+# Org CI baseline -- PROMPTING_RULES rule 16.
+#
+# Two layers: hee-check for what only this org knows, standard tools for
+# what is standard. hee-check needs no toolchain and no language runtime,
+# so it works in every repo including docs-only ones.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  hee-check:
+    name: hee-check (org tooling)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ham-tcos-app
+        uses: actions/checkout@v4
+        with:
+          path: ham-tcos-app
+
+      # Check out the tool's home repo rather than vendoring a copy.
+      # Vendoring is what produced three divergent security_scanner.py
+      # files across the org -- human-execution-engine#468.
+      - name: Checkout human-execution-engine (hee-check lives there)
+        uses: actions/checkout@v4
+        with:
+          repository: Twin-Cities-Open-Systems/human-execution-engine
+          # Pinned. `stable` advances only after this repo is measured green against
+          # the candidate commit; unpinned, a hee tightening turned org repos red with
+          # no commit here -- human-execution-engine#633.
+          ref: stable
+          path: human-execution-engine
+
+      # BLOCKING, and verified green before this workflow was added:
+      # hee-check boundary and refs both exit 0 on this repo today.
+      # It catches broken file references, hardcoded /home/<user>/ paths,
+      # and derived state committed to git.
+      - name: hee-check all
+        run: human-execution-engine/tooling/bin/hee-check all ham-tcos-app
+
+  # Publish what the lab installs, in the shape lab-pull already reads from
+  # thesis-engine and fleet-ops itself: one immutable lab-<short sha> release
+  # per build, carrying the payload plus a COMMIT asset. lab-pull on pve
+  # installs it into the share every five minutes. A workstation `make` that
+  # writes into ct107 stopped working when lab-pull took ownership of /www.
+  publish:
+    name: publish payload (for lab-pull)
+    # Never from a pull request: what the lab installs must be on main.
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: [hee-check]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # only to attach the payload to this build's release
+    env:
+      KEEP_RELEASES: '5'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the payload
+        run: |
+          set -eu
+          # The committed pages only. deploy.sh promote ships these same files
+          # with no rebuild.
+          tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html robots.txt css
+          mv "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" .
+          for f in index.html robots.txt css/site.css; do
+            tar -tzf ham-tcos-app-www.tar.gz | grep -qx "$f" \
+              || { echo "payload is missing $f -- refusing to publish"; exit 1; }
+          done
+          ls -l ham-tcos-app-www.tar.gz
+
+      - name: Publish this build's payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          printf '%s\n' "$SHA" > COMMIT
+          tag="lab-$(printf '%s' "$SHA" | cut -c1-12)"
+          # Draft first with the assets attached: a published release in this
+          # org is immutable and refuses uploads.
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft \
+            --title "ham-tcos-app lab payload $tag" \
+            --notes "Built by ci from $SHA. The static site for the lab mirror, pulled by lab-pull. Derived state, not a version." \
+            ham-tcos-app-www.tar.gz COMMIT
+          gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
+          echo "published $tag ($SHA)"
+
+      - name: Keep the last few, delete the rest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName,createdAt \
+            --jq "[.[] | select(.tagName | startswith(\"lab-\"))]
+                  | sort_by(.createdAt) | reverse | .[${KEEP_RELEASES}:] | .[].tagName" \
+          | while read -r old; do
+              [ -n "$old" ] || continue
+              echo "pruning $old"
+              gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag
+            done

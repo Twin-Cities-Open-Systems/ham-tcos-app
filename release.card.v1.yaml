@@ -1,0 +1,26 @@
+apiVersion: hee/v1
+kind: Card
+metadata:
+  name: ham-tcos-app-release
+  labels: { domain: release, scope: ham-tcos-app, artifact: card }
+  annotations:
+    inuid: null
+    inuid_null_reason: bootstrap
+    created_utc: "2026-09-28T00:00:00Z"
+spec:
+  # hee release lab | cut | promote, modeled on tcos-www's card.
+  # promote runs under the sealed Cloudflare token via hee cred. The token is
+  # the one tcos-www already uses (its zone list includes tcos.app); until this
+  # repo carries its own sealed copy, the card reads it from the sibling checkout.
+  credential: { account: cloudflare-tcos-www, dir: ../tcos-www/.hee/secrets }
+  requires:
+    commands: [git]
+    cut: { commands: [gh] }
+    promote:
+      versions: { node: ">=20" }
+  surfaces:
+    - name: ham-tcos-app
+      build: "true"                          # static pages: nothing to generate
+      outputs: ["index.html"]
+      lab: "./deploy.sh lab"
+      promote: "./deploy.sh promote"

@@ -1,0 +1,12 @@
+*.md
+LICENSE
+release.card.v1.yaml
+deploy.sh
+.git/
+.gitignore
+.hee/
+.github/
+.assetsignore
+__pycache__/
+*.pyc
+.wrangler/
