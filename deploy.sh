@@ -16,9 +16,9 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cmd="${1:-}"
 [ "$cmd" = lab ] || [ "$cmd" = promote ] || { echo "usage: $0 lab|promote" >&2; exit 1; }
-PAGES=(index.html)
-ASSET_DIRS=(css)
-ASSET_FILES=(robots.txt)
+PAGES=(index.html study.html)
+ASSET_DIRS=(css js data)
+ASSET_FILES=(robots.txt sitemap.xml)
 HOST=ham.tcos.app
 LAB_HOST=ham-app.lab.tcos.us
 
@@ -36,6 +36,7 @@ if [ "$cmd" = promote ]; then
   echo "=== promote: committed pages at $(git rev-parse --short HEAD) (origin/main), no rebuild ==="
 fi
 echo "=== gates ==="
+python3 "$HERE/build.py" --check || { echo "❌ CRITICAL deploy: data/ is not what ham/pools produces -- run python3 build.py, commit, merge -- stopping" >&2; exit 2; }
 hee check all "$HERE" >/dev/null 2>&1 || { echo "❌ CRITICAL deploy: hee check all fails -- stopping" >&2; exit 2; }
 if grep -l -E '^(<<<<<<< |=======$|>>>>>>> )' "${PAGES[@]}" 2>/dev/null | grep -q .; then
   echo "❌ CRITICAL deploy: git conflict markers in pages -- stopping" >&2; exit 2

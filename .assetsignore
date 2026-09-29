@@ -10,3 +10,6 @@ deploy.sh
 __pycache__/
 *.pyc
 .wrangler/
+ham/
+build.py
+tests/

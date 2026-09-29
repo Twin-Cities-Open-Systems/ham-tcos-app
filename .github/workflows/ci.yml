@@ -41,6 +41,16 @@ jobs:
       - name: hee-check all
         run: human-execution-engine/tooling/bin/hee-check all ham-tcos-app
 
+      # The committed data/ is what ships (promote never rebuilds), so it must
+      # be exactly what build.py produces from ham/pools and ham/families.yaml.
+      - name: Generated data is current, and the generator's tests pass
+        working-directory: ham-tcos-app
+        run: |
+          set -eu
+          python3 -c 'import yaml' 2>/dev/null || { sudo apt-get update -qq; sudo apt-get install -y -qq python3-yaml; }
+          python3 build.py --check
+          python3 -m unittest discover -s tests -v
+
   # Publish what the lab installs, in the shape lab-pull already reads from
   # thesis-engine and fleet-ops itself: one immutable lab-<short sha> release
   # per build, carrying the payload plus a COMMIT asset. lab-pull on pve
@@ -64,9 +74,9 @@ jobs:
           set -eu
           # The committed pages only. deploy.sh promote ships these same files
           # with no rebuild.
-          tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html robots.txt css
+          tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html study.html robots.txt sitemap.xml css js data
           mv "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" .
-          for f in index.html robots.txt css/site.css; do
+          for f in index.html study.html robots.txt sitemap.xml css/site.css css/study.css js/study.js data/ham-study.json; do
             tar -tzf ham-tcos-app-www.tar.gz | grep -qx "$f" \
               || { echo "payload is missing $f -- refusing to publish"; exit 1; }
           done

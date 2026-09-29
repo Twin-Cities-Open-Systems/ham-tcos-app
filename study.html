@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study guide &middot; Ham Study</title>
+<meta name="description" content="Study for the US amateur radio exams. Every question in the Technician, General and Extra pools with the answer first, flashcards, and a practice exam.">
+<link rel="canonical" href="https://ham.tcos.app/study">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ham Study">
+<meta property="og:title" content="Study guide &middot; Ham Study">
+<meta property="og:description" content="Study for the US amateur radio exams. Every question in the Technician, General and Extra pools with the answer first, flashcards, and a practice exam.">
+<meta property="og:url" content="https://ham.tcos.app/study">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Study guide &middot; Ham Study">
+<meta name="twitter:description" content="Study for the US amateur radio exams. Every question in the Technician, General and Extra pools with the answer first, flashcards, and a practice exam.">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/study.css">
+<script>(function(){var d=document.documentElement;
+try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
+var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-theme",t);}catch(e){d.setAttribute("data-fs","m");}})();</script>
+</head>
+<body>
+<header class="top">
+  <span class="brand"><a href="/">Ham Study</a></span>
+  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html" aria-current="page">Study guide</a></nav>
+  <div class="fontsize-toggle"><span class="fs-label">Aa</span>
+    <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
+    <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
+    <button class="fontsize-btn" data-size="l"  type="button" aria-pressed="false">L</button>
+    <button class="fontsize-btn" data-size="xl" type="button" aria-pressed="false">XL</button>
+    <button class="fontsize-btn" data-size="xxl" type="button" aria-pressed="false">XXL</button>
+  </div>
+  <div class="theme-toggle">
+    <button class="theme-btn" data-theme-choice="light" type="button" aria-pressed="false">Light</button>
+    <button class="theme-btn" data-theme-choice="dark"  type="button" aria-pressed="false">Dark</button>
+    <button class="theme-btn" data-theme-choice="auto"  type="button" aria-pressed="true">Auto</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
+    <h1>Study guide</h1>
+    <p class="lede">Study for the amateur radio license exams from the official NCVEC question pools: Technician 2026&ndash;2030,
+      General 2023&ndash;2027 and Extra 2024&ndash;2028. The <strong>Guide</strong> is the answer to every question, colored by
+      topic family, and the <strong>Mastery map</strong> shows every question at a glance. Or browse by subelement and group,
+      drill with flashcards, or take a practice exam drawn the way the real one is &mdash; one question from each group &mdash;
+      and scored against the passing score.</p>
+    <p class="lede">Your answers are counted in this browser only &mdash; nothing is sent anywhere.</p>
+  </div>
+
+  <div class="cards">
+
+  <section class="card" id="card-study" aria-labelledby="study-h">
+    <header>
+      <h2 id="study-h">Study</h2>
+      <span class="count" id="hs-count">loading&hellip;</span>
+    </header>
+    <div class="body">
+      <div class="hs-controls">
+        <label>Pool <select id="hs-pool"></select></label>
+        <label>Subelement <select id="hs-sub"><option value="">all subelements</option></select></label>
+        <label>Group <select id="hs-group"><option value="">all groups</option></select></label>
+        <label class="wide">Search <small>text or a regular expression, over question ids, questions and answers; Escape clears</small>
+          <input type="search" id="hs-search" placeholder="Ohm|impedance" autocomplete="off"></label>
+        <label class="hs-check"><input type="checkbox" id="hs-missed"> missed last time only</label>
+      </div>
+      <div class="tabs hs-modes" role="tablist" aria-label="Study mode">
+        <button class="tab" type="button" role="tab" data-mode="guide" aria-selected="true" aria-controls="hs-panel-guide">Guide</button>
+        <button class="tab" type="button" role="tab" data-mode="browse" aria-selected="false" aria-controls="hs-panel-browse">Browse</button>
+        <button class="tab" type="button" role="tab" data-mode="flash" aria-selected="false" aria-controls="hs-panel-flash">Flashcards</button>
+        <button class="tab" type="button" role="tab" data-mode="exam" aria-selected="false" aria-controls="hs-panel-exam">Practice exam</button>
+        <button class="tab" type="button" role="tab" data-mode="mastery" aria-selected="false" aria-controls="hs-panel-mastery">Mastery map</button>
+      </div>
+      <p class="hint" id="hs-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="hs-panel-guide" aria-labelledby="guide-h">
+    <header>
+      <h2 id="guide-h">Guide</h2>
+      <span class="count">the answer first, colored by topic family</span>
+    </header>
+    <div class="body"><div id="hs-guide"></div></div>
+  </section>
+
+  <section class="card" id="hs-panel-browse" aria-labelledby="browse-h" hidden>
+    <header>
+      <h2 id="browse-h">Browse</h2>
+      <span class="count">a group is a card; open a question for its answer</span>
+    </header>
+    <div class="body"><div class="ham-groups" id="hs-browse"></div></div>
+  </section>
+
+  <section class="card" id="hs-panel-flash" aria-labelledby="flash-h" hidden>
+    <header>
+      <h2 id="flash-h">Flashcards</h2>
+      <span class="count mono" id="hs-flash-pos">0 / 0</span>
+    </header>
+    <div class="body">
+      <label class="hs-check hs-flash-show"><input type="checkbox" id="hs-flash-show" checked>
+        Show the correct answer by default <small>(memorize mode; turn off to quiz yourself)</small></label>
+      <div id="hs-flash-body" aria-live="polite"></div>
+      <div class="bar">
+        <button class="btn secondary" type="button" id="hs-flash-prev">&larr; Previous</button>
+        <button class="btn secondary" type="button" id="hs-flash-shuffle" aria-pressed="false">Shuffle</button>
+        <button class="btn" type="button" id="hs-flash-next">Next &rarr;</button>
+      </div>
+      <p class="hint">Keys: <span class="mono">1</span>&ndash;<span class="mono">4</span> answer (quiz mode), <span class="mono">&larr;</span>
+        <span class="mono">&rarr;</span> move. The deck is the current pool and filter.</p>
+    </div>
+  </section>
+
+  <section class="card" id="hs-panel-exam" aria-labelledby="exam-h" hidden>
+    <header>
+      <h2 id="exam-h">Practice exam</h2>
+      <span class="count">the whole pool, not the filter</span>
+    </header>
+    <div class="body">
+      <div class="bar">
+        <button class="btn secondary" type="button" id="hs-exam-new">New exam</button>
+        <button class="btn" type="button" id="hs-exam-scorebtn" disabled>Score</button>
+      </div>
+      <div id="hs-exam-score" aria-live="polite"></div>
+      <div id="hs-exam-body"></div>
+    </div>
+  </section>
+
+  <section class="card" id="hs-panel-mastery" aria-labelledby="mastery-h" hidden>
+    <header>
+      <h2 id="mastery-h">Mastery map</h2>
+      <span class="count">one square per question, this pool</span>
+    </header>
+    <div class="body"><div id="hs-mastery"></div></div>
+  </section>
+
+  <section class="card" id="card-progress" aria-labelledby="progress-h">
+    <header>
+      <h2 id="progress-h">Progress</h2>
+      <span class="count">this pool, this browser</span>
+    </header>
+    <div class="body">
+      <div id="hs-progress"></div>
+      <div class="bar"><button class="btn secondary" type="button" id="hs-reset">Forget my answers</button></div>
+    </div>
+  </section>
+
+  <section class="card" id="card-pools" aria-labelledby="pools-h">
+    <header>
+      <h2 id="pools-h">The question pools</h2>
+      <span class="count">NCVEC, public domain</span>
+    </header>
+    <div class="body"><div id="hs-pools"></div>
+      <p class="hint">Each pool is valid for a fixed window. The practice exam draws one question from each group, which is how the
+        pool sets the exam&rsquo;s subject mix.</p></div>
+  </section>
+
+  </div>
+</main>
+<footer class="hint credit">
+  <p>Questions and figures are from the <a href="https://ncvec.org/index.php/amateur-question-pools">National Conference of Volunteer
+    Examiner Coordinators (NCVEC)</a> amateur question pools, which the NCVEC releases into the public domain.</p>
+  <p>Ham Study is not affiliated with the FCC, the NCVEC or the ARRL, and is not an official exam-prep service.
+    Check the current pool and the rules with your Volunteer Examiner Coordinator before you test.</p>
+  <p><a href="https://tcos.app/">tcos.app</a> &middot;
+    <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
+</footer>
+<script src="/js/shell.js"></script>
+<script src="/js/study.js" defer></script>
+</body>
+</html>

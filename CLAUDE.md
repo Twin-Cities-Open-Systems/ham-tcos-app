@@ -11,8 +11,11 @@ outside this repo fails silently. If the org rules are not in `/context`, the
 hook is not installed.
 
 `ham-tcos-app` is a static site, the ham study guide served at `ham.tcos.app`.
-There is no generator yet: the committed pages are what ships, and
-`deploy.sh promote` deploys them with no rebuild. Never commit or push to
+`build.py` turns `ham/pools` into `data/`; the committed pages and data are
+what ships, and `deploy.sh promote` deploys them with no rebuild. After any
+change under `ham/`, run `python3 build.py` and commit `data/`; CI and
+`deploy.sh` refuse stale data. New shipped paths must be added to `deploy.sh`,
+the CI payload and its required-member check. Never commit or push to
 `main`; branch, then PR. Release only through
 `hee release -lab | -cut | -promote`.
 

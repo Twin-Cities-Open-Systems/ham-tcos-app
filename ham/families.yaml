@@ -1,0 +1,100 @@
+# families.yaml -- the eight topic families the study guide colors by.
+#
+# All three NCVEC pools share the same ten subelement topics in the same order
+# (T0..T9, G0..G9, E0..E9 name the identical ten subjects), so one family map,
+# in one fixed slot order, covers Technician, General and Extra. Ten
+# subelements fold into eight families by merging propagation with antennas and
+# practices with practical circuits, the two pairs usually taught together.
+#
+# Identity color is eight hues in a fixed order, never cycled. Color is never
+# the only signal: the family name is always printed beside its swatch.
+#
+# Contrast, measured against the page surfaces (css/site.css): the dark hues
+# pass on all five checks (lightness, chroma, color-vision, normal-vision,
+# 3:1 contrast). On the light surface the aqua, yellow and magenta hues fall
+# under 3:1 contrast, which the icon-plus-label rule covers structurally.
+
+schema: ham-tcos-app.families.v1
+
+families:
+  - slot: 1
+    id: rules
+    title: "Rules"
+    hue: blue
+    color: {light: "#2a78d6", dark: "#3987e5"}
+  - slot: 2
+    id: operating
+    title: "Operating"
+    hue: orange
+    color: {light: "#eb6834", dark: "#d95926"}
+  - slot: 3
+    id: waves
+    title: "Waves & Antennas"
+    hue: aqua
+    color: {light: "#1baf7a", dark: "#199e70"}
+  - slot: 4
+    id: practices
+    title: "Practices & Circuits"
+    hue: yellow
+    color: {light: "#eda100", dark: "#c98500"}
+  - slot: 5
+    id: electrical
+    title: "Electrical Principles"
+    hue: magenta
+    color: {light: "#e87ba4", dark: "#d55181"}
+  - slot: 6
+    id: components
+    title: "Components"
+    hue: green
+    color: {light: "#008300", dark: "#008300"}
+  - slot: 7
+    id: signals
+    title: "Signals & Emissions"
+    hue: violet
+    color: {light: "#4a3aa7", dark: "#9085e9"}
+  - slot: 8
+    id: safety
+    title: "Safety"
+    hue: red
+    color: {light: "#e34948", dark: "#e66767"}
+
+# Every pool shares this map. Subelement titles are quoted verbatim from each
+# pool's own subelement card under ham/pools, so a mismatch here is real drift,
+# not a typo. build.py refuses a subelement this map does not name.
+pools:
+  technician-2026-2030:
+    subelements:
+      T1: {family: rules,      title: "COMMISSION’S RULES"}
+      T2: {family: operating,  title: "OPERATING PROCEDURES"}
+      T3: {family: waves,      title: "RADIO WAVE PROPAGATION"}
+      T4: {family: practices,  title: "AMATEUR RADIO PRACTICES"}
+      T5: {family: electrical, title: "ELECTRICAL PRINCIPLES"}
+      T6: {family: components, title: "ELECTRONIC AND ELECTRICAL COMPONENTS"}
+      T7: {family: practices,  title: "PRACTICAL CIRCUITS"}
+      T8: {family: signals,    title: "SIGNALS AND EMISSIONS"}
+      T9: {family: waves,      title: "ANTENNAS AND FEED LINES"}
+      T0: {family: safety,     title: "SAFETY"}
+  general-2023-2027:
+    subelements:
+      G1: {family: rules,      title: "COMMISSION’S RULES"}
+      G2: {family: operating,  title: "OPERATING PROCEDURES"}
+      G3: {family: waves,      title: "RADIO WAVE PROPAGATION"}
+      G4: {family: practices,  title: "AMATEUR RADIO PRACTICES"}
+      G5: {family: electrical, title: "ELECTRICAL PRINCIPLES"}
+      G6: {family: components, title: "CIRCUIT COMPONENTS"}
+      G7: {family: practices,  title: "PRACTICAL CIRCUITS"}
+      G8: {family: signals,    title: "SIGNALS AND EMISSIONS"}
+      G9: {family: waves,      title: "ANTENNAS AND FEED LINES"}
+      G0: {family: safety,     title: "ELECTRICAL AND RF SAFETY"}
+  extra-2024-2028:
+    subelements:
+      E1: {family: rules,      title: "COMMISSION RULES"}
+      E2: {family: operating,  title: "OPERATING PROCEDURES"}
+      E3: {family: waves,      title: "RADIO WAVE PROPAGATION"}
+      E4: {family: practices,  title: "AMATEUR PRACTICES"}
+      E5: {family: electrical, title: "ELECTRICAL PRINCIPLES"}
+      E6: {family: components, title: "CIRCUIT COMPONENTS"}
+      E7: {family: practices,  title: "PRACTICAL CIRCUITS"}
+      E8: {family: signals,    title: "SIGNALS AND EMISSIONS"}
+      E9: {family: waves,      title: "ANTENNAS AND TRANSMISSION LINES"}
+      E0: {family: safety,     title: "SAFETY"}
