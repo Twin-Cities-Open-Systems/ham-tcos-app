@@ -82,7 +82,7 @@ body{font-variant-numeric:slashed-zero}
 .ham-term.is-jumped,.ham-formula.is-jumped{outline:2px solid var(--accent);outline-offset:2px}
 .ham-term h3,.ham-formula h3{margin:0 0 .25rem;font-size:1rem;display:flex;align-items:center;gap:.4rem}
 .ham-term p,.ham-formula p{margin:.25rem 0}
-.ham-formula-forms{font-family:ui-monospace,monospace;font-size:1.05rem;display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:.4rem 0}
+.ham-formula-forms{font-family:ui-monospace,monospace;font-size:1.05rem;display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;margin:.4rem 0}
 .ham-formula-vars{margin:.4rem 0}
 .ham-formula-vars td:first-child{font-family:ui-monospace,monospace;padding-right:1rem;white-space:nowrap}
 .ham-formula-tri{margin:.5rem 0}
