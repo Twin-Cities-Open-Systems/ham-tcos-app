@@ -187,6 +187,15 @@ class Notes(unittest.TestCase):
                     self.assertGreaterEqual(len(t["definition"].split()), 8)
                     self.assertTrue(t["definition"].rstrip().endswith("."))
 
+    def test_every_use_case_is_short_and_is_not_the_definition(self):
+        for pool, n in sorted(self.notes.items()):
+            for kind, key, items in (("term", "term", n["terms"]), ("formula", "key", n["formulas"])):
+                for x in items:
+                    with self.subTest(pool=pool, **{kind: x[key]}):
+                        words = len(x["use"].split())
+                        self.assertTrue(6 <= words <= 40, f"{words} words")
+                        self.assertNotEqual(x["use"].strip(), x.get("definition", "").strip())
+
 
 if __name__ == "__main__":
     unittest.main()

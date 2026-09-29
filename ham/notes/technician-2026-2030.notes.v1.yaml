@@ -11,6 +11,7 @@ pool: technician-2026-2030
 formulas:
   - key: ohms-law
     name: Ohm's law
+    use: "A friend hands you an unmarked resistor and a bench supply. You read the voltage across it and the current through it, and you can name the part."
     forms: ["E = I × R", "I = E ÷ R", "R = E ÷ I"]
     variables:
       E: voltage, in volts (V)
@@ -34,6 +35,7 @@ formulas:
       - {id: T5D12, given: {solve: e, i: 2, r: 10}}
   - key: power-law
     name: Electrical power
+    use: "You are sizing the fuse and wiring for a new rig on a 13.8 V shack supply, and the manual lists only the current it draws."
     forms: ["P = I × E", "I = P ÷ E", "E = P ÷ I"]
     variables:
       P: power, in watts (W)
@@ -51,6 +53,7 @@ formulas:
       - {id: T5C11, given: {solve: i, p: 120, e: 12}}
   - key: prefixes
     name: Metric prefixes and unit conversion
+    use: "Net control gives the frequency as 3525 kHz while your radio's display is set to read megahertz, and the net starts in one minute."
     forms: ["kilo (k) = 1,000", "mega (M) = 1,000,000", "giga (G) = 1,000,000,000", "milli (m) = 1/1,000", "micro (µ) = 1/1,000,000", "pico (p) = 1/1,000,000,000,000"]
     variables:
       to move to a smaller unit: multiply (1.5 A = 1500 mA)
@@ -72,6 +75,7 @@ formulas:
       - {id: T5B13, given: {value: 2425, frm: M, to: G}}
   - key: decibels
     name: Decibels (power)
+    use: "A club member trades a 5 W handheld for a 10 W mobile and asks how much stronger they will sound. This is the arithmetic behind your answer."
     forms: ["dB = 10 × log10(P2 ÷ P1)", "+3 dB ≈ twice the power", "+10 dB = ten times the power", "−3 dB ≈ half the power"]
     variables:
       dB: change in level, in decibels; a loss is negative
@@ -89,6 +93,7 @@ formulas:
       - {id: T5B11, given: {p1: 20, p2: 200}}
   - key: wavelength
     name: Frequency and wavelength
+    use: "A newcomer at the club asks why the local calling channel near 146 MHz is called two meters. This is the conversion that connects the two."
     forms: ["wavelength (m) = 300 ÷ frequency (MHz)", "frequency (MHz) = 300 ÷ wavelength (m)"]
     variables:
       wavelength: length of one cycle of the wave, in meters (m)
@@ -103,6 +108,7 @@ formulas:
       - {id: T1B04, given: {f_mhz: 146.52}}
   - key: antenna-length
     name: Antenna element length
+    use: "You are trimming a mobile whip for a 2-meter repeater with a hacksaw already in hand. You get to cut once, so do the arithmetic first."
     forms: ["half-wave dipole (feet) = 468 ÷ frequency (MHz)", "quarter-wave whip (feet) = 234 ÷ frequency (MHz)"]
     variables:
       frequency: operating frequency, in megahertz (MHz)
@@ -117,6 +123,7 @@ formulas:
       - {id: T9A08, source: stem, pattern: '(\d+)-inch', scale: 12, given: {f_mhz: 146, kind: quarter}}
   - key: battery-life
     name: Battery run time
+    use: "You are packing one battery and a handheld for a Field Day shift with no mains power, and you need to know if a single charge lasts the whole shift."
     forms: ["hours = battery capacity (Ah) ÷ average current (A)"]
     variables:
       capacity: the battery's rating, in ampere-hours (Ah)
@@ -129,6 +136,7 @@ formulas:
     ids: [T4A09]
   - key: duty-cycle
     name: Duty cycle
+    use: "You run a digital mode that keys the transmitter half the time, and an RF exposure worksheet asks for an average, not your peak output."
     forms: ["duty cycle (%) = transmit time ÷ (transmit time + off time) × 100", "allowed power density scales with 100 ÷ duty cycle"]
     variables:
       transmit time: how long the transmitter is on in one averaging period
@@ -144,6 +152,7 @@ formulas:
       - {id: T0C03, out: factor, given: {t_on: 1, t_off: 1}}
   - key: swr
     name: Standing wave ratio (resistive load)
+    use: "Your new antenna measures some resistance at the feed point that is not 50 ohms. Before blaming the radio, compare it against the coax you fed it with."
     forms: ["SWR = load impedance ÷ line impedance (if the load is larger)", "SWR = line impedance ÷ load impedance (if the line is larger)", "a perfect match is 1:1"]
     variables:
       line impedance: characteristic impedance of the feed line, in ohms (Ω)
@@ -158,6 +167,7 @@ formulas:
       - {id: T7C04, given: {z_line: 50, z_load: 50}}
   - key: repeater-offset
     name: Repeater input frequency
+    use: "A repeater directory lists an output frequency and a minus sign. You are programming a memory channel and the radio also wants a transmit frequency."
     forms: ["input frequency = output frequency + offset (positive offset)", "input frequency = output frequency − offset (negative offset)"]
     variables:
       output frequency: what you listen to, in MHz
@@ -169,62 +179,121 @@ formulas:
       shown: "= 146.34 MHz"
     ids: [T2A01, T2A03]
 terms:
-  - {term: SWR, definition: "Standing wave ratio: a number that says how well an antenna's impedance matches the feed line. 1:1 is a perfect match; the higher the ratio, the more power is reflected back toward the radio.", match: ['\bSWR\b', 'standing wave']}
-  - {term: RF, definition: "Radio frequency: the range of electrical oscillation, from a few kilohertz upward, that is used to carry radio signals through the air or through a cable.", match: ['(?-i:\bRF\b)', 'radio frequency']}
-  - {term: HF, definition: "High frequency: the radio spectrum from 3 to 30 MHz, home to the long-distance bands that bounce off the ionosphere.", match: ['(?-i:\bHF\b)']}
-  - {term: VHF, definition: "Very high frequency: 30 to 300 MHz, including the 6-meter and 2-meter bands. Signals mostly travel in a straight line.", match: ['(?-i:\bVHF\b)']}
-  - {term: UHF, definition: "Ultra high frequency: 300 MHz to 3 GHz, including the 70-centimeter band. Signals mostly travel in a straight line and pass through buildings poorly.", match: ['(?-i:\bUHF\b)']}
-  - {term: FM, definition: "Frequency modulation: a mode in which the voice changes the frequency of the carrier. It sounds clean at VHF and UHF and is the mode most repeaters use.", match: ['(?-i:\bFM\b)', 'frequency modulation']}
-  - {term: AM, definition: "Amplitude modulation: a mode in which the voice changes the strength of the carrier. It uses more bandwidth than single sideband.", match: ['(?-i:\bAM\b)', 'amplitude modulation']}
-  - {term: SSB, definition: "Single sideband: a voice mode that sends only one of the two sidebands and no carrier, so it fits more conversations into less spectrum than AM.", match: ['(?-i:\bSSB\b)', 'single sideband']}
-  - {term: CW, definition: "Continuous wave: Morse code sent by switching a carrier on and off. It is narrow and readable through weak signals and noise.", match: ['(?-i:\bCW\b)', 'Morse']}
-  - {term: PEP, definition: "Peak envelope power: the average power delivered during the strongest peak of the signal's envelope. FCC power limits are stated in PEP.", match: ['(?-i:\bPEP\b)', 'peak envelope']}
-  - {term: Duty cycle, definition: "The fraction of time a transmitter is actually sending. A mode that transmits half the time has a 50 percent duty cycle, which lowers its average power and RF exposure.", match: ['duty cycle']}
-  - {term: Repeater, definition: "A station that listens on one frequency and retransmits on another at higher power and from a high location, extending the range of handheld and mobile radios.", match: ['repeater']}
-  - {term: Simplex, definition: "Communication on a single frequency, with both stations taking turns, and no repeater in between.", match: ['simplex']}
-  - {term: Repeater offset, definition: "The fixed difference between a repeater's receive and transmit frequencies. It is 600 kHz on 2 meters and 5 MHz on 70 centimeters.", match: ['offset']}
-  - {term: CTCSS, definition: "Continuous tone-coded squelch system, often called PL tone: a low-pitched tone sent under your voice that a repeater requires before it will retransmit you.", match: ['CTCSS', 'PL tone', '(?-i:\bPL\b)']}
-  - {term: DTMF, definition: "Dual-tone multi-frequency: the pair of audio tones a telephone keypad makes. Radios use them to control repeaters and other equipment.", match: ['DTMF']}
-  - {term: Squelch, definition: "A receiver circuit that keeps the speaker silent until a signal of enough strength (or the right tone) is present.", match: ['squelch']}
-  - {term: Beacon, definition: "A station that transmits automatically and continuously so other operators can judge propagation conditions.", match: ['beacon']}
-  - {term: Antenna gain, definition: "How much a directional antenna concentrates its radiation in a given direction compared with a reference antenna. It moves power toward one direction; it does not create more.", match: ['gain']}
-  - {term: Dipole, definition: "A simple antenna of two equal straight elements fed in the middle. A half-wave dipole radiates strongest broadside to the wire.", match: ['dipole']}
-  - {term: Yagi, definition: "A directional antenna with one driven element plus a reflector and one or more directors on a boom.", match: ['yagi']}
-  - {term: Coaxial cable, definition: "A feed line with a center conductor surrounded by insulation and an outer shield. It is easy to route and is the most common feed line in amateur stations.", match: ['coax']}
-  - {term: Feed line, definition: "The cable that carries RF between the transmitter and the antenna.", match: ['feed ?line', 'transmission line']}
-  - {term: Impedance, definition: "The total opposition to alternating current in a circuit, measured in ohms. Matching the impedance of the radio, feed line and antenna moves power efficiently.", match: ['impedance']}
-  - {term: Dummy load, definition: "A non-radiating resistor, usually 50 ohms, mounted on a heat sink. It lets you test a transmitter without sending a signal out over the air.", match: ['dummy load']}
-  - {term: Polarization, definition: "The orientation of a radio wave's electric field, set by how the antenna is mounted: vertical, horizontal or circular.", match: ['polariz']}
-  - {term: Wavelength, definition: "The distance a radio wave travels in one cycle. It gets shorter as frequency goes up.", match: ['wavelength', 'meter band']}
-  - {term: Frequency, definition: "The number of times per second a signal completes a full cycle, measured in hertz (Hz).", match: ['frequency']}
-  - {term: Bandwidth, definition: "The width of spectrum a signal occupies, or the width a filter passes, measured in hertz.", match: ['bandwidth']}
-  - {term: Modulation, definition: "Changing some property of a radio wave, such as its strength, frequency or phase, so it carries voice or data.", match: ['modulat']}
-  - {term: Sporadic E, definition: "Short-lived patches of unusually dense ionization in the E layer that can bounce signals on 10, 6 and sometimes 2 meters well beyond the horizon.", match: ['sporadic']}
-  - {term: Tropospheric ducting, definition: "A weather condition in which a layer of warm air traps VHF and UHF signals, carrying them hundreds of miles past the horizon.", match: ['\bduct(?:ing|s)?\b', 'troposph']}
-  - {term: Ionosphere, definition: "Layers of the upper atmosphere ionized by the Sun. They bend HF signals back to Earth, which makes long-distance skip possible.", match: ['ionospher', 'F region', 'F layer']}
-  - {term: Doppler shift, definition: "The change in received frequency caused by relative motion between transmitter and receiver, noticeable on satellite passes.", match: ['doppler']}
-  - {term: Call sign, definition: "The unique identifier the FCC assigns to a licensed station. You must give it at the required times when you transmit.", match: ['call ?sign']}
-  - {term: Control operator, definition: "The licensed amateur who is responsible for a station's operation while it transmits.", match: ['control operator']}
-  - {term: CQ, definition: "A general call meaning 'calling any station', sent when you want to start a contact.", match: ['(?-i:\bCQ\b)']}
-  - {term: QSY, definition: "A Q signal that means 'change frequency', as in 'QSY up five kilohertz'.", match: ['QSY']}
-  - {term: DX, definition: "Long-distance communication, usually a contact with a station in another country.", match: ['(?-i:\bDX\b)']}
-  - {term: RACES, definition: "Radio Amateur Civil Emergency Service: a government-sponsored emergency communications service run under FCC rules for civil defense.", match: ['(?-i:\bRACES\b)']}
-  - {term: ARES, definition: "Amateur Radio Emergency Service: a volunteer group of licensed amateurs who register their skills and equipment for emergency communications.", match: ['(?-i:\bARES\b)']}
-  - {term: APRS, definition: "Automatic Packet Reporting System: a way for stations to broadcast short position and status reports that others can display on a map.", match: ['APRS']}
-  - {term: FT8, definition: "A digital mode with 15-second transmit cycles, designed to make contacts possible with very weak signals.", match: ['FT8']}
-  - {term: DMR, definition: "Digital mobile radio: a digital voice mode that time-shares one channel between two conversations, using talkgroups and a code plug.", match: ['(?-i:\bDMR\b)']}
-  - {term: PSK31, definition: "A narrow digital keyboard-to-keyboard mode that changes the phase of a tone to send text.", match: ['PSK']}
-  - {term: SDR, definition: "Software-defined radio: a radio in which much of the signal processing that used to be done by hardware is done by software.", match: ['(?-i:\bSDR\b)', 'software.defined']}
-  - {term: EchoLink, definition: "An internet-linked system that connects amateur stations and repeaters over voice-over-IP.", match: ['EchoLink']}
-  - {term: IRLP, definition: "Internet Radio Linking Project: a system that ties repeaters together over the internet using voice-over-IP.", match: ['IRLP']}
-  - {term: VFO, definition: "Variable-frequency oscillator: the tuning control that sets the operating frequency of a transceiver.", match: ['(?-i:\bVFO\b)']}
-  - {term: Transceiver, definition: "A radio that combines a transmitter and a receiver in one unit.", match: ['transceiver']}
-  - {term: Amplifier, definition: "A circuit that increases a signal's power, voltage or current.", match: ['amplifier']}
-  - {term: Resistor, definition: "A component that opposes current and turns the difference into heat, measured in ohms.", match: ['resistor']}
-  - {term: Capacitor, definition: "A component that stores energy in an electric field. It blocks direct current and passes alternating current more easily as frequency rises.", match: ['capacitor']}
-  - {term: Inductor, definition: "A coil that stores energy in a magnetic field. It resists changes in current and passes alternating current less easily as frequency rises.", match: ['inductor', 'inductance']}
-  - {term: Diode, definition: "A component that lets current flow in one direction only.", match: ['diode']}
-  - {term: Transistor, definition: "A semiconductor device that can switch current or amplify a signal.", match: ['transistor']}
-  - {term: Fuse, definition: "A safety part that melts and opens a circuit when the current is too high.", match: ['fuse']}
-  - {term: MPE, definition: "Maximum permissible exposure: the FCC's limit on how much RF energy people may be exposed to, which depends on frequency and averaging time.", match: ['(?-i:\bMPE\b)', 'permissible exposure', 'RF exposure']}
-  - {term: Decibel, definition: "A logarithmic unit that compares two power levels. Three decibels is about double the power; ten decibels is ten times.", match: ['(?-i:\bdB[a-z]?\b)', 'decibel']}
+  - {term: SWR, definition: "Standing wave ratio: a number that says how well an antenna's impedance matches the feed line. 1:1 is a perfect match; the higher the ratio, the more power is reflected back toward the radio.", match: ['\bSWR\b', 'standing wave'],
+    use: "You key up on a freshly built antenna and the meter needle swings hard instead of resting near the left. Stop and check the connectors before running full power."}
+  - {term: RF, definition: "Radio frequency: the range of electrical oscillation, from a few kilohertz upward, that is used to carry radio signals through the air or through a cable.", match: ['(?-i:\bRF\b)', 'radio frequency'],
+    use: "A club elder warns you never to grab the antenna while someone is transmitting. What is on that wire behaves nothing like the DC from your battery."}
+  - {term: HF, definition: "High frequency: the radio spectrum from 3 to 30 MHz, home to the long-distance bands that bounce off the ionosphere.", match: ['(?-i:\bHF\b)'],
+    use: "A friend works Japan from a backyard wire while your handheld barely clears the next town. Which slice of spectrum they chose explains the difference."}
+  - {term: VHF, definition: "Very high frequency: 30 to 300 MHz, including the 6-meter and 2-meter bands. Signals mostly travel in a straight line.", match: ['(?-i:\bVHF\b)'],
+    use: "Your 2-meter handheld works across town but dies the moment a ridge sits between you and the repeater. That habit defines this stretch of spectrum."}
+  - {term: UHF, definition: "Ultra high frequency: 300 MHz to 3 GHz, including the 70-centimeter band. Signals mostly travel in a straight line and pass through buildings poorly.", match: ['(?-i:\bUHF\b)'],
+    use: "In a concrete stairwell your 70-centimeter handheld drops out, though it is fine from the parking lot. The band you picked shapes that behavior."}
+  - {term: FM, definition: "Frequency modulation: a mode in which the voice changes the frequency of the carrier. It sounds clean at VHF and UHF and is the mode most repeaters use.", match: ['(?-i:\bFM\b)', 'frequency modulation'],
+    use: "You tune the local repeater and the audio is quiet and clean, then falls off a cliff into silence as you drive out of range. That is the mode's signature."}
+  - {term: AM, definition: "Amplitude modulation: a mode in which the voice changes the strength of the carrier. It uses more bandwidth than single sideband.", match: ['(?-i:\bAM\b)', 'amplitude modulation'],
+    use: "You tune across the aircraft band or hear a vintage boatanchor net and the voices ride on a steady carrier you can hear behind them."}
+  - {term: SSB, definition: "Single sideband: a voice mode that sends only one of the two sidebands and no carrier, so it fits more conversations into less spectrum than AM.", match: ['(?-i:\bSSB\b)', 'single sideband'],
+    use: "On 20 meters everyone sounds like ducks until you tune slowly and a voice snaps into place. There is nothing on the other side and no carrier to zero in on."}
+  - {term: CW, definition: "Continuous wave: Morse code sent by switching a carrier on and off. It is narrow and readable through weak signals and noise.", match: ['(?-i:\bCW\b)', 'Morse'],
+    use: "During a contest you copy a station you could never understand as voice, just steady beeps rising out of the noise."}
+  - {term: PEP, definition: "Peak envelope power: the average power delivered during the strongest peak of the signal's envelope. FCC power limits are stated in PEP.", match: ['(?-i:\bPEP\b)', 'peak envelope'],
+    use: "You are filling in the power line on an exposure worksheet, and the wattmeter needle bouncing while you talk is not the number the FCC means."}
+  - {term: Duty cycle, definition: "The fraction of time a transmitter is actually sending. A mode that transmits half the time has a 50 percent duty cycle, which lowers its average power and RF exposure.", match: ['duty cycle'],
+    use: "Your amplifier stays cool on voice but the heatsink gets hot running a digital mode, even with the power knob in exactly the same place."}
+  - {term: Repeater, definition: "A station that listens on one frequency and retransmits on another at higher power and from a high location, extending the range of handheld and mobile radios.", match: ['repeater'],
+    use: "Your five-watt handheld reaches a friend forty miles away because a box on a water tower hears you both and shouts for you."}
+  - {term: Simplex, definition: "Communication on a single frequency, with both stations taking turns, and no repeater in between.", match: ['simplex'],
+    use: "After a repeater contact, you and a friend agree to move off the machine, set the same frequency on both radios and take turns."}
+  - {term: Repeater offset, definition: "The fixed difference between a repeater's receive and transmit frequencies. It is 600 kHz on 2 meters and 5 MHz on 70 centimeters.", match: ['offset'],
+    use: "A visiting ham asks why your radio shows one number while you talk and another while you listen. Which band you are on sets the gap."}
+  - {term: CTCSS, definition: "Continuous tone-coded squelch system, often called PL tone: a low-pitched tone sent under your voice that a repeater requires before it will retransmit you.", match: ['CTCSS', 'PL tone', '(?-i:\bPL\b)'],
+    use: "You hear the repeater perfectly but it never comes back when you key up, and a club member tells you one small setting is missing from that memory."}
+  - {term: DTMF, definition: "Dual-tone multi-frequency: the pair of audio tones a telephone keypad makes. Radios use them to control repeaters and other equipment.", match: ['DTMF'],
+    use: "You press the keypad on your handheld to bring up an autopatch or a node, and telephone-style tone pairs go out over the air."}
+  - {term: Squelch, definition: "A receiver circuit that keeps the speaker silent until a signal of enough strength (or the right tone) is present.", match: ['squelch'],
+    use: "Your handheld hisses loudly in a quiet room until you turn a knob, and after that it stays silent until someone actually calls you."}
+  - {term: Beacon, definition: "A station that transmits automatically and continuously so other operators can judge propagation conditions.", match: ['beacon'],
+    use: "Before hunting distant stations on 6 meters you listen for a known automatic transmitter hundreds of miles away. Hearing it tells you the band is open."}
+  - {term: Antenna gain, definition: "How much a directional antenna concentrates its radiation in a given direction compared with a reference antenna. It moves power toward one direction; it does not create more.", match: ['gain'],
+    use: "You swap an omnidirectional whip for a beam and suddenly work stations that were unreadable, without touching the power setting on the radio."}
+  - {term: Dipole, definition: "A simple antenna of two equal straight elements fed in the middle. A half-wave dipole radiates strongest broadside to the wire.", match: ['dipole'],
+    use: "You hang a wire between two trees and feed it in the middle, then notice the best signals come from off the sides rather than off the wire ends."}
+  - {term: Yagi, definition: "A directional antenna with one driven element plus a reflector and one or more directors on a boom.", match: ['yagi'],
+    use: "You are on the roof bolting a boom full of aluminum rods to a rotator so you can swing it toward a distant hilltop repeater."}
+  - {term: Coaxial cable, definition: "A feed line with a center conductor surrounded by insulation and an outer shield. It is easy to route and is the most common feed line in amateur stations.", match: ['coax'],
+    use: "At the hamfest flea market you are buying a length of jacketed cable with braid under the jacket to run from the shack up to the roof."}
+  - {term: Feed line, definition: "The cable that carries RF between the transmitter and the antenna.", match: ['feed ?line', 'transmission line'],
+    use: "The run from your radio, through the wall and up the mast, is where some of your power quietly turns into heat before anything radiates."}
+  - {term: Impedance, definition: "The total opposition to alternating current in a circuit, measured in ohms. Matching the impedance of the radio, feed line and antenna moves power efficiently.", match: ['impedance'],
+    use: "Your radio expects 50 ohms, your wire antenna disagrees, and the tuner you bolted between them exists only to settle that argument."}
+  - {term: Dummy load, definition: "A non-radiating resistor, usually 50 ohms, mounted on a heat sink. It lets you test a transmitter without sending a signal out over the air.", match: ['dummy load'],
+    use: "You want to tune up a transmitter, or let a newcomer practice sending, without putting a signal on the air for the whole region to hear."}
+  - {term: Polarization, definition: "The orientation of a radio wave's electric field, set by how the antenna is mounted: vertical, horizontal or circular.", match: ['polariz'],
+    use: "Your handheld held upright barely hears a 6-meter beam strung out flat above someone's yard, until a club member tells you to turn the antenna sideways."}
+  - {term: Wavelength, definition: "The distance a radio wave travels in one cycle. It gets shorter as frequency goes up.", match: ['wavelength', 'meter band'],
+    use: "Hams name bands in meters while your radio reads in megahertz, so you have to know that twenty meters and a dial number mean the same place."}
+  - {term: Frequency, definition: "The number of times per second a signal completes a full cycle, measured in hertz (Hz).", match: ['frequency'],
+    use: "You dial across a band and the number on the display climbs. That number is what your license privileges and the band plans actually refer to."}
+  - {term: Bandwidth, definition: "The width of spectrum a signal occupies, or the width a filter passes, measured in hertz.", match: ['bandwidth'],
+    use: "A neighbor on the repeater says your signal is splattering onto the next channel, and the mode plus your microphone gain decide how much room you take."}
+  - {term: Modulation, definition: "Changing some property of a radio wave, such as its strength, frequency or phase, so it carries voice or data.", match: ['modulat'],
+    use: "Without it your transmitter just heats the antenna with a bare carrier. Talking into the microphone is what puts your voice onto the wave."}
+  - {term: Sporadic E, definition: "Short-lived patches of unusually dense ionization in the E layer that can bounce signals on 10, 6 and sometimes 2 meters well beyond the horizon.", match: ['sporadic'],
+    use: "On a June afternoon 6 meters fills with stations eight hundred miles away, and an hour later they are all gone again."}
+  - {term: Tropospheric ducting, definition: "A weather condition in which a layer of warm air traps VHF and UHF signals, carrying them hundreds of miles past the horizon.", match: ['\bduct(?:ing|s)?\b', 'troposph'],
+    use: "One still evening your 70-centimeter radio hears a repeater three states away that you have never copied, and a warm layer sits on the weather map."}
+  - {term: Ionosphere, definition: "Layers of the upper atmosphere ionized by the Sun. They bend HF signals back to Earth, which makes long-distance skip possible.", match: ['ionospher', 'F region', 'F layer'],
+    use: "At sunset 40 meters fills with distant voices that were not there at noon. Something far above you changed, not your radio."}
+  - {term: Doppler shift, definition: "The change in received frequency caused by relative motion between transmitter and receiver, noticeable on satellite passes.", match: ['doppler'],
+    use: "You are working a satellite and have to keep nudging the dial as it rises, passes overhead and drops toward the far horizon."}
+  - {term: Call sign, definition: "The unique identifier the FCC assigns to a licensed station. You must give it at the required times when you transmit.", match: ['call ?sign'],
+    use: "You finish a long conversation on the repeater and, before you let go of the button, you say the letters the FCC issued to you."}
+  - {term: Control operator, definition: "The licensed amateur who is responsible for a station's operation while it transmits.", match: ['control operator'],
+    use: "You let an unlicensed friend say hello on your radio at a club demo. Someone licensed still has to be at the controls and answer for it."}
+  - {term: CQ, definition: "A general call meaning 'calling any station', sent when you want to start a contact.", match: ['(?-i:\bCQ\b)'],
+    use: "You sit down at an HF radio on a quiet Saturday, find an empty patch of band, and call out hoping anybody at all comes back."}
+  - {term: QSY, definition: "A Q signal that means 'change frequency', as in 'QSY up five kilohertz'.", match: ['QSY'],
+    use: "Another station starts calling on the frequency you were using, so you suggest sliding a few kilohertz up before carrying on."}
+  - {term: DX, definition: "Long-distance communication, usually a contact with a station in another country.", match: ['(?-i:\bDX\b)'],
+    use: "A faint signal with an unfamiliar prefix appears on 10 meters and within a minute dozens of stations are calling it at once."}
+  - {term: RACES, definition: "Radio Amateur Civil Emergency Service: a government-sponsored emergency communications service run under FCC rules for civil defense.", match: ['(?-i:\bRACES\b)'],
+    use: "During a county exercise your served agency activates you, and you operate under the rules written for civil defense rather than ordinary hamming."}
+  - {term: ARES, definition: "Amateur Radio Emergency Service: a volunteer group of licensed amateurs who register their skills and equipment for emergency communications.", match: ['(?-i:\bARES\b)'],
+    use: "You sign up at the club, list your radios and your available hours, then get the call to staff a shelter radio desk during a flood."}
+  - {term: APRS, definition: "Automatic Packet Reporting System: a way for stations to broadcast short position and status reports that others can display on a map.", match: ['APRS'],
+    use: "You put a tracker in the car and your family watches your drive to the hamfest show up as a moving trail on a map."}
+  - {term: FT8, definition: "A digital mode with 15-second transmit cycles, designed to make contacts possible with very weak signals.", match: ['FT8'],
+    use: "You leave the radio running on 20 meters and watch contacts complete themselves from signals you cannot hear at all in the speaker."}
+  - {term: DMR, definition: "Digital mobile radio: a digital voice mode that time-shares one channel between two conversations, using talkgroups and a code plug.", match: ['(?-i:\bDMR\b)'],
+    use: "You buy a cheap handheld online and discover you must load a code plug and choose a talkgroup before you can say a single word."}
+  - {term: PSK31, definition: "A narrow digital keyboard-to-keyboard mode that changes the phase of a tone to send text.", match: ['PSK'],
+    use: "You type at the keyboard on an HF station and your sentences appear on the far operator's screen inside a sliver of spectrum."}
+  - {term: SDR, definition: "Software-defined radio: a radio in which much of the signal processing that used to be done by hardware is done by software.", match: ['(?-i:\bSDR\b)', 'software.defined'],
+    use: "You push a small USB dongle into a laptop and watch an entire band scroll by on a waterfall instead of tuning one signal at a time."}
+  - {term: EchoLink, definition: "An internet-linked system that connects amateur stations and repeaters over voice-over-IP.", match: ['EchoLink'],
+    use: "You are traveling for work without a radio, so you check in to your home club's Tuesday net from an app on your phone."}
+  - {term: IRLP, definition: "Internet Radio Linking Project: a system that ties repeaters together over the internet using voice-over-IP.", match: ['IRLP'],
+    use: "Your local repeater can be connected to a machine in another country, and the audio between the two sites rides over the internet."}
+  - {term: VFO, definition: "Variable-frequency oscillator: the tuning control that sets the operating frequency of a transceiver.", match: ['(?-i:\bVFO\b)'],
+    use: "You spin the big knob on the front panel to slide up and down the band, listening for anyone worth answering."}
+  - {term: Transceiver, definition: "A radio that combines a transmitter and a receiver in one unit.", match: ['transceiver'],
+    use: "The single box on your desk with a microphone on the front does both jobs, which is why you can answer a call without rewiring anything."}
+  - {term: Amplifier, definition: "A circuit that increases a signal's power, voltage or current.", match: ['amplifier'],
+    use: "Your hundred watts are not getting through on a noisy band, so you add a box between the radio and the feed line."}
+  - {term: Resistor, definition: "A component that opposes current and turns the difference into heat, measured in ohms.", match: ['resistor'],
+    use: "You open an old radio and find small striped cylinders on the board, one of them discolored because that is where the extra energy went."}
+  - {term: Capacitor, definition: "A component that stores energy in an electric field. It blocks direct current and passes alternating current more easily as frequency rises.", match: ['capacitor'],
+    use: "You unplug a power supply and an experienced tech tells you to wait before reaching in, because something on that board still holds a charge."}
+  - {term: Inductor, definition: "A coil that stores energy in a magnetic field. It resists changes in current and passes alternating current less easily as frequency rises.", match: ['inductor', 'inductance'],
+    use: "You are winding turns of wire onto a ferrite core to build a choke that keeps stray RF off your microphone cable."}
+  - {term: Diode, definition: "A component that lets current flow in one direction only.", match: ['diode'],
+    use: "You hook a power lead up backwards once, and a small part across the radio's input either saves the rig or dies trying."}
+  - {term: Transistor, definition: "A semiconductor device that can switch current or amplify a signal.", match: ['transistor'],
+    use: "You replace the blown final in a homebrew transmitter, and the new three-legged part bolted to the heatsink does the heavy lifting."}
+  - {term: Fuse, definition: "A safety part that melts and opens a circuit when the current is too high.", match: ['fuse'],
+    use: "You drop a wrench across the battery terminals in the car, and a cheap part in the power lead gives up instead of your radio."}
+  - {term: MPE, definition: "Maximum permissible exposure: the FCC's limit on how much RF energy people may be exposed to, which depends on frequency and averaging time.", match: ['(?-i:\bMPE\b)', 'permissible exposure', 'RF exposure'],
+    use: "You bolt a beam to a low mast beside the patio and have to work out whether guests standing under it are safe while you transmit."}
+  - {term: Decibel, definition: "A logarithmic unit that compares two power levels. Three decibels is about double the power; ten decibels is ten times.", match: ['(?-i:\bdB[a-z]?\b)', 'decibel'],
+    use: "A vendor claims a new antenna is a huge improvement. The number printed on the box is a ratio, so you ask compared with what."}

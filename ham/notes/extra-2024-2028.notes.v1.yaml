@@ -11,6 +11,7 @@ pool: extra-2024-2028
 formulas:
   - key: resonant-frequency
     name: Resonant frequency of an LC circuit
+    use: "You are building a trap for a multiband dipole and must pick a coil and a capacitor so the trap rejects exactly one band."
     forms: ["f = 1 ÷ (2π × √(L × C))", "resonance is where X(L) = X(C)"]
     variables:
       f: resonant frequency, in hertz (Hz)
@@ -28,6 +29,7 @@ formulas:
       - {id: E5A10, scale: 0.000001, given: {l: 0.00005, c: 0.00000000001}}
   - key: circuit-q
     name: Circuit Q and half-power bandwidth
+    use: "You wind two versions of a 40 meter preselector coil and notice one needs retuning after you move only a little across the band."
     forms: ["bandwidth = f ÷ Q", "Q (series) = X ÷ R", "Q (parallel) = R ÷ X"]
     variables:
       bandwidth: the width between the half-power points, in the same unit as f
@@ -46,6 +48,7 @@ formulas:
       - {id: E5A12, scale: 0.001, given: {f: 3700000, q: 118}}
   - key: time-constant
     name: RC time constant
+    use: "A relay in your amplifier keying line drops out slowly, and you trace it to a capacitor bleeding down through a resistor."
     forms: ["τ = R × C", "after 1 τ a charging capacitor is at 63.2% of the supply", "after 1 τ a discharging capacitor is at 36.8% of where it began"]
     variables:
       τ: the time constant, in seconds (s)
@@ -61,6 +64,7 @@ formulas:
       - {id: E5B04, given: {r: 500000, c: 0.00044}}
   - key: phase-angle
     name: Phase angle of a series RLC circuit
+    use: "You are troubleshooting an antenna tuner and your analyzer reports resistance and reactance, but you want to know whether the load looks like a coil or a capacitor."
     forms: ["θ = arctan((X(L) − X(C)) ÷ R)", "a positive result: voltage leads current (inductive)", "a negative result: voltage lags current (capacitive)"]
     variables:
       X(L): inductive reactance, in ohms (Ω)
@@ -78,6 +82,7 @@ formulas:
       - {id: E5B11, given: {xl: 75, xc: 25, r: 100}}
   - key: reactance
     name: Reactance of an inductor and a capacitor
+    use: "A bypass capacitor that works fine on 80 meters seems to do nothing at 144 MHz, so you check what the part looks like at each frequency."
     forms: ["X(L) = 2π × f × L", "X(C) = 1 ÷ (2π × f × C)", "rectangular form: Z = R + jX; capacitive X is negative"]
     variables:
       X: reactance, in ohms (Ω)
@@ -92,6 +97,7 @@ formulas:
     ids: [E5C01, E5C06, E5C10, E5C11, E5C12]
   - key: real-power
     name: Real power in a reactive circuit
+    use: "Your feed point shows both resistance and reactance, and you want to know how much of the current is actually making heat rather than sloshing back."
     forms: ["real power P = I² × R", "reactance stores and returns energy; it consumes none"]
     variables:
       P: real power, in watts (W)
@@ -107,6 +113,7 @@ formulas:
       - {id: E5D11, given: {i: 1, r: 100}}
   - key: decibels
     name: Decibels and receiver noise
+    use: "You switch your receiver from a wide SSB filter to a narrow CW filter and want to predict how much the background hiss will drop."
     forms: ["dB = 10 × log10(P2 ÷ P1)", "noise floor change = 10 × log10(bandwidth 2 ÷ bandwidth 1)", "dBm is decibels relative to 1 milliwatt"]
     variables:
       dB: change in level; a loss is negative
@@ -123,6 +130,7 @@ formulas:
       - {id: E9D01, given: {p1: 1, p2: 4}}
   - key: dbi-dbd
     name: dBi and dBd
+    use: "Two 2 meter beams sit side by side at a hamfest, one rated in dBi and the other in dBd, and you want an honest comparison."
     forms: ["dBi = dBd + 2.15", "dBd = dBi − 2.15"]
     variables:
       dBi: gain compared with an isotropic radiator
@@ -137,6 +145,7 @@ formulas:
       - {id: E9A12, given: {dbi: 6}}
   - key: erp-eirp
     name: ERP and EIRP
+    use: "Your coordinator asks what the club repeater actually radiates, given its transmitter output, a lossy duplexer and hardline run, and a gain antenna."
     forms: ["ERP = transmitter power × 10^((antenna gain in dBd − line losses in dB) ÷ 10)", "EIRP = transmitter power × 10^((antenna gain in dBi − line losses in dB) ÷ 10)", "EIRP = ERP × 1.64"]
     variables:
       transmitter power: output power, in watts (W)
@@ -154,6 +163,7 @@ formulas:
       - {id: E9A07, given: {p: 200, losses: [2, 2.8, 1.2], gain: 7}}
   - key: link-budget
     name: Received level and link margin
+    use: "You are planning a 10 GHz shot across town and want to know whether the signal will arrive strong enough for the receiver to use."
     forms: ["received level (dBm) = TX power (dBm) + antenna gains (dB) − cable losses (dB) − path loss (dB)", "link margin (dB) = received level − receiver minimum signal − required S/N"]
     variables:
       TX power: in dBm; 10 W is +40 dBm
@@ -171,6 +181,7 @@ formulas:
       - {id: E4D12, given: {tx: 40, gains: [10], losses: [3, 136], mds: -103, snr: 6}}
   - key: fm-index
     name: Modulation index and deviation ratio
+    use: "You set deviation on a 2 meter rig with a service monitor while feeding a steady tone into the microphone jack."
     forms: ["modulation index = peak deviation ÷ modulating frequency", "deviation ratio = maximum deviation ÷ highest modulating frequency"]
     variables:
       peak deviation: the largest frequency swing from the center, in the same unit as the modulating frequency
@@ -188,6 +199,7 @@ formulas:
       - {id: E8B06, given: {dev: 7.5, fmod: 3.5}}
   - key: data-bandwidth
     name: Bandwidth of CW and FSK
+    use: "A band plan discussion at the club asks how much spectrum your CW signal, or an RTTY signal, really occupies."
     forms: ["CW bandwidth ≈ 4 × words per minute (Hz)", "FSK bandwidth ≈ (1.2 × shift) + baud rate"]
     variables:
       WPM: Morse speed in words per minute
@@ -204,6 +216,7 @@ formulas:
       - {id: E8C07, scale: 0.001, given: {kind: fsk, shift: 4800, baud: 9600}}
   - key: binary-counting
     name: Bits, levels and dividers
+    use: "You are designing a frequency counter's divider chain and choosing how fine a converter your homebrew S meter needs."
     forms: ["levels = 2ⁿ for n bits", "bits needed = log2(range ÷ resolution), rounded up", "flip-flops to divide by N = log2(N)"]
     variables:
       n: number of bits in a converter or a counter
@@ -220,6 +233,7 @@ formulas:
       - {id: E8A09, given: {kind: levels, bits: 8}}
   - key: q-section
     name: Quarter-wave matching section
+    use: "Your beam's driven element measures a few hundred ohms, and you want a length of line that brings it to what the radio wants."
     forms: ["Z(section) = √(Z1 × Z2)", "length = quarter wavelength × velocity factor"]
     variables:
       Z1: impedance at one end, in ohms (Ω)
@@ -234,6 +248,7 @@ formulas:
       - {id: E9E06, nearest: true, given: {z1: 100, z2: 50}}
   - key: velocity-factor
     name: Velocity factor and line length
+    use: "You are cutting a coax stub on the roof and the tape measure length never matches the free space number you first wrote down."
     forms: ["velocity factor = wave speed in the line ÷ speed of light", "half-wave length (m) = 150 × VF ÷ frequency (MHz)", "half-wave length (ft) = 492 × VF ÷ frequency (MHz)"]
     variables:
       VF: velocity factor; about 1.0 for air-insulated line and lower for solid dielectrics such as polyethylene (about 0.66)
@@ -248,6 +263,7 @@ formulas:
       - {id: E9F06, given: {f_mhz: 14.1, vf: 1.0}}
   - key: op-amp-gain
     name: Inverting op-amp gain
+    use: "You are building a microphone preamp for a homebrew SSB rig and pick the two resistors that set how much the audio grows."
     forms: ["gain = −R(F) ÷ R(1)", "V(out) = −V(in) × R(F) ÷ R(1)"]
     variables:
       R(F): the feedback resistor from output to the inverting input, in ohms (Ω)
@@ -265,6 +281,7 @@ formulas:
       - {id: E7G11, given: {rf: 47000, r1: 3300}}
   - key: regulator-dissipation
     name: Series regulator dissipation
+    use: "You run a 9 volt accessory from the shack's 13.8 volt supply through a linear regulator and wonder how big a heat sink it needs."
     forms: ["P = (V(in) − V(out)) × I(out)"]
     variables:
       V(in): unregulated input voltage, in volts (V)
@@ -278,6 +295,7 @@ formulas:
     ids: [E7D13]
   - key: battery-life
     name: Battery run time
+    use: "You are packing for a POTA activation and want to know whether one battery will carry the radio through the whole afternoon."
     forms: ["hours = battery capacity (Ah) ÷ average current (A)"]
     variables:
       capacity: the battery's rating, in ampere-hours (Ah)
@@ -289,86 +307,86 @@ formulas:
       shown: "= 5 hours"
     ids: [E7D09]
 terms:
-  - {term: Resonance, definition: "The condition where inductive and capacitive reactance are equal and cancel. A series circuit then has minimum impedance and maximum current; a parallel circuit has maximum impedance and minimum input current.", match: ['resonan']}
-  - {term: Q, definition: "Quality factor: how sharply a circuit responds around its resonant frequency, equal to reactance divided by resistance in a series circuit. A higher Q gives a narrower bandwidth and larger internal voltages.", match: ['(?-i:\bQ\b)']}
-  - {term: Half-power bandwidth, definition: "The width of a response between the two frequencies where the power has fallen to half, which is 3 dB below the peak. For a resonant circuit it is the resonant frequency divided by Q.", match: ['half-power', '3 dB bandwidth']}
-  - {term: Reactance, definition: "The opposition of a coil or a capacitor to alternating current, in ohms. It is positive for an inductor and negative for a capacitor.", match: ['reactance']}
-  - {term: Impedance, definition: "The combined opposition of resistance and reactance to alternating current, written as R + jX or as a magnitude and a phase angle.", match: ['impedance']}
-  - {term: Admittance, definition: "The reciprocal of impedance. Its parts are conductance (reciprocal of resistance) and susceptance (reciprocal of reactance).", match: ['admittance', 'susceptance']}
-  - {term: Time constant, definition: "The time an RC or RL circuit takes to move 63.2% of the way to its final value, equal to R times C for a capacitor.", match: ['time constant']}
-  - {term: Phase angle, definition: "How far the voltage is ahead of or behind the current, in degrees. In an inductor the voltage leads by 90 degrees; in a capacitor the current leads.", match: ['phase angle', 'phase relationship']}
-  - {term: Polar and rectangular form, definition: "Two ways to write an impedance. Rectangular gives resistance and reactance (50 − j25 Ω); polar gives magnitude and phase angle.", match: ['\bpolar\b', 'rectangular']}
-  - {term: Smith chart, definition: "A circular chart that plots impedance and reflection so you can follow how a transmission line transforms an impedance, with wavelength scales around the outside.", match: ['Smith chart']}
-  - {term: Skin effect, definition: "At RF, current flows on the outer surface of a conductor, so resistance rises with frequency.", match: ['skin effect']}
-  - {term: Parasitic component, definition: "The unwanted inductance, capacitance or resistance that every real part has, such as the inductance of a capacitor's leads. It sets a part's self-resonant frequency.", match: ['parasitic', 'self-resonan']}
-  - {term: Decibel, definition: "A logarithmic ratio of two powers. Every 3 dB is a factor of about 2, and 10 dB is a factor of 10.", match: ['\bdB\b', 'decibel']}
-  - {term: dBm, definition: "Decibels relative to 1 milliwatt. 0 dBm is 1 mW, +30 dBm is 1 W, and +40 dBm is 10 W.", match: ['dBm']}
-  - {term: dBi and dBd, definition: "Antenna gain compared with an isotropic radiator (dBi) or with a half-wave dipole (dBd). The dBi figure is 2.15 higher.", match: ['dBi', 'dBd']}
-  - {term: ERP, definition: "Effective radiated power: transmitter power adjusted for feed line loss and for antenna gain compared with a dipole (dBd).", match: ['(?-i:\bERP\b)', 'effective radiated']}
-  - {term: EIRP, definition: "Effective isotropic radiated power: transmitter power adjusted for losses and for antenna gain compared with an isotropic radiator (dBi).", match: ['(?-i:\bEIRP\b)', 'isotropic radiated']}
-  - {term: Link margin, definition: "How many decibels the received signal is above what the receiver needs. Positive means the link should work.", match: ['link margin', 'link budget']}
-  - {term: Noise floor, definition: "The lowest signal level a receiver can separate from its own noise. It rises with bandwidth: −174 dBm in 1 Hz for a perfect receiver at room temperature.", match: ['noise floor']}
-  - {term: Noise figure, definition: "How many decibels more noise a receiver adds than a theoretically perfect one.", match: ['noise figure']}
-  - {term: Dynamic range, definition: "The span in dB between the weakest signal a receiver can detect and the strongest it can handle. Blocking dynamic range is measured to the level that causes 1 dB of gain compression.", match: ['dynamic range', 'compression']}
-  - {term: Intercept point, definition: "A rating of how strong the third-order intermodulation products get: the theoretical input level where they would equal the wanted signals. A higher intercept is better.", match: ['intercept']}
-  - {term: Intermodulation, definition: "Unwanted signals created when two or more signals mix in a non-linear stage.", match: ['intermodulation']}
-  - {term: Preselector, definition: "A tunable filter ahead of a receiver's first stage that rejects strong out-of-band signals.", match: ['preselector', 'front-end filter']}
-  - {term: Roofing filter, definition: "A narrow filter placed early in a receiver that limits how many strong nearby signals reach later stages, improving blocking dynamic range.", match: ['roofing']}
-  - {term: Phase noise, definition: "Random phase jitter on an oscillator. In a receiver's clock it can mix with strong signals and produce interference near them.", match: ['phase noise']}
-  - {term: Spectrum analyzer, definition: "An instrument that displays signal strength against frequency, used to look for spurious signals and intermodulation products.", match: ['spectrum analyzer']}
-  - {term: Vector network analyzer, definition: "An instrument that measures how a circuit or antenna reflects and transmits signals, including phase. It is calibrated with short, open and 50-ohm loads.", match: ['network analyzer', 'S parameter', '(?-i:\bS11\b)']}
-  - {term: Oscilloscope, definition: "An instrument that draws voltage against time. A digital scope's sampling rate limits the highest frequency it can show accurately.", match: ['oscilloscope']}
-  - {term: Sampling, definition: "Measuring an analog signal at regular instants. It must happen at least twice as often as the highest frequency in the signal (the Nyquist rate).", match: ['sample', 'sampling']}
-  - {term: ADC, definition: "Analog-to-digital converter: turns a voltage into a number. An n-bit converter can tell apart 2ⁿ levels.", match: ['analog-to-digital', '(?-i:\bADC\b)', 'resolution']}
-  - {term: Decimation, definition: "Lowering a digital signal's sample rate by discarding samples, done after filtering.", match: ['decimation']}
-  - {term: Fast Fourier transform, definition: "A fast computation that turns a signal from the time domain into the frequency domain, used in waterfall displays and SDR.", match: ['Fourier', '(?-i:\bFFT\b)']}
-  - {term: DSP, definition: "Digital signal processing: filtering, mixing and modulating a signal as numbers in software or a chip.", match: ['digital signal processing', '(?-i:\bDSP\b)']}
-  - {term: SDR, definition: "Software-defined radio: a radio whose signal handling is mostly done in software after or before a converter.", match: ['(?-i:\bSDR\b)', 'software.defined']}
-  - {term: Quadrature, definition: "Two signals 90 degrees apart in phase, called I and Q. Combining them lets a digital circuit make or separate sidebands.", match: ['quadrature', '(?-i:\bI-?Q\b)']}
-  - {term: Modulation index, definition: "For FM, the peak deviation divided by the modulating frequency. Deviation ratio uses the maximum deviation and the highest modulating frequency.", match: ['modulation index', 'deviation ratio']}
-  - {term: Frequency deviation, definition: "How far an FM carrier moves from its center in response to the audio.", match: ['deviation']}
-  - {term: Symbol rate, definition: "How often the waveform changes to carry information, in baud. It is the same as the baud rate.", match: ['symbol rate', '(?-i:\bbaud\b)']}
-  - {term: Spread spectrum, definition: "A method that spreads a signal over a wide bandwidth so that it resists interference and is hard to detect. Direct sequence and frequency hopping are two kinds.", match: ['spread spectrum', 'direct sequence', 'frequency hopping']}
-  - {term: Parity bit, definition: "An extra bit added to a character so the receiver can detect some errors.", match: ['parity']}
-  - {term: Baudot and ASCII, definition: "Two character codes for text. Baudot uses 5 bits per character and letter and figure shift codes; ASCII uses 7 or 8 bits.", match: ['Baudot', 'ASCII']}
-  - {term: PSK, definition: "Phase-shift keying: sending data by changing the phase of a carrier.", match: ['(?-i:\bPSK\b)', '(?-i:\bBPSK\b)']}
-  - {term: FT8, definition: "A weak-signal digital mode with about 50 Hz of bandwidth that uses 15-second time slots.", match: ['(?-i:\bFT8\b)']}
-  - {term: Multiplexing, definition: "Sending several data streams over one channel. Frequency-division multiplexing gives each stream its own frequency band.", match: ['multiplex']}
-  - {term: EME, definition: "Earth-Moon-Earth, or moonbounce: bouncing signals off the Moon to reach stations far apart, up to half the world away.", match: ['(?-i:\bEME\b)', 'moonbounce']}
-  - {term: Transponder, definition: "A satellite stage that receives signals on an uplink and retransmits them on a downlink. A linear transponder repeats many signals at once and an inverting one flips the sidebands.", match: ['transponder']}
-  - {term: PIN diode, definition: "A diode with a wide undoped layer, giving low capacitance when off. Forward DC bias sets its RF resistance, so it makes a good RF switch or attenuator.", match: ['PIN diode']}
-  - {term: Junction diode, definition: "A PN-junction semiconductor that conducts in one direction. When reverse biased, its depletion region widens and current stops.", match: ['depletion', 'PN.junction', 'reverse.biased']}
-  - {term: Transistor, definition: "A semiconductor amplifier or switch. Bipolar types are on with about 0.6 to 0.7 volts base to emitter (silicon NPN); field-effect types are controlled by gate voltage.", match: ['transistor', '(?-i:\bFET\b)', '(?-i:\bBJT\b)']}
-  - {term: Op amp, definition: "Operational amplifier: a high-gain differential amplifier with very high input impedance and very low output impedance. Feedback resistors set its gain.", match: ['op-amp', 'operational amplifier']}
-  - {term: CMOS, definition: "Complementary metal-oxide-semiconductor: a low-power logic family with high noise immunity because its switching point is about half the supply voltage.", match: ['CMOS']}
-  - {term: Logic gate, definition: "A digital circuit that combines inputs into one output, for example AND, OR, NAND and exclusive-OR.", match: ['(?-i:\b(?:NAND|NOR|XOR|XNOR|AND|OR) gate)', '(?-i:\bNAND\b)', 'exclusive.(?:OR|NOR)', 'logic gate', 'logical operation']}
-  - {term: Flip-flop, definition: "A memory circuit with two stable states. Each flip-flop divides a clock frequency by two.", match: ['flip.flop']}
-  - {term: Piezoelectric, definition: "A material, such as quartz, that makes a voltage when squeezed and flexes when a voltage is applied. Crystal oscillators and filters rely on it.", match: ['piezoelectric', 'crystal']}
-  - {term: Phase-locked loop, definition: "A circuit that compares an oscillator with a reference and corrects it, used for frequency synthesis and FM demodulation.", match: ['phase-locked', '(?-i:\bPLL\b)']}
-  - {term: Mixer, definition: "A non-linear circuit that combines two frequencies and produces their sum and difference. Overdriving it makes spurious products.", match: ['mixer']}
-  - {term: Class A amplifier, definition: "An amplifier biased so it conducts for the whole cycle, giving low distortion at low efficiency. The operating point sits about halfway between saturation and cutoff.", match: ['Class [ABC]\b']}
-  - {term: Switching regulator, definition: "A regulator that turns its pass element on and off quickly, wasting little power as heat but adding noise that must be filtered.", match: ['switching (?:power|regulator|supply)', 'switch.?mode']}
-  - {term: Series and shunt regulator, definition: "A series linear regulator drops the excess voltage in a pass element in the current path, dissipating (Vin − Vout) × I. A shunt regulator loads the source instead.", match: ['series linear', 'shunt regulator', 'linear voltage regulator']}
-  - {term: Photovoltaic cell, definition: "A solar cell that converts light into electricity. A silicon cell makes about 0.5 volts open circuit.", match: ['photovoltaic']}
-  - {term: Beamwidth, definition: "The angle between the two points on an antenna's main lobe where power is half (3 dB down) its peak.", match: ['beamwidth']}
-  - {term: Front-to-back ratio, definition: "The difference in dB between the strongest signal off the front of a directive antenna and the signal off the back.", match: ['front-to-back', 'front-to-side']}
-  - {term: Radiation pattern, definition: "A graph of how strongly an antenna radiates in each direction. Two verticals fed in different phase produce patterns such as a figure-eight or cardioid.", match: ['radiation pattern', 'figure-eight', 'cardioid']}
-  - {term: Folded dipole, definition: "A dipole made of two parallel wires joined at the ends; its feed point impedance is about 300 ohms.", match: ['folded dipole']}
-  - {term: Yagi, definition: "A directional antenna with a driven element, a reflector and directors along a boom.", match: ['yagi']}
-  - {term: Parabolic reflector, definition: "A dish antenna that focuses waves to a point. Its gain rises 6 dB each time the frequency is doubled.", match: ['parabolic']}
-  - {term: Circular polarization, definition: "A wave whose electric field rotates as it travels. Two perpendicular Yagis fed 90 degrees apart produce it, which helps with satellites and EME.", match: ['circular']}
-  - {term: Fresnel zone, definition: "An elliptical region around the line between two antennas that must be mostly clear for a microwave link to work well. It is smaller at higher frequencies.", match: ['Fresnel']}
-  - {term: Velocity factor, definition: "The speed of a wave in a transmission line as a fraction of the speed of light. Solid dielectric coax is about 0.66; an air-insulated line is close to 1.", match: ['velocity factor']}
-  - {term: Quarter-wave line, definition: "A transmission line a quarter wavelength long. It inverts impedance: a short at the far end looks like a very high impedance, and an open looks like a very low one.", match: ['quarter.wave', '1/4.wavelength', 'Q-section']}
-  - {term: Balun, definition: "A device that connects a balanced antenna to an unbalanced feed line and helps stop common-mode current on the outside of the coax.", match: ['balun']}
-  - {term: Wilkinson divider, definition: "A circuit that splits power equally between two ports while keeping 50 ohms at the input and isolating the outputs from each other.", match: ['Wilkinson']}
-  - {term: Beverage antenna, definition: "A long wire, at least a wavelength long, used for directional reception on the low bands.", match: ['Beverage']}
-  - {term: Receiving loop, definition: "A small loop antenna for reception. Adding turns or area raises its output voltage.", match: ['receiving loop', 'loop antenna']}
-  - {term: SWR, definition: "Standing wave ratio: a measure of how well an antenna's impedance matches the feed line.", match: ['(?-i:\bSWR\b)', 'standing wave', 'reflection coefficient', 'return loss']}
-  - {term: Duplexer, definition: "Filters that let a repeater transmit and receive at the same time on one antenna. A cavity filter is used in a 2-meter repeater duplexer.", match: ['duplexer', 'cavity filter']}
-  - {term: Circulator, definition: "A device that passes power in one direction only around its ports. On a repeater output, a terminated circulator reduces intermodulation.", match: ['circulator']}
-  - {term: RF exposure, definition: "Human exposure to radio-frequency energy, limited by FCC rules that are strictest between 30 and 300 MHz. An evaluation is required in many cases, including all stations on 80 meters.", match: ['RF exposure', 'exposure']}
-  - {term: Control operator, definition: "The licensed amateur responsible for a station's transmissions.", match: ['control operator']}
-  - {term: VEC and VE, definition: "A volunteer examiner coordinator manages the volunteer examiners, called VEs, who conduct exams.", match: ['(?-i:\bVEC?s?\b)', 'volunteer examiner']}
-  - {term: Telecommand, definition: "Controlling a distant device or station, such as a space station, by radio.", match: ['telecommand', 'telemetry']}
-  - {term: Grid square, definition: "A location code used for contests and VHF and up weak-signal work, based on latitude and longitude.", match: ['grid square', 'grid locator']}
+  - {term: Resonance, use: "You adjust the loading coil on a mobile whip and sweep the band with an analyzer to find the one spot where the antenna stops fighting you.", definition: "The condition where inductive and capacitive reactance are equal and cancel. A series circuit then has minimum impedance and maximum current; a parallel circuit has maximum impedance and minimum input current.", match: ['resonan']}
+  - {term: Q, use: "You wind the same filter coil twice, once on a good ceramic form and once on a lossy one, and compare how sharp each version is.", definition: "Quality factor: how sharply a circuit responds around its resonant frequency, equal to reactance divided by resistance in a series circuit. A higher Q gives a narrower bandwidth and larger internal voltages.", match: ['(?-i:\bQ\b)']}
+  - {term: Half-power bandwidth, use: "You sweep a homebrew crystal filter on the bench, noting where the output has fallen 3 dB on each side of the peak.", definition: "The width of a response between the two frequencies where the power has fallen to half, which is 3 dB below the peak. For a resonant circuit it is the resonant frequency divided by Q.", match: ['half-power', '3 dB bandwidth']}
+  - {term: Reactance, use: "Your antenna analyzer's X reading swings one way above the antenna's resonance and the other way below it, on the same wire.", definition: "The opposition of a coil or a capacitor to alternating current, in ohms. It is positive for an inductor and negative for a capacitor.", match: ['reactance']}
+  - {term: Impedance, use: "You write down what the analyzer reports at the feed point before deciding what kind of matching network to build.", definition: "The combined opposition of resistance and reactance to alternating current, written as R + jX or as a magnitude and a phase angle.", match: ['impedance']}
+  - {term: Admittance, use: "Working a parallel tank circuit, you find the branches easier to add up as reciprocals than as impedances.", definition: "The reciprocal of impedance. Its parts are conductance (reciprocal of resistance) and susceptance (reciprocal of reactance).", match: ['admittance', 'susceptance']}
+  - {term: Time constant, use: "Your homebrew keyer mutes the receiver and hangs on briefly after you stop sending, set by one resistor and one capacitor.", definition: "The time an RC or RL circuit takes to move 63.2% of the way to its final value, equal to R times C for a capacitor.", match: ['time constant']}
+  - {term: Phase angle, use: "A scope shows the voltage and current waveforms in your amplifier's tank not lining up, and you measure the offset in degrees.", definition: "How far the voltage is ahead of or behind the current, in degrees. In an inductor the voltage leads by 90 degrees; in a capacitor the current leads.", match: ['phase angle', 'phase relationship']}
+  - {term: Polar and rectangular form, use: "Your antenna analyzer can show the same load two ways, and you switch displays while working out a matching network.", definition: "Two ways to write an impedance. Rectangular gives resistance and reactance (50 − j25 Ω); polar gives magnitude and phase angle.", match: ['\bpolar\b', 'rectangular']}
+  - {term: Smith chart, use: "Matching a 20 meter vertical, someone at the club plots your load on a round chart and reads off how long a stub to add.", definition: "A circular chart that plots impedance and reflection so you can follow how a transmission line transforms an impedance, with wavelength scales around the outside.", match: ['Smith chart']}
+  - {term: Skin effect, use: "You notice VHF coils are often silver plated, and that hollow copper tubing works as well as solid rod in a tank circuit.", definition: "At RF, current flows on the outer surface of a conductor, so resistance rises with frequency.", match: ['skin effect']}
+  - {term: Parasitic component, use: "Your 6 meter amplifier breaks into oscillation and you trace it to stray inductance in parts you had treated as plain resistors.", definition: "The unwanted inductance, capacitance or resistance that every real part has, such as the inductance of a capacitor's leads. It sets a part's self-resonant frequency.", match: ['parasitic', 'self-resonan']}
+  - {term: Decibel, use: "You compare a 100 watt radio with a kilowatt amplifier and want to know what the difference really means at the far end.", definition: "A logarithmic ratio of two powers. Every 3 dB is a factor of about 2, and 10 dB is a factor of 10.", match: ['\bdB\b', 'decibel']}
+  - {term: dBm, use: "Your SDR's noise specification is printed one way and your wattmeter reads another, so you convert before comparing them.", definition: "Decibels relative to 1 milliwatt. 0 dBm is 1 mW, +30 dBm is 1 W, and +40 dBm is 10 W.", match: ['dBm']}
+  - {term: dBi and dBd, use: "Two satellite antennas advertise gain figures against different references, so the printed numbers cannot be compared as they stand.", definition: "Antenna gain compared with an isotropic radiator (dBi) or with a half-wave dipole (dBd). The dBi figure is 2.15 higher.", match: ['dBi', 'dBd']}
+  - {term: ERP, use: "Your repeater coordination paperwork asks for a power figure that accounts for duplexer and feed line loss plus the antenna's gain over a dipole.", definition: "Effective radiated power: transmitter power adjusted for feed line loss and for antenna gain compared with a dipole (dBd).", match: ['(?-i:\bERP\b)', 'effective radiated']}
+  - {term: EIRP, use: "You fill in a microwave or satellite link worksheet that wants power referenced to a theoretical point source rather than to a dipole.", definition: "Effective isotropic radiated power: transmitter power adjusted for losses and for antenna gain compared with an isotropic radiator (dBi).", match: ['(?-i:\bEIRP\b)', 'isotropic radiated']}
+  - {term: Link margin, use: "After building a 5 GHz link between two buildings, you ask how much rain fade the path can take before it drops out.", definition: "How many decibels the received signal is above what the receiver needs. Positive means the link should work.", match: ['link margin', 'link budget']}
+  - {term: Noise floor, use: "You move the same receiver from a quiet rural site to a city apartment and can no longer hear the weak ones on 20 meters.", definition: "The lowest signal level a receiver can separate from its own noise. It rises with bandwidth: −174 dBm in 1 Hz for a perfect receiver at room temperature.", match: ['noise floor']}
+  - {term: Noise figure, use: "You are deciding whether a mast mounted preamp is worth the trouble on 432 MHz with a long run of feed line.", definition: "How many decibels more noise a receiver adds than a theoretically perfect one.", match: ['noise figure']}
+  - {term: Dynamic range, use: "A nearby AM broadcast station makes your receiver go deaf on 160 meters even when you are well away from its frequency.", definition: "The span in dB between the weakest signal a receiver can detect and the strongest it can handle. Blocking dynamic range is measured to the level that causes 1 dB of gain compression.", match: ['dynamic range', 'compression']}
+  - {term: Intercept point, use: "Two loud contest signals create a phantom third one in your passband, so you compare receiver specifications before buying.", definition: "A rating of how strong the third-order intermodulation products get: the theoretical input level where they would equal the wanted signals. A higher intercept is better.", match: ['intercept']}
+  - {term: Intermodulation, use: "On a hilltop next to a commercial paging transmitter, your handheld hears signals that nobody is actually sending.", definition: "Unwanted signals created when two or more signals mix in a non-linear stage.", match: ['intermodulation']}
+  - {term: Preselector, use: "You operate a contest near a shortwave broadcast site and add a tunable filter ahead of the receiver's first stage.", definition: "A tunable filter ahead of a receiver's first stage that rejects strong out-of-band signals.", match: ['preselector', 'front-end filter']}
+  - {term: Roofing filter, use: "You are shopping for a contest radio and read reviews about how each one behaves with a loud station 2 kHz away.", definition: "A narrow filter placed early in a receiver that limits how many strong nearby signals reach later stages, improving blocking dynamic range.", match: ['roofing']}
+  - {term: Phase noise, use: "Tuning close to a very strong local station, you hear a mushy hiss spread out beside it that the other operator is not transmitting.", definition: "Random phase jitter on an oscillator. In a receiver's clock it can mix with strong signals and produce interference near them.", match: ['phase noise']}
+  - {term: Spectrum analyzer, use: "Before putting a homebrew transmitter on the air, you look at its output for harmonics and anything else that should not be there.", definition: "An instrument that displays signal strength against frequency, used to look for spurious signals and intermodulation products.", match: ['spectrum analyzer']}
+  - {term: Vector network analyzer, use: "You sweep a newly tuned 70 cm duplexer on the bench, after first calibrating with short, open and load standards.", definition: "An instrument that measures how a circuit or antenna reflects and transmits signals, including phase. It is calibrated with short, open and 50-ohm loads.", match: ['network analyzer', 'S parameter', '(?-i:\bS11\b)']}
+  - {term: Oscilloscope, use: "You watch a two tone test envelope to see whether your amplifier is flat topping before you key it on the air.", definition: "An instrument that draws voltage against time. A digital scope's sampling rate limits the highest frequency it can show accurately.", match: ['oscilloscope']}
+  - {term: Sampling, use: "You choose your SDR's rate and discover the highest frequency it can capture honestly, above which signals fold back in.", definition: "Measuring an analog signal at regular instants. It must happen at least twice as often as the highest frequency in the signal (the Nyquist rate).", match: ['sample', 'sampling']}
+  - {term: ADC, use: "Your SDR's datasheet brags about its bit count, and you ask what that buys you when a very strong signal shares the band.", definition: "Analog-to-digital converter: turns a voltage into a number. An n-bit converter can tell apart 2ⁿ levels.", match: ['analog-to-digital', '(?-i:\bADC\b)', 'resolution']}
+  - {term: Decimation, use: "Your SDR software throws away samples after filtering so an older laptop can keep up with a wide waterfall.", definition: "Lowering a digital signal's sample rate by discarding samples, done after filtering.", match: ['decimation']}
+  - {term: Fast Fourier transform, use: "One block of audio from your receiver becomes a waterfall showing dozens of FT8 signals at once.", definition: "A fast computation that turns a signal from the time domain into the frequency domain, used in waterfall displays and SDR.", match: ['Fourier', '(?-i:\bFFT\b)']}
+  - {term: DSP, use: "Your radio's noise reduction and auto notch happen inside a chip, where older rigs used coils, capacitors and crystals.", definition: "Digital signal processing: filtering, mixing and modulating a signal as numbers in software or a chip.", match: ['digital signal processing', '(?-i:\bDSP\b)']}
+  - {term: SDR, use: "You plug a small USB dongle into a laptop and a whole band appears on the screen with no traditional IF strip inside.", definition: "Software-defined radio: a radio whose signal handling is mostly done in software after or before a converter.", match: ['(?-i:\bSDR\b)', 'software.defined']}
+  - {term: Quadrature, use: "Your receiver hands the computer two audio channels, and swapping them turns upper sideband into lower.", definition: "Two signals 90 degrees apart in phase, called I and Q. Combining them lets a digital circuit make or separate sidebands.", match: ['quadrature', '(?-i:\bI-?Q\b)']}
+  - {term: Modulation index, use: "You set microphone gain on an FM transmitter so your audio does not splatter into the next repeater channel up.", definition: "For FM, the peak deviation divided by the modulating frequency. Deviation ratio uses the maximum deviation and the highest modulating frequency.", match: ['modulation index', 'deviation ratio']}
+  - {term: Frequency deviation, use: "Someone on the repeater tells you that you sound distorted and wide, and suggests turning your microphone gain down.", definition: "How far an FM carrier moves from its center in response to the audio.", match: ['deviation']}
+  - {term: Symbol rate, use: "You configure a packet link and have to choose a speed quoted in baud, which is not simply bits per second.", definition: "How often the waveform changes to carry information, in baud. It is the same as the baud rate.", match: ['symbol rate', '(?-i:\bbaud\b)']}
+  - {term: Spread spectrum, use: "Your 2.4 GHz gear shares a crowded band with neighbors' Wi-Fi without any one signal shutting the others down.", definition: "A method that spreads a signal over a wide bandwidth so that it resists interference and is hard to detect. Direct sequence and frequency hopping are two kinds.", match: ['spread spectrum', 'direct sequence', 'frequency hopping']}
+  - {term: Parity bit, use: "An old TNC program will not talk to your computer until you pick settings such as 7E1 or 8N1.", definition: "An extra bit added to a character so the receiver can detect some errors.", match: ['parity']}
+  - {term: Baudot and ASCII, use: "You write an RTTY contest macro and find that sending a serial number needs a shift the letters do not.", definition: "Two character codes for text. Baudot uses 5 bits per character and letter and figure shift codes; ASCII uses 7 or 8 bits.", match: ['Baudot', 'ASCII']}
+  - {term: PSK, use: "You run a few watts of PSK31 and watch a very narrow trace hold steady on the waterfall while the phase carries the text.", definition: "Phase-shift keying: sending data by changing the phase of a carrier.", match: ['(?-i:\bPSK\b)', '(?-i:\bBPSK\b)']}
+  - {term: FT8, use: "Your computer clock drifts by a second or two and suddenly nobody on 20 meters decodes you.", definition: "A weak-signal digital mode with about 50 Hz of bandwidth that uses 15-second time slots.", match: ['(?-i:\bFT8\b)']}
+  - {term: Multiplexing, use: "A single satellite downlink carries telemetry and voice traffic at the same time, each in its own slice.", definition: "Sending several data streams over one channel. Frequency-division multiplexing gives each stream its own frequency band.", match: ['multiplex']}
+  - {term: EME, use: "You point a stacked 2 meter array at moonrise and keep a prearranged schedule with a station in Europe.", definition: "Earth-Moon-Earth, or moonbounce: bouncing signals off the Moon to reach stations far apart, up to half the world away.", match: ['(?-i:\bEME\b)', 'moonbounce']}
+  - {term: Transponder, use: "Working an SSB satellite, you find your downlink signal tuning the opposite way as you move up the uplink band.", definition: "A satellite stage that receives signals on an uplink and retransmits them on a downlink. A linear transponder repeats many signals at once and an inverting one flips the sidebands.", match: ['transponder']}
+  - {term: PIN diode, use: "You open a modern VHF transceiver looking for the transmit receive relay and find no moving contacts at all.", definition: "A diode with a wide undoped layer, giving low capacitance when off. Forward DC bias sets its RF resistance, so it makes a good RF switch or attenuator.", match: ['PIN diode']}
+  - {term: Junction diode, use: "You check a suspect rectifier in a power supply with a meter, testing it in both directions.", definition: "A PN-junction semiconductor that conducts in one direction. When reverse biased, its depletion region widens and current stops.", match: ['depletion', 'PN.junction', 'reverse.biased']}
+  - {term: Transistor, use: "You replace the blown final in a small HF rig and have to match the original's gain, voltage rating and dissipation.", definition: "A semiconductor amplifier or switch. Bipolar types are on with about 0.6 to 0.7 volts base to emitter (silicon NPN); field-effect types are controlled by gate voltage.", match: ['transistor', '(?-i:\bFET\b)', '(?-i:\bBJT\b)']}
+  - {term: Op amp, use: "You build an audio CW filter for the shack from one small chip and a handful of resistors instead of winding coils.", definition: "Operational amplifier: a high-gain differential amplifier with very high input impedance and very low output impedance. Feedback resistors set its gain.", match: ['op-amp', 'operational amplifier']}
+  - {term: CMOS, use: "Your homebrew keyer runs for months on a coin cell and keeps working on a shack supply full of noise.", definition: "Complementary metal-oxide-semiconductor: a low-power logic family with high noise immunity because its switching point is about half the supply voltage.", match: ['CMOS']}
+  - {term: Logic gate, use: "You build a small interlock so the amplifier can only key when two separate conditions are both satisfied.", definition: "A digital circuit that combines inputs into one output, for example AND, OR, NAND and exclusive-OR.", match: ['(?-i:\b(?:NAND|NOR|XOR|XNOR|AND|OR) gate)', '(?-i:\bNAND\b)', 'exclusive.(?:OR|NOR)', 'logic gate', 'logical operation']}
+  - {term: Flip-flop, use: "You build a frequency counter and chain stages so a fast input becomes a rate the display can actually count.", definition: "A memory circuit with two stable states. Each flip-flop divides a clock frequency by two.", match: ['flip.flop']}
+  - {term: Piezoelectric, use: "You buy a rock bound crystal for a QRP transmitter and your operating frequency is set by a thin slab of quartz.", definition: "A material, such as quartz, that makes a voltage when squeezed and flexes when a voltage is applied. Crystal oscillators and filters rely on it.", match: ['piezoelectric', 'crystal']}
+  - {term: Phase-locked loop, use: "Your synthesized VFO takes a moment to settle after a big frequency jump, and drifts if its reference is disturbed.", definition: "A circuit that compares an oscillator with a reference and corrects it, used for frequency synthesis and FM demodulation.", match: ['phase-locked', '(?-i:\bPLL\b)']}
+  - {term: Mixer, use: "You feed a VFO and a crystal oscillator into one stage and take the difference out as your transmit frequency.", definition: "A non-linear circuit that combines two frequencies and produces their sum and difference. Overdriving it makes spurious products.", match: ['mixer']}
+  - {term: Class A amplifier, use: "You design a receive preamp for the mast where clean, undistorted output matters far more than current draw.", definition: "An amplifier biased so it conducts for the whole cycle, giving low distortion at low efficiency. The operating point sits about halfway between saturation and cutoff.", match: ['Class [ABC]\b']}
+  - {term: Switching regulator, use: "A new 30 amp supply runs your rig fine but lays a buzz across the low bands whenever it is powered up.", definition: "A regulator that turns its pass element on and off quickly, wasting little power as heat but adding noise that must be filtered.", match: ['switching (?:power|regulator|supply)', 'switch.?mode']}
+  - {term: Series and shunt regulator, use: "You add a regulator for a 9 volt accessory and decide whether the extra voltage is dropped in the current path or shunted aside.", definition: "A series linear regulator drops the excess voltage in a pass element in the current path, dissipating (Vin − Vout) × I. A shunt regulator loads the source instead.", match: ['series linear', 'shunt regulator', 'linear voltage regulator']}
+  - {term: Photovoltaic cell, use: "You wire panels in series for a Field Day battery charger and count how many cells it takes to reach charging voltage.", definition: "A solar cell that converts light into electricity. A silicon cell makes about 0.5 volts open circuit.", match: ['photovoltaic']}
+  - {term: Beamwidth, use: "You aim a 70 cm beam at a distant station and find how far you can swing the rotator before signals drop off.", definition: "The angle between the two points on an antenna's main lobe where power is half (3 dB down) its peak.", match: ['beamwidth']}
+  - {term: Front-to-back ratio, use: "A station behind you is causing interference, so you turn the Yagi to put the offender off its rear.", definition: "The difference in dB between the strongest signal off the front of a directive antenna and the signal off the back.", match: ['front-to-back', 'front-to-side']}
+  - {term: Radiation pattern, use: "You phase two verticals for Field Day and switch the favored direction toward a different part of the country.", definition: "A graph of how strongly an antenna radiates in each direction. Two verticals fed in different phase produce patterns such as a figure-eight or cardioid.", match: ['radiation pattern', 'figure-eight', 'cardioid']}
+  - {term: Folded dipole, use: "You build a VHF antenna from twin lead and need a transformer between it and your 50 ohm coax.", definition: "A dipole made of two parallel wires joined at the ends; its feed point impedance is about 300 ohms.", match: ['folded dipole']}
+  - {term: Yagi, use: "You put a beam up on the roof and suddenly work stations that were buried in the noise on the dipole.", definition: "A directional antenna with a driven element, a reflector and directors along a boom.", match: ['yagi']}
+  - {term: Parabolic reflector, use: "You set up a dish for a 10 GHz contact and check that the feed horn really sits at the focus.", definition: "A dish antenna that focuses waves to a point. Its gain rises 6 dB each time the frequency is doubled.", match: ['parabolic']}
+  - {term: Circular polarization, use: "Your satellite signal fades in and out as the spacecraft tumbles, until you switch to a different antenna.", definition: "A wave whose electric field rotates as it travels. Two perpendicular Yagis fed 90 degrees apart produce it, which helps with satellites and EME.", match: ['circular']}
+  - {term: Fresnel zone, use: "You survey a microwave shot between two rooftops and worry about a tall tree standing partway along the path.", definition: "An elliptical region around the line between two antennas that must be mostly clear for a microwave link to work well. It is smaller at higher frequencies.", match: ['Fresnel']}
+  - {term: Velocity factor, use: "You cut a quarter wave stub of coax and find the physical piece is shorter than the free space math suggested.", definition: "The speed of a wave in a transmission line as a fraction of the speed of light. Solid dielectric coax is about 0.66; an air-insulated line is close to 1.", match: ['velocity factor']}
+  - {term: Quarter-wave line, use: "You tee an open-ended quarter wave stub onto a repeater feed line to knock down a strong nearby transmitter on its exact frequency.", definition: "A transmission line a quarter wavelength long. It inverts impedance: a short at the far end looks like a very high impedance, and an open looks like a very low one.", match: ['quarter.wave', '1/4.wavelength', 'Q-section']}
+  - {term: Balun, use: "Your SWR reading changes when you touch the radio, and RF is clearly riding on the outside of the coax into the shack.", definition: "A device that connects a balanced antenna to an unbalanced feed line and helps stop common-mode current on the outside of the coax.", match: ['balun']}
+  - {term: Wilkinson divider, use: "You feed two stacked beams from one radio and want each to get an equal share without the two interacting.", definition: "A circuit that splits power equally between two ports while keeping 50 ohms at the input and isolating the outputs from each other.", match: ['Wilkinson']}
+  - {term: Beverage antenna, use: "You have a long fence line available on a friend's farm and want a quiet receiving antenna for 160 meters.", definition: "A long wire, at least a wavelength long, used for directional reception on the low bands.", match: ['Beverage']}
+  - {term: Receiving loop, use: "You walk the neighborhood hunting a noise source with a small loop on a portable receiver.", definition: "A small loop antenna for reception. Adding turns or area raises its output voltage.", match: ['receiving loop', 'loop antenna']}
+  - {term: SWR, use: "The meter on your radio climbs after an ice storm and you suspect the antenna rather than the rig.", definition: "Standing wave ratio: a measure of how well an antenna's impedance matches the feed line.", match: ['(?-i:\bSWR\b)', 'standing wave', 'reflection coefficient', 'return loss']}
+  - {term: Duplexer, use: "Your club's repeater transmits and receives through a single antenna on the tower without deafening its own receiver.", definition: "Filters that let a repeater transmit and receive at the same time on one antenna. A cavity filter is used in a 2-meter repeater duplexer.", match: ['duplexer', 'cavity filter']}
+  - {term: Circulator, use: "Your repeater shares a crowded hilltop and starts making mixing products, so you add a device with a dummy load on one port.", definition: "A device that passes power in one direction only around its ports. On a repeater output, a terminated circulator reduces intermodulation.", match: ['circulator']}
+  - {term: RF exposure, use: "You mount a 2 meter antenna close to an upstairs bedroom window and have to run and document a station evaluation.", definition: "Human exposure to radio-frequency energy, limited by FCC rules that are strictest between 30 and 300 MHz. An evaluation is required in many cases, including all stations on 80 meters.", match: ['RF exposure', 'exposure']}
+  - {term: Control operator, use: "You let an unlicensed friend talk on your radio while you sit beside them at the microphone.", definition: "The licensed amateur responsible for a station's transmissions.", match: ['control operator']}
+  - {term: VEC and VE, use: "You volunteer at your club's test session and sit as one of the three accredited examiners grading the papers.", definition: "A volunteer examiner coordinator manages the volunteer examiners, called VEs, who conduct exams.", match: ['(?-i:\bVEC?s?\b)', 'volunteer examiner']}
+  - {term: Telecommand, use: "You send a command over the air to a remote base station, or to a CubeSat passing overhead.", definition: "Controlling a distant device or station, such as a space station, by radio.", match: ['telecommand', 'telemetry']}
+  - {term: Grid square, use: "You exchange a four character locator during a 432 MHz SSB contest so both stations can score the distance.", definition: "A location code used for contests and VHF and up weak-signal work, based on latitude and longitude.", match: ['grid square', 'grid locator']}
