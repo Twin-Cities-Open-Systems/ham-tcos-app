@@ -10,6 +10,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch: {}
+  # An NCVEC pool expires on a fixed date whether or not anyone opens a PR, so
+  # the expiry check below also runs weekly. The publish job is push/dispatch
+  # only and does not run on a schedule.
+  schedule:
+    - cron: '17 13 * * 1'
 
 jobs:
   hee-check:
@@ -50,6 +55,12 @@ jobs:
           python3 -c 'import yaml' 2>/dev/null || { sudo apt-get update -qq; sudo apt-get install -y -qq python3-yaml; }
           python3 build.py --check
           python3 -m unittest discover -s tests -v
+
+      # Fails when any pool ends within 90 days: the successor pool has to be in
+      # the tree before exams stop using this one.
+      - name: No question pool expires within 90 days
+        working-directory: ham-tcos-app
+        run: python3 pool_expiry.py
 
   # Publish what the lab installs, in the shape lab-pull already reads from
   # thesis-engine and fleet-ops itself: one immutable lab-<short sha> release
