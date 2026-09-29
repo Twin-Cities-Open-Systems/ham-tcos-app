@@ -1,0 +1,230 @@
+schema: ham-tcos-app.notes.v1
+pool: technician-2026-2030
+# Original explanatory material for this pool, written for Ham Study. The
+# question pool itself is NCVEC public domain; nothing here is copied from a
+# commercial or third-party study guide.
+#
+# formulas: every entry is proved by tests/test_notes.py -- the worked example
+# and each `checks` row are computed and compared with the pool's own answer.
+# terms: `match` is a list of regexes (case-insensitive unless (?-i:...)) run
+# over a question's stem and choices; the ids a term is "used in" are derived.
+formulas:
+  - key: ohms-law
+    name: Ohm's law
+    forms: ["E = I × R", "I = E ÷ R", "R = E ÷ I"]
+    variables:
+      E: voltage, in volts (V)
+      I: current, in amperes (A)
+      R: resistance, in ohms (Ω)
+    example:
+      text: A 12 V source pushes current through a 3 Ω load. I = E ÷ R = 12 ÷ 3 = 4 A.
+      given: {solve: i, e: 12, r: 3}
+      value: 4
+      shown: "= 4 A"
+    ids: [T5D01, T5D02, T5D03, T5D04, T5D05, T5D06, T5D07, T5D08, T5D09, T5D10, T5D11, T5D12]
+    checks:
+      - {id: T5D04, given: {solve: r, e: 90, i: 3}}
+      - {id: T5D05, given: {solve: r, e: 12, i: 1.5}}
+      - {id: T5D06, given: {solve: r, e: 12, i: 4}}
+      - {id: T5D07, given: {solve: i, e: 120, r: 80}}
+      - {id: T5D08, given: {solve: i, e: 200, r: 100}}
+      - {id: T5D09, given: {solve: i, e: 240, r: 24}}
+      - {id: T5D10, given: {solve: e, i: 0.5, r: 2}}
+      - {id: T5D11, given: {solve: e, i: 1, r: 10}}
+      - {id: T5D12, given: {solve: e, i: 2, r: 10}}
+  - key: power-law
+    name: Electrical power
+    forms: ["P = I × E", "I = P ÷ E", "E = P ÷ I"]
+    variables:
+      P: power, in watts (W)
+      I: current, in amperes (A)
+      E: voltage, in volts (V)
+    example:
+      text: A radio on 13.8 V draws 10 A. P = I × E = 10 × 13.8 = 138 W.
+      given: {solve: p, e: 13.8, i: 10}
+      value: 138
+      shown: "= 138 W"
+    ids: [T5C08, T5C09, T5C10, T5C11]
+    checks:
+      - {id: T5C09, given: {solve: p, e: 13.8, i: 10}}
+      - {id: T5C10, given: {solve: p, e: 12, i: 2.5}}
+      - {id: T5C11, given: {solve: i, p: 120, e: 12}}
+  - key: prefixes
+    name: Metric prefixes and unit conversion
+    forms: ["kilo (k) = 1,000", "mega (M) = 1,000,000", "giga (G) = 1,000,000,000", "milli (m) = 1/1,000", "micro (µ) = 1/1,000,000", "pico (p) = 1/1,000,000,000,000"]
+    variables:
+      to move to a smaller unit: multiply (1.5 A = 1500 mA)
+      to move to a larger unit: divide (3525 kHz = 3.525 MHz)
+    example:
+      text: 3.525 MHz is 3.525 × 1,000 = 3525 kHz, because 1 MHz is 1,000 kHz.
+      given: {value: 3.525, frm: M, to: k}
+      value: 3525
+      shown: "= 3525 kHz"
+    ids: [T5B01, T5B02, T5B03, T5B04, T5B05, T5B06, T5B07, T5B08, T5B12, T5B13]
+    checks:
+      - {id: T5B01, given: {value: 1.5, frm: "", to: m}}
+      - {id: T5B02, given: {value: 1500000, frm: "", to: k}}
+      - {id: T5B05, given: {value: 500, frm: m, to: ""}}
+      - {id: T5B06, given: {value: 3000, frm: m, to: ""}}
+      - {id: T5B07, given: {value: 3.525, frm: M, to: k}}
+      - {id: T5B08, given: {value: 1000000, frm: p, to: u}}
+      - {id: T5B12, given: {value: 28400, frm: k, to: M}}
+      - {id: T5B13, given: {value: 2425, frm: M, to: G}}
+  - key: decibels
+    name: Decibels (power)
+    forms: ["dB = 10 × log10(P2 ÷ P1)", "+3 dB ≈ twice the power", "+10 dB = ten times the power", "−3 dB ≈ half the power"]
+    variables:
+      dB: change in level, in decibels; a loss is negative
+      P1: starting power, in watts
+      P2: ending power, in watts
+    example:
+      text: Going from 5 W to 10 W doubles the power, so dB = 10 × log10(10 ÷ 5) = 10 × 0.301 = about 3 dB.
+      given: {p1: 5, p2: 10}
+      value: 3.0103
+      shown: about 3 dB
+    ids: [T5B09, T5B10, T5B11, T6B11]
+    checks:
+      - {id: T5B09, given: {p1: 5, p2: 10}}
+      - {id: T5B10, given: {p1: 12, p2: 3}}
+      - {id: T5B11, given: {p1: 20, p2: 200}}
+  - key: wavelength
+    name: Frequency and wavelength
+    forms: ["wavelength (m) = 300 ÷ frequency (MHz)", "frequency (MHz) = 300 ÷ wavelength (m)"]
+    variables:
+      wavelength: length of one cycle of the wave, in meters (m)
+      frequency: cycles per second, in megahertz (MHz)
+    example:
+      text: On 146.52 MHz, wavelength = 300 ÷ 146.52 = about 2.05 m, which is why it is the 2-meter band.
+      given: {f_mhz: 146.52}
+      value: 2.0476
+      shown: about 2.05 m
+    ids: [T3B05, T3B06, T3B07, T1B04]
+    checks:
+      - {id: T1B04, given: {f_mhz: 146.52}}
+  - key: antenna-length
+    name: Antenna element length
+    forms: ["half-wave dipole (feet) = 468 ÷ frequency (MHz)", "quarter-wave whip (feet) = 234 ÷ frequency (MHz)"]
+    variables:
+      frequency: operating frequency, in megahertz (MHz)
+      "468 and 234": rule-of-thumb constants for wire in feet; they allow for the wire being slightly electrically longer than its length in free space
+    example:
+      text: A quarter-wave whip for 146 MHz is 234 ÷ 146 = 1.6 ft, about 19 inches.
+      given: {f_mhz: 146, kind: quarter}
+      value: 1.6027
+      shown: about 19 inches
+    ids: [T9A05, T9A08]
+    checks:
+      - {id: T9A08, source: stem, pattern: '(\d+)-inch', scale: 12, given: {f_mhz: 146, kind: quarter}}
+  - key: battery-life
+    name: Battery run time
+    forms: ["hours = battery capacity (Ah) ÷ average current (A)"]
+    variables:
+      capacity: the battery's rating, in ampere-hours (Ah)
+      average current: what the equipment draws on average, in amperes (A)
+    example:
+      text: A 10 Ah battery feeding a radio that averages 2 A lasts about 10 ÷ 2 = 5 hours.
+      given: {ah: 10, amps: 2}
+      value: 5
+      shown: "= 5 hours"
+    ids: [T4A09]
+  - key: duty-cycle
+    name: Duty cycle
+    forms: ["duty cycle (%) = transmit time ÷ (transmit time + off time) × 100", "allowed power density scales with 100 ÷ duty cycle"]
+    variables:
+      transmit time: how long the transmitter is on in one averaging period
+      off time: how long it is off in that period
+    example:
+      text: A transmitter that is on for 30 seconds of every 60 has a 50% duty cycle, so the RF exposure limit is 100 ÷ 50 = 2 times higher than for continuous transmitting.
+      given: {t_on: 30, t_off: 30}
+      out: factor
+      value: 2
+      shown: "= 2 times"
+    ids: [T0C03, T0C10, T0C11]
+    checks:
+      - {id: T0C03, out: factor, given: {t_on: 1, t_off: 1}}
+  - key: swr
+    name: Standing wave ratio (resistive load)
+    forms: ["SWR = load impedance ÷ line impedance (if the load is larger)", "SWR = line impedance ÷ load impedance (if the line is larger)", "a perfect match is 1:1"]
+    variables:
+      line impedance: characteristic impedance of the feed line, in ohms (Ω)
+      load impedance: the antenna's resistance at the feed point, in ohms (Ω)
+    example:
+      text: A 50 Ω line into a 50 Ω load has SWR = 50 ÷ 50 = 1, written 1:1.
+      given: {z_line: 50, z_load: 50}
+      value: 1
+      shown: written 1:1
+    ids: [T7C04, T7C06, T9B12]
+    checks:
+      - {id: T7C04, given: {z_line: 50, z_load: 50}}
+  - key: repeater-offset
+    name: Repeater input frequency
+    forms: ["input frequency = output frequency + offset (positive offset)", "input frequency = output frequency − offset (negative offset)"]
+    variables:
+      output frequency: what you listen to, in MHz
+      offset: 0.6 MHz on 2 meters, 5 MHz on 70 centimeters
+    example:
+      text: A 2-meter repeater whose output is 146.94 MHz has a −600 kHz offset, so you transmit on 146.94 − 0.6 = 146.34 MHz.
+      given: {f_out: 146.94, offset: -0.6}
+      value: 146.34
+      shown: "= 146.34 MHz"
+    ids: [T2A01, T2A03]
+terms:
+  - {term: SWR, definition: "Standing wave ratio: a number that says how well an antenna's impedance matches the feed line. 1:1 is a perfect match; the higher the ratio, the more power is reflected back toward the radio.", match: ['\bSWR\b', 'standing wave']}
+  - {term: RF, definition: "Radio frequency: the range of electrical oscillation, from a few kilohertz upward, that is used to carry radio signals through the air or through a cable.", match: ['(?-i:\bRF\b)', 'radio frequency']}
+  - {term: HF, definition: "High frequency: the radio spectrum from 3 to 30 MHz, home to the long-distance bands that bounce off the ionosphere.", match: ['(?-i:\bHF\b)']}
+  - {term: VHF, definition: "Very high frequency: 30 to 300 MHz, including the 6-meter and 2-meter bands. Signals mostly travel in a straight line.", match: ['(?-i:\bVHF\b)']}
+  - {term: UHF, definition: "Ultra high frequency: 300 MHz to 3 GHz, including the 70-centimeter band. Signals mostly travel in a straight line and pass through buildings poorly.", match: ['(?-i:\bUHF\b)']}
+  - {term: FM, definition: "Frequency modulation: a mode in which the voice changes the frequency of the carrier. It sounds clean at VHF and UHF and is the mode most repeaters use.", match: ['(?-i:\bFM\b)', 'frequency modulation']}
+  - {term: AM, definition: "Amplitude modulation: a mode in which the voice changes the strength of the carrier. It uses more bandwidth than single sideband.", match: ['(?-i:\bAM\b)', 'amplitude modulation']}
+  - {term: SSB, definition: "Single sideband: a voice mode that sends only one of the two sidebands and no carrier, so it fits more conversations into less spectrum than AM.", match: ['(?-i:\bSSB\b)', 'single sideband']}
+  - {term: CW, definition: "Continuous wave: Morse code sent by switching a carrier on and off. It is narrow and readable through weak signals and noise.", match: ['(?-i:\bCW\b)', 'Morse']}
+  - {term: PEP, definition: "Peak envelope power: the average power delivered during the strongest peak of the signal's envelope. FCC power limits are stated in PEP.", match: ['(?-i:\bPEP\b)', 'peak envelope']}
+  - {term: Duty cycle, definition: "The fraction of time a transmitter is actually sending. A mode that transmits half the time has a 50 percent duty cycle, which lowers its average power and RF exposure.", match: ['duty cycle']}
+  - {term: Repeater, definition: "A station that listens on one frequency and retransmits on another at higher power and from a high location, extending the range of handheld and mobile radios.", match: ['repeater']}
+  - {term: Simplex, definition: "Communication on a single frequency, with both stations taking turns, and no repeater in between.", match: ['simplex']}
+  - {term: Repeater offset, definition: "The fixed difference between a repeater's receive and transmit frequencies. It is 600 kHz on 2 meters and 5 MHz on 70 centimeters.", match: ['offset']}
+  - {term: CTCSS, definition: "Continuous tone-coded squelch system, often called PL tone: a low-pitched tone sent under your voice that a repeater requires before it will retransmit you.", match: ['CTCSS', 'PL tone', '(?-i:\bPL\b)']}
+  - {term: DTMF, definition: "Dual-tone multi-frequency: the pair of audio tones a telephone keypad makes. Radios use them to control repeaters and other equipment.", match: ['DTMF']}
+  - {term: Squelch, definition: "A receiver circuit that keeps the speaker silent until a signal of enough strength (or the right tone) is present.", match: ['squelch']}
+  - {term: Beacon, definition: "A station that transmits automatically and continuously so other operators can judge propagation conditions.", match: ['beacon']}
+  - {term: Antenna gain, definition: "How much a directional antenna concentrates its radiation in a given direction compared with a reference antenna. It moves power toward one direction; it does not create more.", match: ['gain']}
+  - {term: Dipole, definition: "A simple antenna of two equal straight elements fed in the middle. A half-wave dipole radiates strongest broadside to the wire.", match: ['dipole']}
+  - {term: Yagi, definition: "A directional antenna with one driven element plus a reflector and one or more directors on a boom.", match: ['yagi']}
+  - {term: Coaxial cable, definition: "A feed line with a center conductor surrounded by insulation and an outer shield. It is easy to route and is the most common feed line in amateur stations.", match: ['coax']}
+  - {term: Feed line, definition: "The cable that carries RF between the transmitter and the antenna.", match: ['feed ?line', 'transmission line']}
+  - {term: Impedance, definition: "The total opposition to alternating current in a circuit, measured in ohms. Matching the impedance of the radio, feed line and antenna moves power efficiently.", match: ['impedance']}
+  - {term: Dummy load, definition: "A non-radiating resistor, usually 50 ohms, mounted on a heat sink. It lets you test a transmitter without sending a signal out over the air.", match: ['dummy load']}
+  - {term: Polarization, definition: "The orientation of a radio wave's electric field, set by how the antenna is mounted: vertical, horizontal or circular.", match: ['polariz']}
+  - {term: Wavelength, definition: "The distance a radio wave travels in one cycle. It gets shorter as frequency goes up.", match: ['wavelength', 'meter band']}
+  - {term: Frequency, definition: "The number of times per second a signal completes a full cycle, measured in hertz (Hz).", match: ['frequency']}
+  - {term: Bandwidth, definition: "The width of spectrum a signal occupies, or the width a filter passes, measured in hertz.", match: ['bandwidth']}
+  - {term: Modulation, definition: "Changing some property of a radio wave, such as its strength, frequency or phase, so it carries voice or data.", match: ['modulat']}
+  - {term: Sporadic E, definition: "Short-lived patches of unusually dense ionization in the E layer that can bounce signals on 10, 6 and sometimes 2 meters well beyond the horizon.", match: ['sporadic']}
+  - {term: Tropospheric ducting, definition: "A weather condition in which a layer of warm air traps VHF and UHF signals, carrying them hundreds of miles past the horizon.", match: ['\bduct(?:ing|s)?\b', 'troposph']}
+  - {term: Ionosphere, definition: "Layers of the upper atmosphere ionized by the Sun. They bend HF signals back to Earth, which makes long-distance skip possible.", match: ['ionospher', 'F region', 'F layer']}
+  - {term: Doppler shift, definition: "The change in received frequency caused by relative motion between transmitter and receiver, noticeable on satellite passes.", match: ['doppler']}
+  - {term: Call sign, definition: "The unique identifier the FCC assigns to a licensed station. You must give it at the required times when you transmit.", match: ['call ?sign']}
+  - {term: Control operator, definition: "The licensed amateur who is responsible for a station's operation while it transmits.", match: ['control operator']}
+  - {term: CQ, definition: "A general call meaning 'calling any station', sent when you want to start a contact.", match: ['(?-i:\bCQ\b)']}
+  - {term: QSY, definition: "A Q signal that means 'change frequency', as in 'QSY up five kilohertz'.", match: ['QSY']}
+  - {term: DX, definition: "Long-distance communication, usually a contact with a station in another country.", match: ['(?-i:\bDX\b)']}
+  - {term: RACES, definition: "Radio Amateur Civil Emergency Service: a government-sponsored emergency communications service run under FCC rules for civil defense.", match: ['(?-i:\bRACES\b)']}
+  - {term: ARES, definition: "Amateur Radio Emergency Service: a volunteer group of licensed amateurs who register their skills and equipment for emergency communications.", match: ['(?-i:\bARES\b)']}
+  - {term: APRS, definition: "Automatic Packet Reporting System: a way for stations to broadcast short position and status reports that others can display on a map.", match: ['APRS']}
+  - {term: FT8, definition: "A digital mode with 15-second transmit cycles, designed to make contacts possible with very weak signals.", match: ['FT8']}
+  - {term: DMR, definition: "Digital mobile radio: a digital voice mode that time-shares one channel between two conversations, using talkgroups and a code plug.", match: ['(?-i:\bDMR\b)']}
+  - {term: PSK31, definition: "A narrow digital keyboard-to-keyboard mode that changes the phase of a tone to send text.", match: ['PSK']}
+  - {term: SDR, definition: "Software-defined radio: a radio in which much of the signal processing that used to be done by hardware is done by software.", match: ['(?-i:\bSDR\b)', 'software.defined']}
+  - {term: EchoLink, definition: "An internet-linked system that connects amateur stations and repeaters over voice-over-IP.", match: ['EchoLink']}
+  - {term: IRLP, definition: "Internet Radio Linking Project: a system that ties repeaters together over the internet using voice-over-IP.", match: ['IRLP']}
+  - {term: VFO, definition: "Variable-frequency oscillator: the tuning control that sets the operating frequency of a transceiver.", match: ['(?-i:\bVFO\b)']}
+  - {term: Transceiver, definition: "A radio that combines a transmitter and a receiver in one unit.", match: ['transceiver']}
+  - {term: Amplifier, definition: "A circuit that increases a signal's power, voltage or current.", match: ['amplifier']}
+  - {term: Resistor, definition: "A component that opposes current and turns the difference into heat, measured in ohms.", match: ['resistor']}
+  - {term: Capacitor, definition: "A component that stores energy in an electric field. It blocks direct current and passes alternating current more easily as frequency rises.", match: ['capacitor']}
+  - {term: Inductor, definition: "A coil that stores energy in a magnetic field. It resists changes in current and passes alternating current less easily as frequency rises.", match: ['inductor', 'inductance']}
+  - {term: Diode, definition: "A component that lets current flow in one direction only.", match: ['diode']}
+  - {term: Transistor, definition: "A semiconductor device that can switch current or amplify a signal.", match: ['transistor']}
+  - {term: Fuse, definition: "A safety part that melts and opens a circuit when the current is too high.", match: ['fuse']}
+  - {term: MPE, definition: "Maximum permissible exposure: the FCC's limit on how much RF energy people may be exposed to, which depends on frequency and averaging time.", match: ['(?-i:\bMPE\b)', 'permissible exposure', 'RF exposure']}
+  - {term: Decibel, definition: "A logarithmic unit that compares two power levels. Three decibels is about double the power; ten decibels is ten times.", match: ['(?-i:\bdB[a-z]?\b)', 'decibel']}

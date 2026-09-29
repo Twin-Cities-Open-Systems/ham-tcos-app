@@ -62,7 +62,35 @@ body{font-variant-numeric:slashed-zero}
 .ham-gans .mono{color:var(--muted);font-size:.82em;margin-right:.4em}
 .ham-gall{list-style:none;margin:.3rem 0 0;padding:0;display:flex;flex-direction:column;gap:.15rem;font-weight:600}
 .ham-gq{color:var(--muted);margin:.35rem 0 0;line-height:1.45}
+.ham-gchips{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0 0}
+.ham-gchip{font:inherit;font-size:.78rem;background:var(--surface);color:var(--accent);border:1px solid var(--rule);
   border-radius:999px;padding:.2rem .65rem;cursor:pointer}
+.ham-gchip.is-formula{font-family:ui-monospace,monospace}
+.ham-gchip:hover,.ham-gchip:focus-visible{background:var(--accent-soft)}
+
+/* Glossary and formulas: reference cards, colored by the family of the
+   term/formula's first question (a pointer back into the Guide, not a new
+   identity channel of its own). */
+.hs-ref-controls{margin:0 0 .8rem}
+.hs-ref-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.82rem;color:color-mix(in srgb,var(--ink) 75%,var(--muted))}
+.hs-ref-controls input{width:100%;max-width:24rem;font:inherit;font-size:.9rem;padding:.4rem .5rem;color:var(--ink);
+  background:var(--sunk);border:1px solid var(--rule);border-radius:6px}
+.hs-ref-controls :focus-visible,.ham-refqs button:focus-visible,.ham-gchip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ham-terms,.ham-formulas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+.ham-term,.ham-formula{border:1px solid var(--rule);border-left:4px solid var(--fam,var(--accent));border-radius:8px;
+  padding:.65rem .85rem;background:var(--surface);scroll-margin-top:5rem}
+.ham-term.is-jumped,.ham-formula.is-jumped{outline:2px solid var(--accent);outline-offset:2px}
+.ham-term h3,.ham-formula h3{margin:0 0 .25rem;font-size:1rem;display:flex;align-items:center;gap:.4rem}
+.ham-term p,.ham-formula p{margin:.25rem 0}
+.ham-formula-forms{font-family:ui-monospace,monospace;font-size:1.05rem;display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:.4rem 0}
+.ham-formula-vars{margin:.4rem 0}
+.ham-formula-vars td:first-child{font-family:ui-monospace,monospace;padding-right:1rem;white-space:nowrap}
+.ham-formula-tri{margin:.5rem 0}
+.ham-example{margin:.5rem 0 .25rem;padding:.4rem .7rem;border-left:3px solid var(--rule);color:var(--ink)}
+.ham-example b{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:.4em}
+.ham-refqs{margin:.4rem 0 0;font-size:.85rem;color:var(--muted)}
+.ham-refqs button{font:inherit;font-size:inherit;color:var(--accent);background:none;border:0;padding:0;
+  text-decoration:underline;cursor:pointer}
 
 /* Mastery map: one square per question, sequential blue by times answered
    right, grouped by family. Never the only signal -- the exact counts are

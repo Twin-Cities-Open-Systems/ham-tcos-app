@@ -20,7 +20,11 @@ WHAT IT REFUSES -- exit 2, nothing written
   * a question without choices A-D and a key among them, or a figure the tree
     does not have;
   * a subelement that ham/families.yaml does not name, or more than eight
-    families: a guide with no color is not shipped.
+    families: a guide with no color is not shipped;
+  * a pool with no ham/notes/<pool>.notes.v1.yaml, a glossary term that matches
+    no question, a formula that lists a question the pool does not have, or a
+    duplicate term or formula key. (tests/test_notes.py separately proves every
+    formula's worked example and its answers against the pool.)
 
 USAGE
   build.py           write data/ham-study.json and data/ham-figures/
@@ -42,6 +46,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent
 POOLS_DIR = "ham/pools"
+NOTES_DIR = ROOT / "ham" / "notes"
+NOTES_SCHEMA = "ham-tcos-app.notes.v1"
 FAMILIES_FILE = ROOT / "ham" / "families.yaml"
 JSON_OUT = ROOT / "data" / "ham-study.json"
 FIGURES_OUT = ROOT / "data" / "ham-figures"
@@ -198,8 +204,75 @@ def question(s, pool, sid, gid, qid, files, figures):
             "figure": fig_url, "figure_id": fig_id}
 
 
-def build(files, families_path=FAMILIES_FILE):
-    """(document, figures) from the tree, with families and answers applied."""
+def read_notes(notes_dir=NOTES_DIR):
+    """{pool: parsed notes document} for every ham/notes/*.notes.v1.yaml."""
+    notes = {}
+    for path in sorted(Path(notes_dir).glob("*.notes.v1.yaml")):
+        try:
+            doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError) as exc:
+            raise Mismatch(f"{path.name}: not readable: {exc}")
+        if not isinstance(doc, dict) or doc.get("schema") != NOTES_SCHEMA:
+            raise Mismatch(f"{path.name}: schema is not {NOTES_SCHEMA}")
+        pool = doc.get("pool")
+        if not pool or pool in notes:
+            raise Mismatch(f"{path.name}: needs a pool that no other notes file names")
+        notes[pool] = doc
+    return notes
+
+
+def slug(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def attach_notes(pool, questions, doc):
+    """pool["terms"] and pool["formulas"] from an authored notes document. A
+    term's question ids are derived: every question whose stem or choices match
+    one of the term's patterns. Everything else is authored, and refused if it
+    points at nothing."""
+    name = pool["pool"]
+    ids = {q["id"] for q in questions}
+    terms, seen = [], set()
+    for t in doc.get("terms") or []:
+        key = slug(str(t.get("term", "")))
+        if not key or key in seen:
+            raise Mismatch(f"{name}: term {t.get('term')!r} is empty or repeated")
+        seen.add(key)
+        if not t.get("definition") or not t.get("match"):
+            raise Mismatch(f"{name}: term {t['term']!r} needs a definition and at least one match pattern")
+        try:
+            pats = [re.compile(m, re.I) for m in t["match"]]
+        except re.error as exc:
+            raise Mismatch(f"{name}: term {t['term']!r}: bad pattern: {exc}")
+        used = [q["id"] for q in questions
+                if any(p.search(q["question"] or "") or any(p.search(c) for c in q["choices"].values()) for p in pats)]
+        if not used:
+            raise Mismatch(f"{name}: term {t['term']!r} matches no question")
+        terms.append({"key": key, "term": t["term"], "definition": t["definition"], "ids": used})
+    terms.sort(key=lambda t: t["term"].lower())
+    formulas, seen = [], set()
+    for f in doc.get("formulas") or []:
+        key = f.get("key")
+        if not key or key in seen:
+            raise Mismatch(f"{name}: formula key {key!r} is empty or repeated")
+        seen.add(key)
+        missing = sorted(set(f.get("ids") or []) - ids)
+        if missing:
+            raise Mismatch(f"{name}: formula {key} lists questions the pool does not have: {missing[:5]}")
+        for need in ("name", "forms", "variables", "ids"):
+            if not f.get(need):
+                raise Mismatch(f"{name}: formula {key} has no {need}")
+        if not (f.get("example") or {}).get("text"):
+            raise Mismatch(f"{name}: formula {key} has no worked example")
+        formulas.append({"key": key, "name": f["name"], "forms": list(f["forms"]),
+                         "variables": [{"name": str(k), "text": str(v)} for k, v in f["variables"].items()],
+                         "example": f["example"]["text"], "ids": list(f["ids"])})
+    pool["terms"], pool["formulas"] = terms, formulas
+
+
+def build(files, families_path=FAMILIES_FILE, notes=None):
+    """(document, figures) from the tree, with families, answers and, when the
+    authored notes are given, each pool's glossary terms and formulas applied."""
     pools, questions, figures = load(files)
     families_by_pool, families = load_families(families_path)
     by_pool_q = {}
@@ -220,6 +293,12 @@ def build(files, families_path=FAMILIES_FILE):
             if q["answers"] is not None:
                 n += 1
         p["all_of_the_above"] = n
+        if notes is not None:
+            if p["pool"] not in notes:
+                raise Mismatch(f"{p['pool']}: no ham/notes/{p['pool']}.notes.v1.yaml")
+            attach_notes(p, by_pool_q.get(p["pool"], []), notes[p["pool"]])
+    if notes is not None and set(notes) - {p["pool"] for p in pools}:
+        raise Mismatch(f"notes for pools that do not exist: {sorted(set(notes) - {p['pool'] for p in pools})}")
     doc = {"schema": SCHEMA,
            "credit": {"text": "Question pools: NCVEC, public domain", "url": NCVEC_POOLS},
            "pools": pools, "questions": questions, "families": families}
@@ -285,7 +364,7 @@ def main(argv=None):
         return 0 if exc.code == 0 else 3
     try:
         files = read_tree(ROOT)
-        doc, figures = build(files)
+        doc, figures = build(files, notes=read_notes())
     except Mismatch as exc:
         print(f"CRITICAL {exc} -- nothing written", file=sys.stderr)
         return 2
@@ -305,7 +384,8 @@ def main(argv=None):
         print(f"CRITICAL cannot write: {exc}", file=sys.stderr)
         return 2
     print(f"OK {len(doc['questions'])} questions in {len(doc['pools'])} pools, "
-          f"{len(doc['families'])} families, {len(figures)} figures")
+          f"{len(doc['families'])} families, {len(figures)} figures, "
+          f"{sum(len(p['terms']) for p in doc['pools'])} terms, {sum(len(p['formulas']) for p in doc['pools'])} formulas")
     return 0
 
 

@@ -1,0 +1,319 @@
+schema: ham-tcos-app.notes.v1
+pool: general-2023-2027
+# Original explanatory material for this pool, written for Ham Study. The
+# question pool itself is NCVEC public domain; nothing here is copied from a
+# commercial or third-party study guide.
+#
+# formulas: every entry is proved by tests/test_notes.py -- the worked example
+# and each `checks` row are computed and compared with the pool's own answer.
+# terms: `match` is a list of regexes (case-insensitive unless (?-i:...)) run
+# over a question's stem and choices; the ids a term is "used in" are derived.
+formulas:
+  - key: power-law
+    name: Electrical power
+    forms: ["P = I × E", "I = P ÷ E", "E = P ÷ I"]
+    variables:
+      P: power, in watts (W)
+      I: current, in amperes (A)
+      E: voltage, in volts (V)
+    example:
+      text: A radio on 13.8 V draws 10 A. P = I × E = 10 × 13.8 = 138 W.
+      given: {solve: p, e: 13.8, i: 10}
+      value: 138
+      shown: "= 138 W"
+    ids: [G5B04]
+    checks:
+      - {id: G5B04, given: {solve: p, e: 12, i: 0.2}}
+  - key: power-resistance
+    name: Power in a resistance
+    forms: ["P = E² ÷ R", "P = I² × R", "E = √(P × R)"]
+    variables:
+      P: power, in watts (W)
+      E: voltage across the resistance, in volts (V)
+      I: current through the resistance, in amperes (A)
+      R: resistance, in ohms (Ω)
+    example:
+      text: 100 V across a 50 Ω load. P = E² ÷ R = 10,000 ÷ 50 = 200 W.
+      given: {solve: p_er, e: 100, r: 50}
+      value: 200
+      shown: "= 200 W"
+    ids: [G5B03, G5B05, G5B12]
+    checks:
+      - {id: G5B03, given: {solve: p_er, e: 400, r: 800}}
+      - {id: G5B05, scale: 1000, given: {solve: p_ir, i: 0.007, r: 1250}}
+      - {id: G5B12, given: {solve: e_pr, p: 1200, r: 50}}
+  - key: pep-peak-to-peak
+    name: PEP from a peak-to-peak voltage
+    forms: ["RMS = peak-to-peak ÷ 2 ÷ 1.414", "PEP = RMS² ÷ R = V(pp)² ÷ (8 × R)"]
+    variables:
+      V(pp): the voltage measured from the bottom to the top of the waveform, in volts
+      RMS: the equivalent steady voltage that would give the same heating, in volts
+      R: the load resistance, in ohms (Ω)
+    example:
+      text: 400 V peak-to-peak across a 50 Ω load. PEP = 400² ÷ (8 × 50) = 160,000 ÷ 400 = 400 W.
+      given: {vpp: 400, r: 50}
+      value: 400
+      shown: "= 400 W"
+    ids: [G5B06, G5B14]
+    checks:
+      - {id: G5B06, given: {vpp: 200, r: 50}}
+      - {id: G5B14, given: {vpp: 500, r: 50}}
+  - key: decibels
+    name: Decibels and S-units
+    forms: ["dB = 10 × log10(P2 ÷ P1)", "power ratio = 10^(dB ÷ 10)", "+3 dB ≈ 2× power", "+6 dB ≈ 4× power", "+10 dB = 10× power", "+20 dB = 100× power", "1 S-unit = 6 dB"]
+    variables:
+      dB: change in level, in decibels; a loss is negative
+      P1: starting power, in watts
+      P2: ending power, in watts
+    example:
+      text: A signal 20 dB over S9 is 10^(20 ÷ 10) = 100 times the power of an S9 signal.
+      given: {db: 20, out: ratio}
+      value: 100
+      shown: "= 100 times"
+    ids: [G5B01, G5B10, G4D05, G4D06, G4D07]
+    checks:
+      - {id: G5B01, given: {p1: 1, p2: 2}}
+      - {id: G5B10, given: {db: -1, out: loss_pct}}
+      - {id: G4D05, given: {db: 20, out: ratio}}
+      - {id: G4D07, given: {db: 6, out: ratio}}
+  - key: combining-components
+    name: Resistors, capacitors and inductors in combination
+    forms: ["series resistors or inductors, parallel capacitors: add them", "parallel resistors or inductors, series capacitors: 1 ÷ (1/X1 + 1/X2 + …)", "two in that second case: (X1 × X2) ÷ (X1 + X2)"]
+    variables:
+      X1, X2: the values being combined, all in the same unit
+    example:
+      text: A 100 Ω and a 200 Ω resistor in parallel give (100 × 200) ÷ (100 + 200) = 66.7 Ω.
+      given: {mode: recip, values: [100, 200]}
+      value: 66.667
+      shown: about 66.7 Ω
+    ids: [G5C03, G5C04, G5C08, G5C09, G5C10, G5C11, G5C12, G5C13, G5C14]
+    checks:
+      - {id: G5C03, given: {mode: recip, values: [10, 20, 50]}}
+      - {id: G5C04, given: {mode: recip, values: [100, 200]}}
+      - {id: G5C08, given: {mode: sum, values: [5.0, 5.0, 0.75]}}
+      - {id: G5C09, given: {mode: recip, values: [100, 100, 100]}}
+      - {id: G5C10, given: {mode: recip, values: [10, 10, 10]}}
+      - {id: G5C11, given: {mode: sum, values: [20, 50]}}
+      - {id: G5C12, given: {mode: recip, values: [20, 50]}}
+  - key: transformer
+    name: Transformer turns ratio
+    forms: ["V(secondary) = V(primary) × N(secondary) ÷ N(primary)", "turns ratio = √(higher impedance ÷ lower impedance)"]
+    variables:
+      V: voltage across a winding, in volts
+      N: number of turns of wire in a winding
+      impedance: the two impedances the transformer connects, in ohms (Ω)
+    example:
+      text: A 100-turn primary and 300-turn secondary on 10 V gives 10 × 300 ÷ 100 = 30 V. To match 200 Ω to 50 Ω, the turns ratio is √(200 ÷ 50) = 2 to 1.
+      given: {kind: match, z_hi: 200, z_lo: 50}
+      value: 2
+      shown: "= 2 to 1"
+    ids: [G5C02, G5C06, G5C07]
+    checks:
+      - {id: G5C06, given: {kind: voltage, vp: 120, np: 500, ns: 1500}}
+      - {id: G5C07, given: {kind: match, z_hi: 600, z_lo: 50}}
+  - key: reactance
+    name: Reactance and resonance
+    forms: ["X(L) = 2π × f × L", "X(C) = 1 ÷ (2π × f × C)", "f(resonant) = 1 ÷ (2π × √(L × C))"]
+    variables:
+      X: reactance, in ohms (Ω)
+      f: frequency, in hertz (Hz)
+      L: inductance, in henries (H)
+      C: capacitance, in farads (F)
+    example:
+      text: A 10 µH inductor at 7 MHz has X(L) = 2π × 7,000,000 × 0.00001 = about 440 Ω. Reactance grows with frequency for an inductor and shrinks for a capacitor.
+      given: {kind: xl, f: 7000000, l: 0.00001}
+      value: 439.82
+      shown: about 440 Ω
+    ids: [G5A01, G5A05, G5A06, G5A12]
+  - key: swr
+    name: Standing wave ratio (resistive load)
+    forms: ["SWR = load ÷ line impedance (if the load is larger)", "SWR = line ÷ load impedance (if the line is larger)", "a perfect match is 1:1"]
+    variables:
+      line impedance: characteristic impedance of the feed line, in ohms (Ω)
+      load impedance: the antenna's resistance at the feed point, in ohms (Ω)
+    example:
+      text: A 50 Ω line into a 200 Ω load has SWR = 200 ÷ 50 = 4, written 4:1.
+      given: {z_line: 50, z_load: 200}
+      value: 4
+      shown: written 4:1
+    ids: [G9A09, G9A10]
+    checks:
+      - {id: G9A09, given: {z_line: 50, z_load: 200}}
+      - {id: G9A10, given: {z_line: 50, z_load: 10}}
+  - key: antenna-length
+    name: Antenna element length
+    forms: ["half-wave dipole (feet) = 468 ÷ frequency (MHz)", "quarter-wave monopole (feet) = 234 ÷ frequency (MHz)"]
+    variables:
+      frequency: operating frequency, in megahertz (MHz)
+      "468 and 234": rule-of-thumb constants for wire in feet; they allow for the wire being slightly electrically longer than its length in free space
+    example:
+      text: A half-wave dipole for 7.1 MHz is 468 ÷ 7.1 = about 66 ft overall.
+      given: {f_mhz: 7.1, kind: half}
+      value: 65.915
+      shown: about 66 ft
+    ids: [G9B10, G9B11, G9B12, G9C02]
+    checks:
+      - {id: G9B10, given: {f_mhz: 14.25, kind: half}}
+      - {id: G9B11, given: {f_mhz: 3.55, kind: half}}
+      - {id: G9B12, given: {f_mhz: 28.5, kind: quarter}}
+  - key: fm-bandwidth
+    name: FM bandwidth (Carson's rule)
+    forms: ["bandwidth = 2 × (deviation + highest modulating frequency)"]
+    variables:
+      deviation: the most the carrier frequency swings from its center, in kilohertz (kHz)
+      modulating frequency: the highest audio frequency in the signal, in kilohertz (kHz)
+    example:
+      text: 5 kHz deviation and a 3 kHz top audio frequency gives 2 × (5 + 3) = 16 kHz of bandwidth.
+      given: {dev: 5, fmod: 3}
+      value: 16
+      shown: "= 16 kHz"
+    ids: [G8B06]
+    checks:
+      - {id: G8B06, given: {dev: 5, fmod: 3}}
+  - key: fm-multiplier
+    name: Deviation before a frequency multiplier
+    forms: ["oscillator deviation = final deviation × (oscillator frequency ÷ final frequency)"]
+    variables:
+      final deviation: the deviation wanted at the output frequency
+      oscillator frequency: where the modulated oscillator runs
+      final frequency: the transmit frequency after multiplying
+    example:
+      text: To get 5 kHz of deviation at 146 MHz from a 12 MHz oscillator you only need 5 kHz × 12 ÷ 146 = about 411 Hz, because the multiplier stages multiply the deviation too.
+      given: {dev_khz: 5, f_osc: 12, f_out: 146}
+      value: 410.96
+      shown: about 411 Hz
+    ids: [G8B07]
+    checks:
+      - {id: G8B07, given: {dev_khz: 5, f_osc: 12.21, f_out: 146.52}}
+  - key: sideband-edges
+    name: Sideband edges from the displayed frequency
+    forms: ["upper sideband occupies the dial frequency up to dial + bandwidth", "lower sideband occupies the dial frequency down to dial − bandwidth"]
+    variables:
+      dial frequency: the suppressed-carrier frequency your radio displays, in MHz
+      bandwidth: about 3 kHz (0.003 MHz) for a voice signal
+    example:
+      text: On USB with the dial at 14.200 MHz, the signal fills 14.200 to 14.203 MHz. Keep the whole signal, not just the dial frequency, inside the band edge.
+      given: {mode: usb, carrier: 14.2, bw_khz: 3}
+      value: [14.2, 14.203]
+      shown: 14.200 to 14.203 MHz
+    ids: [G4D08, G4D09, G4D10, G4D11]
+    checks:
+      - {id: G4D08, pick: all, given: {mode: lsb, carrier: 7.178, bw_khz: 3}}
+      - {id: G4D09, pick: all, given: {mode: usb, carrier: 14.347, bw_khz: 3}}
+  - key: efficiency
+    name: Amplifier efficiency
+    forms: ["efficiency (%) = RF output power ÷ DC input power × 100"]
+    variables:
+      RF output power: power delivered to the antenna or load, in watts (W)
+      DC input power: power drawn from the supply, in watts (W)
+    example:
+      text: An amplifier draws 200 W from its supply and delivers 120 W of RF. Efficiency = 120 ÷ 200 × 100 = 60%.
+      given: {p_out: 120, p_in: 200}
+      value: 60
+      shown: "= 60%"
+    ids: [G7B08]
+  - key: duty-cycle
+    name: Duty cycle
+    forms: ["duty cycle (%) = transmit time ÷ (transmit time + off time) × 100", "average power = peak power × duty cycle"]
+    variables:
+      transmit time: how long the transmitter is on in one period
+      off time: how long it is off in that period
+    example:
+      text: A digital mode that transmits 45 seconds of every 60 has a 75% duty cycle, so a 100 W transmitter averages 75 W.
+      given: {t_on: 45, t_off: 15, out: pct}
+      value: 75
+      shown: "= 75%"
+    ids: [G8B08]
+terms:
+  - {term: MUF, definition: "Maximum usable frequency: the highest frequency that the ionosphere will refract back to Earth between two specific points at a given time. Signals just below it usually suffer the least loss on long paths.", match: ['(?-i:\bMUF\b)', 'maximum usable']}
+  - {term: LUF, definition: "Lowest usable frequency: the lowest frequency that works between two points, set by how much the D region absorbs signals in daylight.", match: ['(?-i:\bLUF\b)', 'lowest usable']}
+  - {term: Critical frequency, definition: "The highest frequency that is bent back to Earth when it is sent straight up into the ionosphere. Above it, a vertical signal passes through into space.", match: ['critical frequency']}
+  - {term: Solar flux index, definition: "A daily measure of the Sun's radio noise at 10.7 cm wavelength. A higher number generally means better conditions on the higher HF bands.", match: ['solar flux']}
+  - {term: Sunspot number, definition: "A count of dark, magnetically active regions on the Sun. More sunspots mean more ionization in the upper atmosphere and stronger high-band propagation.", match: ['sunspot']}
+  - {term: Ionosphere, definition: "Layers of electrically charged air, roughly 50 to 400 km up, that refract or absorb radio waves and make long-distance HF communication possible.", match: ['ionospher']}
+  - {term: D region, definition: "The lowest part of the ionosphere. It exists mainly in daylight and absorbs lower HF signals, which is why 80 and 160 meters are poor for distance during the day.", match: ['(?-i:\bD region\b)', '(?-i:\bD layer\b)']}
+  - {term: Skip, definition: "Long-distance HF propagation in which a signal is refracted from the ionosphere back to Earth, so the first place it can be heard can be hundreds of miles from the transmitter.", match: ['skip', 'skywave']}
+  - {term: NVIS, definition: "Near vertical incidence skywave: sending signals almost straight up so they return at short range, filling in the gap that ground wave and normal skip leave. A low horizontal dipole on 40 or 80 meters works well.", match: ['NVIS', 'near vertical']}
+  - {term: Sideband, definition: "The band of frequencies just above (upper) or just below (lower) a carrier that carries the information. By convention, amateurs use lower sideband below 10 MHz and upper sideband above.", match: ['sideband', '(?-i:\b[UL]SB\b)']}
+  - {term: SSB, definition: "Single sideband: a voice mode that sends one sideband and suppresses the carrier and the other sideband, using less bandwidth and less power for the same range than AM.", match: ['(?-i:\bSSB\b)', 'single sideband']}
+  - {term: VOX, definition: "Voice-operated switch: it starts your transmitter when it hears you speak, so you do not need to press a push-to-talk key.", match: ['(?-i:\bVOX\b)']}
+  - {term: PTT, definition: "Push to talk: a key or switch you hold to make the radio transmit.", match: ['(?-i:\bPTT\b)']}
+  - {term: QSK, definition: "Full break-in CW: the receiver is live between the dots and dashes, so you can hear another station interrupt you while you are sending.", match: ['(?-i:\bQSK\b)', 'break-in']}
+  - {term: Zero beat, definition: "In CW, adjusting your transmit frequency until it matches the frequency of the station you are answering, so the tone you hear drops to zero.", match: ['zero beat']}
+  - {term: QRP, definition: "Low-power operation, usually 5 watts or less on CW or 10 watts PEP on SSB.", match: ['(?-i:\bQRP\b)']}
+  - {term: Q signals, definition: "Three-letter codes beginning with Q that started as shorthand for Morse code. With a question mark they ask; without one they answer. For example, QRL? asks whether the frequency is in use.", match: ['Q signal', '(?-i:\bQ[A-Z]{2}\b)']}
+  - {term: CQ, definition: "A general call meaning that you want to talk with anyone. CQ DX means you want a distant contact, and stations nearby should leave it to those far away.", match: ['(?-i:\bCQ\b)']}
+  - {term: DX, definition: "A distant station, usually one in another country or continent.", match: ['(?-i:\bDX\b)']}
+  - {term: Band plan, definition: "A voluntary agreement about which parts of a band are used for which modes, made to reduce interference. It is good practice to follow it even where the FCC does not require it.", match: ['band plan']}
+  - {term: RTTY, definition: "Radioteletype: a digital mode that shifts a carrier between two tones, called mark and space. The most common shift on the amateur HF bands is 170 Hz.", match: ['RTTY']}
+  - {term: FSK, definition: "Frequency-shift keying: sending data by switching between two or more frequencies. The two RTTY tones are called mark and space.", match: ['(?-i:\bFSK\b)', 'frequency.shift']}
+  - {term: PSK31, definition: "A narrow digital keyboard-to-keyboard mode that changes the phase of a tone and uses Varicode. Its bandwidth is only about 31 Hz.", match: ['PSK31', 'BPSK', 'QPSK', 'Varicode']}
+  - {term: FT8, definition: "A weak-signal digital mode that sends short 15-second transmissions in alternating time slots, using 8-tone frequency-shift keying. It can be decoded well below the noise level.", match: ['(?-i:\bFT8\b)']}
+  - {term: WSPR, definition: "Weak Signal Propagation Reporter: a very low-power digital beacon mode that automatically reports how far your signal was heard, used to check HF propagation.", match: ['WSPR']}
+  - {term: Waterfall display, definition: "A screen that plots signals with frequency running left to right, time running down and signal strength shown by brightness or color. Data-mode software uses it to find and tune signals.", match: ['waterfall']}
+  - {term: Winlink, definition: "A radio network that carries email between amateurs and the internet, over HF, VHF or packet gateways, often used in emergencies.", match: ['Winlink']}
+  - {term: ARQ, definition: "Automatic repeat request: a data protocol in which the receiver acknowledges good packets and asks for a resend (NAK) of bad ones. If too many attempts fail, the link is dropped.", match: ['(?-i:\bARQ\b)']}
+  - {term: FEC, definition: "Forward error correction: sending extra redundant data with the message so the receiver can fix errors without asking for a resend.", match: ['(?-i:\bFEC\b)', 'forward error']}
+  - {term: Packet radio, definition: "A digital mode that sends data in short bursts called frames, each with a header carrying addressing and routing information.", match: ['packet']}
+  - {term: Baudot, definition: "A 5-bit character code used by RTTY, with added start and stop bits.", match: ['Baudot']}
+  - {term: Symbol rate, definition: "How many signal changes per second a digital mode sends, measured in baud. A higher symbol rate needs more bandwidth.", match: ['symbol rate', '(?-i:\bbaud\b)']}
+  - {term: Digital voice, definition: "Voice that is converted to data before it is sent. DMR, D-STAR and System Fusion are popular amateur digital voice systems.", match: ['digital voice', '(?-i:\bDMR\b)', 'D-STAR']}
+  - {term: SDR, definition: "Software-defined radio: a receiver or transmitter in which much of the signal handling is done by computer software instead of by fixed circuits.", match: ['(?-i:\bSDR\b)', 'software.defined']}
+  - {term: I-Q, definition: "In-phase and quadrature: two copies of a signal 90 degrees apart. SDRs use I and Q signals to create or decode any kind of modulation.", match: ['(?-i:\bI-?Q\b)']}
+  - {term: DDS, definition: "Direct digital synthesizer: a circuit that builds a sine wave from a digital table, producing a variable frequency with the stability of a crystal oscillator.", match: ['(?-i:\bDDS\b)', 'direct digital']}
+  - {term: DSP, definition: "Digital signal processing: filtering and shaping a signal in numbers rather than with coils and capacitors, which lets bandwidth and filter shape be changed freely.", match: ['(?-i:\bDSP\b)', 'digital signal processing']}
+  - {term: ALC, definition: "Automatic level control: a circuit that limits the drive from the radio to an RF power amplifier so it is not overdriven and does not distort.", match: ['(?-i:\bALC\b)', 'automatic level control']}
+  - {term: Antenna tuner, definition: "An adjustable matching network between the transmitter and the feed line that raises power transfer to the line. It does not change the SWR on the feed line itself.", match: ['antenna tuner', 'matching network']}
+  - {term: Speech processor, definition: "A circuit that raises the average power of a voice signal without raising the peak, making it more readable in weak conditions.", match: ['speech processor']}
+  - {term: Keyer, definition: "A device that makes dots and dashes automatically for CW when you press a paddle.", match: ['keyer']}
+  - {term: Reactance, definition: "The opposition of an inductor or capacitor to alternating current, measured in ohms and written X. It rises with frequency for an inductor and falls with frequency for a capacitor.", match: ['reactance', '(?-i:\breactive\b)']}
+  - {term: Impedance, definition: "The total opposition of a circuit to alternating current, combining resistance and reactance, measured in ohms.", match: ['impedance']}
+  - {term: Resonance, definition: "The frequency at which inductive and capacitive reactance are equal and cancel. A series LC circuit then has very low impedance, and a parallel one has very high.", match: ['resonan']}
+  - {term: Transformer, definition: "Two or more coils that couple AC energy through a magnetic field. The turns ratio sets the voltage change and the impedance change.", match: ['transformer']}
+  - {term: SWR, definition: "Standing wave ratio: a measure of how well an antenna's impedance matches the feed line. 1:1 is perfect. A high SWR increases loss in the line.", match: ['(?-i:\bSWR\b)', 'standing wave']}
+  - {term: Characteristic impedance, definition: "The impedance a feed line presents to a signal, set by the size and spacing of its conductors and not by its length. Coax is usually 50 ohms; window line is about 450 ohms.", match: ['characteristic impedance', 'window line']}
+  - {term: Feed line, definition: "The cable or line that carries RF between the transmitter and the antenna. Its loss rises with frequency and is quoted in decibels per 100 feet.", match: ['feed ?line', 'transmission line', 'coax']}
+  - {term: Balanced and unbalanced, definition: "A balanced feed line, such as window line, carries equal and opposite currents on two conductors. Coax is unbalanced, with the signal on the center conductor and the shield at ground.", match: ['balanced', 'balun']}
+  - {term: Dummy load, definition: "A resistor that absorbs power without radiating, used to test a transmitter off the air.", match: ['dummy load']}
+  - {term: Dipole, definition: "A straight antenna fed in the center. In free space its pattern is a figure-eight broadside to the wire.", match: ['dipole', 'inverted V']}
+  - {term: Yagi, definition: "A directional antenna made of a driven element, a longer reflector and shorter directors on a boom.", match: ['yagi']}
+  - {term: Driven element, definition: "The part of a Yagi that the feed line connects to; it is roughly a half wavelength long.", match: ['driven element']}
+  - {term: Front-to-back ratio, definition: "How much stronger a directive antenna radiates in its main direction than in the opposite one.", match: ['front-to-back']}
+  - {term: dBi and dBd, definition: "Two ways to state antenna gain. dBi compares with an ideal isotropic radiator and dBd with a half-wave dipole; the dBi number for the same antenna is 2.15 higher.", match: ['dBi', 'dBd']}
+  - {term: Log-periodic antenna, definition: "A wideband directional antenna whose element lengths and spacing change logarithmically along the boom.", match: ['log-periodic']}
+  - {term: Beverage antenna, definition: "A very long horizontal wire used for directional reception on the low HF and MF bands.", match: ['Beverage']}
+  - {term: Gamma and hairpin match, definition: "Two ways to match a Yagi driven element to the feed line. A gamma match does not need the element insulated from the boom; a hairpin match is a shorted stub across the feed point.", match: ['gamma match', 'hairpin']}
+  - {term: Radials, definition: "Wires laid on or under the ground, or elevated, that act as the ground plane for a vertical antenna. Sloping radials downward raises the feed impedance toward 50 ohms.", match: ['radial', 'ground plane']}
+  - {term: Trap antenna, definition: "An antenna with tuned circuits, called traps, that let one wire work on several bands.", match: ['\btrap']}
+  - {term: Mixer, definition: "A circuit that combines two signals in a non-linear device, producing outputs at the sum and difference of the input frequencies. Receivers use it to convert a signal to a fixed intermediate frequency.", match: ['mixer', 'heterodyn']}
+  - {term: Intermodulation, definition: "Unwanted signals created when two or more signals mix in a non-linear circuit. Odd-order products, such as 2F1 − F2, fall closest to the original signals.", match: ['intermodulation']}
+  - {term: Image response, definition: "Interference from a signal at twice the IF away from the wanted one, which the mixer converts to the same intermediate frequency.", match: ['image response', '(?-i:\bIF\b)']}
+  - {term: Modulation, definition: "Changing a property of a carrier, its amplitude, frequency or phase, to convey information. Overmodulation causes distortion and excess bandwidth.", match: ['modulat']}
+  - {term: Deviation, definition: "How far an FM carrier frequency moves from its center in response to the audio.", match: ['deviation']}
+  - {term: Bandwidth, definition: "The width of spectrum a signal occupies, or the width a filter passes. Matching receiver bandwidth to the mode gives the best signal-to-noise ratio.", match: ['bandwidth']}
+  - {term: Cutoff frequency, definition: "The frequency at which a filter's output has fallen to half the input power, that is, 3 dB down.", match: ['cutoff frequency', 'half-power']}
+  - {term: Rectifier, definition: "A circuit that converts AC to pulsing DC using diodes. A full-wave rectifier's output pulses at twice the AC frequency.", match: ['rectifier']}
+  - {term: Bleeder resistor, definition: "A resistor across a power supply filter that discharges the capacitors after power is removed, for safety.", match: ['bleeder']}
+  - {term: Switchmode supply, definition: "A power supply that switches at high frequency, so its transformer and filter parts can be small and light.", match: ['switching (?:power|regulator|supply)', 'switch.?mode']}
+  - {term: Amplifier class, definition: "How long an amplifying device conducts in each cycle. Class A conducts all the time, and Class C conducts for less than half, which suits FM and CW but not linear modes.", match: ['Class [ABC]\b']}
+  - {term: Oscilloscope, definition: "An instrument that draws voltage against time, so you can see complex waveforms that a meter can only average.", match: ['oscilloscope']}
+  - {term: Antenna analyzer, definition: "A small transmitter and bridge that measures the SWR, impedance and resonance of an antenna or feed line.", match: ['antenna analyzer']}
+  - {term: Directional wattmeter, definition: "A meter that separates forward and reflected power so that SWR can be found.", match: ['wattmeter']}
+  - {term: Two-tone test, definition: "A test that feeds two audio tones into an SSB transmitter to check how linear it is.", match: ['two-tone']}
+  - {term: S meter, definition: "A receiver display of signal strength. One S-unit is 6 dB, and S9 is the strong end of the scale; readings above S9 are given in dB.", match: ['S meter', 'S-meter', '(?-i:\bS[0-9]\b)']}
+  - {term: PEP, definition: "Peak envelope power: the average power over one radio-frequency cycle at the crest of the modulation envelope. FCC power limits are stated in PEP.", match: ['(?-i:\bPEP\b)', 'peak envelope']}
+  - {term: RMS, definition: "Root mean square: the value of an AC signal that heats a resistor as much as the same DC value. It is 0.707 of the peak value for a sine wave.", match: ['(?-i:\bRMS\b)']}
+  - {term: Duty cycle, definition: "The fraction of time a transmitter is sending. A mode with a high duty cycle can exceed the transmitter's average power rating.", match: ['duty cycle']}
+  - {term: Control operator, definition: "The licensed amateur designated to be responsible for the transmissions of a station.", match: ['control operator']}
+  - {term: VEC and VE, definition: "A volunteer examiner coordinator manages volunteer examiners, called VEs, who give exams. Each exam session needs at least three VEs of the right class.", match: ['(?-i:\bVEC?s?\b)', 'volunteer examiner', 'Volunteer Examiner Coordinator']}
+  - {term: CSCE, definition: "Certificate of successful completion of an examination: proof that you passed an element, valid for credit for a limited time.", match: ['CSCE']}
+  - {term: ITU region, definition: "One of three world areas that set amateur allocations. North and South America are Region 2.", match: ['(?-i:\bITU\b)']}
+  - {term: Beacon, definition: "An automatic station that transmits continuously so others can check propagation. Its power is limited to 100 watts PEP.", match: ['beacon']}
+  - {term: RACES, definition: "Radio Amateur Civil Emergency Service: an emergency communications service under civil defense, for licensed amateurs.", match: ['(?-i:\bRACES\b)']}
+  - {term: Spread spectrum, definition: "A mode that spreads a signal over a much wider bandwidth than the data needs. Amateur use is limited to 10 watts PEP.", match: ['spread spectrum']}
+  - {term: Automatic control, definition: "Operating a station with no control operator present at the control point, allowed for certain data and repeater operation.", match: ['automatic(?:ally)? control', 'remote control']}
+  - {term: Third-party traffic, definition: "Messages sent for someone who is not a licensed amateur. It is allowed with the countries that have agreed to it.", match: ['third.party']}
+  - {term: Ferrite, definition: "A magnetic ceramic used in beads and cores. Placed on a cable, it adds impedance to unwanted common-mode RF current.", match: ['ferrite', 'common.mode']}
+  - {term: RF burn, definition: "A skin burn from touching a metal object carrying high RF voltage, such as a poorly grounded equipment cabinet.", match: ['RF burn']}
+  - {term: Polarization, definition: "The orientation of a radio wave's electric field, set by the antenna. A horizontally polarized HF antenna typically has lower ground loss.", match: ['polariz']}
+  - {term: Antenna gain, definition: "How much an antenna concentrates power in a direction compared with a reference antenna. Stacking two Yagis a half wavelength apart raises gain by about 3 dB.", match: ['gain']}

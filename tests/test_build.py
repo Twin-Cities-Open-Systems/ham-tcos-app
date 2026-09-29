@@ -20,7 +20,7 @@ class Tree(unittest.TestCase):
         self.assertEqual(build.expand_answer(q), (None, ["x", "y", "z", "All of these choices are correct"]))
 
     def test_committed_data_matches_pools(self):
-        doc, figures = build.build(self.files)
+        doc, figures = build.build(self.files, notes=build.read_notes())
         self.assertEqual(len(doc["questions"]), 1431)
         self.assertEqual(len(doc["pools"]), 3)
         self.assertEqual(len(figures), 14)
@@ -51,3 +51,27 @@ class Tree(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_notes_that_prove_nothing_are_refused(self):
+        import copy
+
+        def broken(mutate):
+            notes = copy.deepcopy(build.read_notes())
+            mutate(notes[sorted(notes)[0]])
+            return notes
+
+        cases = {
+            "a term matching no question": lambda n: n["terms"].append(
+                {"term": "Zzz", "definition": "Nothing uses this.", "match": ["zzzqqq"]}),
+            "a formula listing an unknown question": lambda n: n["formulas"][0]["ids"].append("X9X99"),
+            "a repeated term": lambda n: n["terms"].append(dict(n["terms"][0])),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(name):
+                with self.assertRaises(build.Mismatch):
+                    build.build(self.files, notes=broken(mutate))
+        with self.subTest("a pool without notes"):
+            notes = build.read_notes()
+            notes.pop(sorted(notes)[0])
+            with self.assertRaises(build.Mismatch):
+                build.build(self.files, notes=notes)

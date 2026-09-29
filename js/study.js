@@ -11,6 +11,8 @@
  *   flashcards  one question at a time from the current filter; keys 1-4
  *               answer, arrow keys move
  *   exam        the pool's own draw, scored against its passing score
+ *   glossary    the terms the pool's questions use, searchable
+ *   formulas    the pool's formulas: forms, variables, a worked example
  *   mastery     one square per question, filled by times answered right
  *
  * Progress -- seen, right and missed per question -- stays in this browser's
@@ -29,7 +31,7 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var state = {
-    data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false,
+    data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
     deck: [], card: 0, shuffled: false, answered: null, exam: null, showAnswer: true
   };
 
@@ -174,6 +176,7 @@
    * render, then scroll the target into view and flash it once. */
   function jumpTo(mode, elId, focus) {
     state.mode = mode;
+    if (mode === "glossary") { state.glossQ = ""; $("hs-gloss-search").value = ""; }
     if (mode === "guide" && focus) {
       var q = state.byId[focus];
       if (q) { state.sub = q.subelement; state.group = ""; state.q = ""; state.missedOnly = false; $("hs-search").value = ""; $("hs-missed").checked = false; fillFilters(); }
@@ -228,14 +231,112 @@
     box.innerHTML = out.length ? out.join("") : "<p>" + chip("neutral", ICON.neutral, "no questions match") + "</p>";
     $("hs-count").textContent = qs.length + " of " + poolQuestions().length + " questions";
   }
+  /* Terms and formulas per question, derived from each pool's own lists, so the
+   * data file states every link once (term.ids, formula.ids) and the Guide
+   * reads it back the other way. A card shows the most specific terms first --
+   * a term that names few questions says more than one that names sixty --
+   * and at most MAX_TERM_CHIPS of them. */
+  var MAX_TERM_CHIPS = 5;
+  function indexRefs(pools) {
+    pools.forEach(function (p) {
+      var m = {};
+      function at(id) { return (m[id] = m[id] || { terms: [], formulas: [] }); }
+      (p.terms || []).forEach(function (t) { t.ids.forEach(function (id) { at(id).terms.push(t); }); });
+      (p.formulas || []).forEach(function (f) { f.ids.forEach(function (id) { at(id).formulas.push(f); }); });
+      Object.keys(m).forEach(function (id) {
+        m[id].terms.sort(function (a, b) { return a.ids.length - b.ids.length || a.term.localeCompare(b.term); });
+        m[id].terms = m[id].terms.slice(0, MAX_TERM_CHIPS);
+      });
+      state.refs[p.pool] = m;
+    });
+  }
+  function chipsHtml(q) {
+    var r = (state.refs[q.pool] || {})[q.id];
+    if (!r) { return ""; }
+    var out = r.formulas.map(function (f) {
+      return '<button type="button" class="ham-gchip is-formula" data-jump="formula" data-key="' + esc(f.key) + '">' + esc(f.name) + "</button>";
+    }).concat(r.terms.map(function (t) {
+      return '<button type="button" class="ham-gchip" data-jump="term" data-key="' + esc(t.key) + '">' + esc(t.term) + "</button>";
+    }));
+    return out.length ? '<p class="ham-gchips" aria-label="Terms and formulas for ' + esc(q.id) + '">' + out.join("") + "</p>" : "";
+  }
   function guideCardHtml(q) {
     var ansHtml = q.answers
       ? '<p class="ham-gans"><span class="mono">' + esc(q.id) + "</span> All of these are correct:</p>" +
         '<ul class="ham-gall">' + q.answers.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ul>"
       : '<p class="ham-gans"><span class="mono">' + esc(q.id) + "</span> " + esc(q.answer) + "</p>";
-    return '<li class="ham-gcard" id="hs-guide-' + esc(q.id) + '">' + ansHtml + '<p class="ham-gq">' + esc(q.question) + "</p>" +
+    return '<li class="ham-gcard" id="hs-guide-' + esc(q.id) + '">' + ansHtml + '<p class="ham-gq">' + esc(q.question) + "</p>" + chipsHtml(q) +
       figureHtml(q) +
       (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</li>";
+  }
+
+  /* --- glossary and formulas ---------------------------------------------------
+   * Every term and formula authored for this pool (ham/notes, written into the
+   * data file by build.py). Each card is colored by the family of its first
+   * question and lists the questions that use it; a question id jumps to that
+   * question in the Guide. */
+  function qButtons(ids) {
+    return ids.map(function (id) {
+      return '<button type="button" data-jump="question" data-key="' + esc(id) + '">' + esc(id) + "</button>";
+    }).join(", ");
+  }
+  function famStyle(ids) {
+    var q = state.byId[ids[0]];
+    return q ? { dot: famDot(q.family), style: ' style="--fam:var(--fam-' + esc(q.family) + ')"' } : { dot: "", style: "" };
+  }
+  function renderGlossary() {
+    var all = poolObj().terms || [];
+    var t = (state.glossQ || "").trim().toLowerCase();
+    var terms = (t ? all.filter(function (x) {
+      return x.term.toLowerCase().indexOf(t) >= 0 || x.definition.toLowerCase().indexOf(t) >= 0;
+    }) : all).slice().sort(function (a, b) { return a.term.localeCompare(b.term); });
+    $("hs-glossary-count").textContent = terms.length + " of " + all.length + " terms";
+    $("hs-count").textContent = all.length + " terms";
+    if (!terms.length) {
+      $("hs-glossary").innerHTML = "<p>" + chip("neutral", ICON.neutral, all.length ? "no terms match" : "no terms for this pool") + "</p>";
+      return;
+    }
+    $("hs-glossary").innerHTML = '<ul class="ham-terms">' + terms.map(function (term) {
+      var f = famStyle(term.ids);
+      return '<li class="ham-term"' + f.style + ' id="hs-term-' + esc(term.key) + '"><h3>' + f.dot + esc(term.term) + "</h3><p>" +
+        esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) + "</p></li>";
+    }).join("") + "</ul>";
+  }
+  /* Ohm's law and the power law get the classic triangle, plain inline SVG:
+     the only figure this page draws. Only where the formula's variables are
+     the three letters, so a pool that names them differently gets no wrong one. */
+  var TRIANGLES = { "ohms-law": ["E", "I", "R"], "power-law": ["P", "I", "E"] };
+  function triangleSvg(top, left, right) {
+    return '<svg class="ham-formula-tri" viewBox="0 0 160 140" width="160" height="140" role="img" aria-label="Triangle: ' +
+      esc(top) + " over " + esc(left) + " and " + esc(right) + '">' +
+      '<polygon points="80,8 8,132 152,132" fill="none" stroke="var(--rule)" stroke-width="2"/>' +
+      '<line x1="8" y1="70" x2="152" y2="70" stroke="var(--rule)" stroke-width="2"/>' +
+      '<line x1="80" y1="8" x2="80" y2="132" stroke="var(--rule)" stroke-width="2"/>' +
+      '<text x="80" y="52" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(top) + "</text>" +
+      '<text x="44" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(left) + "</text>" +
+      '<text x="116" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(right) + "</text></svg>";
+  }
+  function renderFormulas() {
+    var formulas = poolObj().formulas || [];
+    $("hs-formulas-count").textContent = formulas.length + " formulas";
+    $("hs-count").textContent = formulas.length + " formulas";
+    if (!formulas.length) {
+      $("hs-formulas").innerHTML = "<p>" + chip("neutral", ICON.neutral, "no formulas for this pool") + "</p>";
+      return;
+    }
+    $("hs-formulas").innerHTML = '<ul class="ham-formulas">' + formulas.map(function (f) {
+      var fam = famStyle(f.ids);
+      var names = f.variables.map(function (v) { return v.name; });
+      var tri = TRIANGLES[f.key] && TRIANGLES[f.key].every(function (v) { return names.indexOf(v) >= 0; })
+        ? triangleSvg(TRIANGLES[f.key][0], TRIANGLES[f.key][1], TRIANGLES[f.key][2]) : "";
+      var vars = f.variables.length ? '<table class="ham-formula-vars"><tbody>' + f.variables.map(function (v) {
+        return "<tr><td>" + esc(v.name) + "</td><td>" + esc(v.text) + "</td></tr>";
+      }).join("") + "</tbody></table>" : "";
+      return '<li class="ham-formula"' + fam.style + ' id="hs-formula-' + esc(f.key) + '"><h3>' + fam.dot + esc(f.name) +
+        '</h3><p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
+        "</p>" + tri + vars + '<p class="ham-example"><b>Example</b> ' + esc(f.example) + '</p><p class="ham-refqs">Used in: ' +
+        qButtons(f.ids) + "</p></li>";
+    }).join("") + "</ul>";
   }
 
   /* --- mastery map -------------------------------------------------------------
@@ -484,7 +585,7 @@
     fillSelect($("hs-group"), groups, state.group, "all groups");
   }
   function render() {
-    ["guide", "browse", "flash", "exam", "mastery"].forEach(function (m) {
+    ["guide", "browse", "flash", "exam", "glossary", "formulas", "mastery"].forEach(function (m) {
       $("hs-panel-" + m).hidden = m !== state.mode;
       var tab = document.querySelector('.tab[data-mode="' + m + '"]');
       tab.setAttribute("aria-selected", String(m === state.mode));
@@ -493,6 +594,8 @@
     if (state.mode === "browse") { renderBrowse(); }
     if (state.mode === "flash") { buildDeck(); renderFlash(); }
     if (state.mode === "exam") { renderExam(); }
+    if (state.mode === "glossary") { renderGlossary(); }
+    if (state.mode === "formulas") { renderFormulas(); }
     if (state.mode === "mastery") { renderMastery(); }
     renderProgress();
   }
@@ -514,10 +617,18 @@
     Array.prototype.forEach.call(document.querySelectorAll(".tab[data-mode]"), function (t) {
       t.addEventListener("click", function () { state.mode = t.getAttribute("data-mode"); render(); });
     });
+    var glossTimer = null;
+    $("hs-gloss-search").addEventListener("input", function () {
+      var v = this.value;
+      clearTimeout(glossTimer);
+      glossTimer = setTimeout(function () { state.glossQ = v; renderGlossary(); }, 180);
+    });
     document.addEventListener("click", function (e) {
       var b = e.target.closest("[data-jump]");
       if (!b) { return; }
       var kind = b.getAttribute("data-jump"), key = b.getAttribute("data-key");
+      if (kind === "term") { jumpTo("glossary", "hs-term-" + key); }
+      if (kind === "formula") { jumpTo("formulas", "hs-formula-" + key); }
       if (kind === "question") { jumpTo("guide", "hs-guide-" + key, key); }
     });
     $("hs-browse").addEventListener("click", function (e) {
@@ -599,6 +710,7 @@
       data.questions.forEach(function (q) { state.byId[q.id] = q; });
       injectFamilyColors(data.families);
       injectMasteryColors();
+      indexRefs(data.pools);
       $("hs-pool").innerHTML = data.pools.map(function (p) {
         return '<option value="' + esc(p.pool) + '">' + esc(p.title) + " (" + p.questions + ")</option>";
       }).join("");
