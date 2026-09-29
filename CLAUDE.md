@@ -21,3 +21,7 @@ the CI payload and its required-member check. Never commit or push to
 
 The repo is public. Nothing internal goes in it: no lab hostnames beyond what
 `deploy.sh` needs, no IP addresses, no operator details, no tokens.
+
+## Open Graph tags
+
+Every page carries the full og set (title, description, url, image with width, height and alt, locale) plus `twitter:card` `summary_large_image`, and the og image is a real 1200x630 screenshot of the content, never a generic banner, with the org's provenance and branding EXIF (`hee exif provenance|sign|brand`). `tests/test_pages.py` fails when a page lacks any of it. A new page needs the tags in the same PR.

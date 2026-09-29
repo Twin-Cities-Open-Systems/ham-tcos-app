@@ -18,7 +18,7 @@ cmd="${1:-}"
 [ "$cmd" = lab ] || [ "$cmd" = promote ] || { echo "usage: $0 lab|promote" >&2; exit 1; }
 PAGES=(index.html study.html)
 ASSET_DIRS=(css js data)
-ASSET_FILES=(robots.txt sitemap.xml)
+ASSET_FILES=(robots.txt sitemap.xml og.jpg)
 HOST=ham.tcos.app
 LAB_HOST=ham-app.lab.tcos.us
 

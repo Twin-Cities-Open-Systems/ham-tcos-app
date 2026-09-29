@@ -1,6 +1,6 @@
 # ham-tcos-app
 
-Ham Study: a free study guide for the US amateur radio exams, built from the
+Just Another Ham Study: a free study guide for the US amateur radio exams, built from the
 public-domain question pools published by the NCVEC. Live at
 <https://ham.tcos.app>.
 
