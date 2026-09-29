@@ -1,0 +1,17 @@
+{
+ "card": true,
+ "eyebrow": "ham.tcos.app",
+ "for": "https://ham.tcos.app/",
+ "host": "ham.tcos.app",
+ "owner": "Twin Cities Open Systems",
+ "page": "index",
+ "palette": [
+  "#a3e635",
+  "#ff6161"
+ ],
+ "seed": "ham-tcos-app",
+ "subtitle": "(US amateur radio exam study guide)",
+ "tagline": "1,431 questions \u00b7 Technician, General, Extra",
+ "text": "JA",
+ "title": "Just Another Ham Study"
+}

@@ -24,4 +24,4 @@ The repo is public. Nothing internal goes in it: no lab hostnames beyond what
 
 ## Open Graph tags
 
-Every page carries the full og set (title, description, url, image with width, height and alt, locale) plus `twitter:card` `summary_large_image`, and the og image is a real 1200x630 screenshot of the content, never a generic banner, with the org's provenance and branding EXIF (`hee exif provenance|sign|brand`). `tests/test_pages.py` fails when a page lacks any of it. A new page needs the tags in the same PR.
+Every page carries the full og set (title, description, url, image with width, height and alt, locale) plus `twitter:card` `summary_large_image`, and the og image is a 1200x630 title card from the org tile generator (`tools/meme-factory/tile/tile.py`, recipe in `og.jpg.job.json`), the same card the media pages use, with provenance and branding EXIF. `tests/test_pages.py` fails when a page lacks any of it. A new page needs the tags in the same PR.
