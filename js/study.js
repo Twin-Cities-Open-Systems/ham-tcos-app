@@ -473,14 +473,16 @@
      the three letters, so a pool that names them differently gets no wrong one. */
   var TRIANGLES = { "ohms-law": ["E", "I", "R"], "power-law": ["P", "I", "E"] };
   function triangleSvg(top, left, right) {
-    return '<svg class="ham-formula-tri" viewBox="0 0 160 140" width="160" height="140" role="img" aria-label="Triangle: ' +
-      esc(top) + " over " + esc(left) + " and " + esc(right) + '">' +
+    /* The letters are HTML over the SVG lines, not SVG text: a browser's forced-dark
+       mode recolors HTML text but leaves SVG text dark, which vanishes on the dark card. */
+    return '<span class="ham-formula-tri" role="img" aria-label="Triangle: ' + esc(top) + " over " + esc(left) + " and " + esc(right) + '">' +
+      '<svg viewBox="0 0 160 140" width="160" height="140" aria-hidden="true" focusable="false">' +
       '<polygon points="80,8 8,132 152,132" fill="none" stroke="var(--edge)" stroke-width="2"/>' +
       '<line x1="8" y1="70" x2="152" y2="70" stroke="var(--edge)" stroke-width="2"/>' +
-      '<line x1="80" y1="8" x2="80" y2="132" stroke="var(--edge)" stroke-width="2"/>' +
-      '<text x="80" y="52" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(top) + "</text>" +
-      '<text x="44" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(left) + "</text>" +
-      '<text x="116" y="112" text-anchor="middle" font-size="22" fill="var(--ink)">' + esc(right) + "</text></svg>";
+      '<line x1="80" y1="8" x2="80" y2="132" stroke="var(--edge)" stroke-width="2"/></svg>' +
+      '<span class="ham-tri-l" style="left:50%;top:22px">' + esc(top) + "</span>" +
+      '<span class="ham-tri-l" style="left:27.5%;top:82px">' + esc(left) + "</span>" +
+      '<span class="ham-tri-l" style="left:72.5%;top:82px">' + esc(right) + "</span></span>";
   }
   function renderFormulas() {
     var formulas = poolObj().formulas || [];
