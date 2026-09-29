@@ -377,15 +377,24 @@
       '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
       esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
   }
-  /* The same two-faced card for a glossary term or a formula: its name on the front,
-     what it means on the back. */
-  function flipNamedHtml(cls, domId, famAttr, key, dot, name, tag, cue, back) {
-    return '<li class="' + cls + ' ham-flip" id="' + domId + '"' + famAttr + ' data-flipped="false"><div class="ham-flip-in">' +
-      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + esc(key) + '" aria-label="' + esc(name) + ". Show the " + cue + '.">' +
+  /* The same two-faced card for a glossary term or a formula: its name and a real-world
+     use on the front, what it means on the back. ham-fit lets the card be as tall as
+     the face showing, not the taller of the two. */
+  function flipNamedHtml(cls, domId, famAttr, key, dot, name, tag, cue, use, back) {
+    return '<li class="' + cls + ' ham-flip ham-fit" id="' + domId + '"' + famAttr + ' data-flipped="false"><div class="ham-flip-in">' +
+      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + esc(key) + '" aria-label="' + esc(name) + ". " + esc(use) + " Show the " + cue + '.">' +
       '<span class="ham-fq">' + dot + esc(name) + "</span></button>" + (tag || "") +
+      '<p class="ham-use"><span class="ham-use-l">In practice</span> ' + esc(use) + "</p>" +
       '<span class="ham-flip-cue" aria-hidden="true">Show ' + cue + " &#8635;</span></div>" +
       '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + esc(key) + '" aria-label="' + esc(name) + " " + cue + '. Show the name again.">' +
       dot + esc(name) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
+  }
+  /* The questions a term or formula appears in: a few ids up front, the rest one tap away. */
+  var SHOWN_REFS = 4;
+  function askedIn(ids) {
+    var n = ids.length, head = ids.slice(0, SHOWN_REFS);
+    return '<div class="ham-refqs">Asked in ' + n + (n === 1 ? " question: " : " questions: ") + qButtons(head) +
+      (n > SHOWN_REFS ? '<details class="ham-more"><summary>+' + (n - SHOWN_REFS) + " more</summary>" + qButtons(ids.slice(SHOWN_REFS)) + "</details>" : "") + "</div>";
   }
   function guideCardHtml(q) {
     var tick = '<span class="ham-tick" aria-hidden="true">' + ICON.good + "</span>";
@@ -416,8 +425,8 @@
      and how many columns; each group is itself a collapsible card. */
   function termPill(term, tag) {
     var f = famStyle(term.ids);
-    return flipNamedHtml("ham-term", "hs-term-" + esc(term.key), f.style, term.key, f.dot, term.term, tag, "definition",
-      "<p>" + esc(term.definition) + '</p><p class="ham-refqs">Used in: ' + qButtons(term.ids) + "</p>");
+    return flipNamedHtml("ham-term", "hs-term-" + esc(term.key), f.style, term.key, f.dot, term.term, tag, "definition", term.use,
+      "<p>" + esc(term.definition) + "</p>" + askedIn(term.ids));
   }
   function termFamilies(term) {
     var seen = [];
@@ -472,7 +481,7 @@
     var all = poolObj().terms || [];
     var t = (state.glossQ || "").trim().toLowerCase();
     var terms = (t ? all.filter(function (x) {
-      return x.term.toLowerCase().indexOf(t) >= 0 || x.definition.toLowerCase().indexOf(t) >= 0;
+      return x.term.toLowerCase().indexOf(t) >= 0 || x.definition.toLowerCase().indexOf(t) >= 0 || x.use.toLowerCase().indexOf(t) >= 0;
     }) : all).slice().sort(function (a, b) { return a.term.localeCompare(b.term); });
     $("hs-glossary-count").textContent = terms.length + " of " + all.length + " terms";
     $("hs-count").textContent = all.length + " terms";
@@ -521,10 +530,9 @@
       var vars = f.variables.length ? '<table class="ham-formula-vars"><tbody>' + f.variables.map(function (v) {
         return "<tr><td>" + esc(v.name) + "</td><td>" + esc(v.text) + "</td></tr>";
       }).join("") + "</tbody></table>" : "";
-      return flipNamedHtml("ham-formula", "hs-formula-" + esc(f.key), fam.style, f.key, fam.dot, f.name, "", "formula",
+      return flipNamedHtml("ham-formula", "hs-formula-" + esc(f.key), fam.style, f.key, fam.dot, f.name, "", "formula", f.use,
         '<p class="ham-formula-forms">' + f.forms.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") +
-        "</p>" + tri + vars + '<p class="ham-example"><b>Example</b> ' + esc(f.example) + '</p><p class="ham-refqs">Used in: ' +
-        qButtons(f.ids) + "</p>");
+        "</p>" + tri + vars + '<p class="ham-example"><b>Example</b> ' + esc(f.example) + "</p>" + askedIn(f.ids));
     }).join(""));
   }
 
@@ -707,6 +715,7 @@
     var p = poolObj();
     var ex = state.exam;
     $("hs-exam-scorebtn").disabled = !ex || ex.pool !== p.pool || ex.scored;
+    $("hs-exam-dock").hidden = !ex || ex.pool !== p.pool || ex.scored;
     if (!ex || ex.pool !== p.pool) {
       $("hs-exam-body").innerHTML = '<p class="hint">' + esc(p.exam_size) + " questions, one from each group; " +
         esc(p.passing_score) + " correct to pass (47 CFR 97.503). Press New exam.</p>";
@@ -726,6 +735,7 @@
     }).join("") + "</ol>";
     var answered = Object.keys(ex.answers).length;
     $("hs-count").textContent = ex.scored ? "scored" : answered + " of " + ex.items.length + " answered";
+    $("hs-exam-dock-n").textContent = answered + " / " + ex.items.length + " answered";
   }
   function scoreExam() {
     var ex = state.exam;
@@ -762,6 +772,8 @@
     $("hs-exam-score").innerHTML = h;
     renderExam();
     renderProgress();
+    var res = $("hs-exam-result");
+    if (res) { res.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
   }
 
   /* --- progress ----------------------------------------------------------- */
@@ -855,7 +867,7 @@
     });
     document.addEventListener("click", function (e) {
       var f = e.target.closest("[data-flip]");
-      if (!f && !e.target.closest("a, button, input, select, textarea")) {
+      if (!f && !e.target.closest("a, button, input, select, textarea, summary")) {
         f = e.target.closest(".ham-front");
         if (!f && !String(window.getSelection && window.getSelection()).length) { f = e.target.closest(".ham-back"); }
       }
@@ -913,7 +925,9 @@
     $("hs-exam-body").addEventListener("change", function (e) {
       if (!state.exam || state.exam.scored || e.target.type !== "radio") { return; }
       state.exam.answers[e.target.name.replace(/^hs-x-/, "")] = e.target.value;
-      $("hs-count").textContent = Object.keys(state.exam.answers).length + " of " + state.exam.items.length + " answered";
+      var n = Object.keys(state.exam.answers).length;
+      $("hs-count").textContent = n + " of " + state.exam.items.length + " answered";
+      $("hs-exam-dock-n").textContent = n + " / " + state.exam.items.length + " answered";
     });
     $("hs-reset").addEventListener("click", function () {
       if (!window.confirm("Forget every answer recorded in this browser?")) { return; }
@@ -932,6 +946,60 @@
         return "<tr><td>" + esc(p.title) + '</td><td class="mono">' + p.questions + '</td><td class="mono">' + p.exam_size +
           '</td><td class="mono">' + esc(p.passing_score) + '</td><td class="mono">' + esc(p.valid_from) + " &ndash; " + esc(p.valid_to) + "</td></tr>";
       }).join("") + "</tbody></table></div>";
+  }
+
+  /* --- the way back ----------------------------------------------------------
+   * A long panel is a lot of scrolling, so a small pill follows the reader once the
+   * page is under way: back to the group they are inside, back to the panel's
+   * heading, back to the top. It reads the page as it scrolls, so it names
+   * whatever is actually above the reader and shows only the levels that are
+   * out of sight. */
+  function initWayBack() {
+    var nav = $("hs-jump");
+    if (!nav) { return; }
+    var btn = {};
+    Array.prototype.forEach.call(nav.querySelectorAll("[data-hs-to]"), function (b) { btn[b.getAttribute("data-hs-to")] = b; });
+    var HEAD = 76, LINE = 96, target = {}, queued = false;
+    function words(el) {
+      var c = el.cloneNode(true);
+      Array.prototype.forEach.call(c.querySelectorAll(".count,.tc-collapse-marker,.ham-famtag,.chip,[aria-hidden=true]"), function (x) { x.remove(); });
+      return c.textContent.replace(/\s+/g, " ").trim();
+    }
+    function within(panel) {
+      var hit = null;
+      Array.prototype.forEach.call(panel.querySelectorAll("details.ham-group, [data-tc-collapse]"), function (g) {
+        var r = g.getBoundingClientRect(), head = g.querySelector("summary, [data-tc-collapse-toggle]");
+        if (head && r.top <= LINE && r.bottom > LINE + 60 && head.getBoundingClientRect().bottom < HEAD) { hit = { el: head, label: words(head) }; }
+      });
+      return hit;
+    }
+    function update() {
+      queued = false;
+      var panel = $("hs-panel-" + state.mode);
+      var on = panel && window.scrollY > 320;
+      nav.setAttribute("data-show", String(!!on));
+      if (!on) { return; }
+      var hd = panel.querySelector("header"), g = within(panel);
+      var showPanel = hd && hd.getBoundingClientRect().bottom < HEAD;
+      target.group = g && g.el; target.panel = hd;
+      btn.group.hidden = !g || !g.label; if (g) { btn.group.querySelector("span").textContent = g.label; }
+      btn.panel.hidden = !showPanel;
+      if (hd) { btn.panel.querySelector("span").textContent = words(hd.querySelector("h2") || hd); }
+      nav.setAttribute("data-has-group", String(!btn.group.hidden));
+    }
+    function queue() { if (!queued) { queued = true; window.requestAnimationFrame(update); } }
+    nav.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-hs-to]");
+      if (!b) { return; }
+      var to = b.getAttribute("data-hs-to"), el = target[to];
+      var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var y = to === "top" ? 0 : el ? el.getBoundingClientRect().top + window.scrollY - HEAD : null;
+      if (y !== null) { window.scrollTo({ top: Math.max(0, y), behavior: still ? "auto" : "smooth" }); }
+    });
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    document.addEventListener("click", function () { window.setTimeout(queue, 60); });
+    queue();
   }
 
   function fail(msg) {
@@ -958,6 +1026,7 @@
       fillFilters();
       wire();
       render();
+      initWayBack();
     }).catch(function (e) { fail(String(e && e.message || e)); });
   }
 
