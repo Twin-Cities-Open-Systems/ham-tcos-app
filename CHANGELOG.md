@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing since the last release._
 
+## [1.2.0] - 2026-09-29
+
+### Added
+
+- 2026-09-29 **site**: rename to Just Another Ham Study and add the og image ([#8](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/8))
+
 ## [1.1.0] - 2026-09-29
 
 ### Added
