@@ -1,4 +1,4 @@
-/* shell.js: the text-size and theme toggles, on every page. OWNED by tcos-app;
+/* shell.js: the text-size buttons and the theme dropdown, on every page. OWNED by tcos-app;
  * children copy it, never edit the copy (tcos-app CLAUDE.md, "How a child app inherits").
  *
  * Choices persist in localStorage and are applied before paint by the inline
@@ -32,21 +32,25 @@
     });
   });
 
-  /* "auto" removes the stamp entirely, so the page falls back to
-     prefers-color-scheme, the unstamped state the CSS is built for. */
+  /* "auto" removes the stamps entirely, so the page falls back to
+     prefers-color-scheme, the unstamped state the CSS is built for. A named
+     theme is a light or dark base plus a skin; keep KIND in step with the
+     inline bootstrap in each page's <head>. */
+  var KIND = { paper: "light", contrast: "light", midnight: "dark", graphite: "dark" };
   function applyTheme(v) {
-    if (v === "auto") { document.documentElement.removeAttribute("data-theme"); }
-    else { document.documentElement.setAttribute("data-theme", v); }
+    var root = document.documentElement;
+    if (v === "auto") { root.removeAttribute("data-theme"); root.removeAttribute("data-skin"); return; }
+    root.setAttribute("data-theme", KIND[v] || v);
+    root.setAttribute("data-skin", v);
   }
   var th = get("tc-theme", "auto");
+  var pick = document.querySelector(".theme-select");
   applyTheme(th);
-  press(".theme-btn", th, "themeChoice");
-  document.querySelectorAll(".theme-btn").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var v = b.dataset.themeChoice;
-      applyTheme(v);
-      set("tc-theme", v);
-      press(".theme-btn", v, "themeChoice");
+  if (pick) {
+    pick.value = th;
+    pick.addEventListener("change", function () {
+      applyTheme(pick.value);
+      set("tc-theme", pick.value);
     });
-  });
+  }
 })();
