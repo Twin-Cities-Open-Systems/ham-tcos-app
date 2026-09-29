@@ -155,7 +155,7 @@
   }
   /* The letters on a family mark are whichever of the two inks reads better on
      its hue, by WCAG contrast; tests/test_contrast.py holds the same rule to 4.5:1. */
-  var INK_LIGHT = "#fcfbf9", INK_DARK = "#10161c";
+  var INK_LIGHT = "#fbfdff", INK_DARK = "#10161c";
   function luminance(hex) {
     var c = [1, 3, 5].map(function (i) {
       var v = parseInt(hex.substr(i, 2), 16) / 255;

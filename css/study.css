@@ -131,11 +131,11 @@ button.ham-mcell:hover,button.ham-mcell:focus-visible{outline:3px solid var(--ac
    list; a wrong one is plain and lighter. Still tick + word, never color alone.
    Ratios are gated by tests/test_contrast.py: ink on fill >= 7:1, the edge
    against the card >= 3:1, the quieter distractor text >= 4.5:1. */
-:root{--m1:#4087d2;--m2:#2c72bc;--m3:#235b96;--m4:#1a4470;--m5:#112d4b;--m1-ink:#10161c;--m2-ink:#fcfbf9;--m3-ink:#fcfbf9;--m4-ink:#fcfbf9;--m5-ink:#fcfbf9;
+:root{--m1:#4087d2;--m2:#2c72bc;--m3:#235b96;--m4:#1a4470;--m5:#112d4b;--m1-ink:#10161c;--m2-ink:#fbfdff;--m3-ink:#fbfdff;--m4-ink:#fbfdff;--m5-ink:#fbfdff;
   --ans-bg:#d6f5d6;--ans-ink:#053d05;--ans-edge:#0a6f0a;--dim-ink:#4d5b68}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fcfbf9;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fbfdff;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
   --ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}}
-:root[data-theme="dark"]{--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fcfbf9;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
+:root[data-theme="dark"]{--m1:#296bb0;--m2:#4388d3;--m3:#71a6de;--m4:#a4c6ea;--m5:#dae8f6;--m1-ink:#fbfdff;--m2-ink:#10161c;--m3-ink:#10161c;--m4-ink:#10161c;--m5-ink:#10161c;
   --ans-bg:#173a22;--ans-ink:#e6f8e6;--ans-edge:#58d668;--dim-ink:#a3b1be}
 .hs-flash-show{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink);cursor:pointer;flex-wrap:wrap}
 .hs-flash-show small{color:var(--muted)}

@@ -25,8 +25,8 @@
  * --edge is what draws a component's boundary, so it carries the 3:1.
  * --bg < --surface < --sunk is the page, the card, the pill on the card. */
 :root{
-  --bg:#e4e8ec; --surface:#fcfbf9; --sunk:#eeece8; --ink:#1b2128; --muted:#3f4b57;
-  --rule:#c9d1d8; --edge:#69757f; --accent:#144a86; --accent-soft:#dbe7f4; --on-accent:#fcfbf9;
+  --bg:#e8eef5; --surface:#fbfdff; --sunk:#eef3f9; --ink:#17202a; --muted:#3a4757;
+  --rule:#ccd6e2; --edge:#66788c; --accent:#0f4c9c; --accent-soft:#d9e8fa; --on-accent:#fbfdff;
   --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
   --good-ink:#0a5c0a; --warning-ink:#6b4700; --serious-ink:#7c3210; --critical-ink:#921f1f;
   --good-bg:#e3f2e3; --warning-bg:#fbf1da; --serious-bg:#fbeae3; --critical-bg:#f8e3e3;

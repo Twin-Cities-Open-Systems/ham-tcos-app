@@ -15,7 +15,7 @@ SHELL = (ROOT / "css" / "shell.css").read_text()
 STUDY = (ROOT / "css" / "study.css").read_text()
 FAMILIES = (ROOT / "ham" / "families.yaml").read_text()
 BODY, UI, EDGE = 7.0, 4.5, 3.0
-INK_LIGHT, INK_DARK = "#fcfbf9", "#10161c"  # must match INK_LIGHT / INK_DARK in js/study.js
+INK_LIGHT, INK_DARK = "#fbfdff", "#10161c"  # must match INK_LIGHT / INK_DARK in js/study.js
 
 PAIRS = [
     ("ink", "bg", BODY, "body text on the page"),
