@@ -1,20 +1,86 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ham Study</title>
-  <meta name="description" content="Study guide for the US amateur radio exams, from the public-domain NCVEC question pools.">
-  <link rel="stylesheet" href="/css/site.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ham Study</title>
+<meta name="description" content="A free study guide for the US amateur radio exams, built from the public-domain NCVEC question pools: Technician, General and Extra.">
+<link rel="canonical" href="https://ham.tcos.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ham Study">
+<meta property="og:title" content="Ham Study">
+<meta property="og:description" content="A free study guide for the US amateur radio exams, built from the public-domain NCVEC question pools: Technician, General and Extra.">
+<meta property="og:url" content="https://ham.tcos.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ham Study">
+<meta name="twitter:description" content="A free study guide for the US amateur radio exams, built from the public-domain NCVEC question pools: Technician, General and Extra.">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+.hi-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.hi-tile{display:block;text-decoration:none;color:inherit;border:1px solid var(--rule);border-radius:10px;
+  background:var(--surface);box-shadow:var(--shadow);padding:1.1rem 1.2rem;transition:border-color .15s}
+.hi-tile:hover,.hi-tile:focus-visible{border-color:var(--accent)}
+.hi-tile h2{margin:0 0 .3rem;font-size:1.15rem;color:var(--ink)}
+.hi-tile p{margin:0 0 .7rem;color:var(--muted);font-size:.9rem;line-height:1.45}
+.hi-tile .stats{margin:0}
+.hi-tile .stat{padding:.6rem .7rem}
+.hi-tile .stat b{font-size:1.3rem}
+</style>
+<script>(function(){var d=document.documentElement;
+try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
+var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-theme",t);}catch(e){d.setAttribute("data-fs","m");}})();</script>
 </head>
 <body>
-  <main>
+<header class="top">
+  <span class="brand"><a href="/">Ham Study</a></span>
+  <nav aria-label="Main"><a href="/" aria-current="page">Home</a><a href="/study.html">Study guide</a></nav>
+  <div class="fontsize-toggle"><span class="fs-label">Aa</span>
+    <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
+    <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
+    <button class="fontsize-btn" data-size="l"  type="button" aria-pressed="false">L</button>
+    <button class="fontsize-btn" data-size="xl" type="button" aria-pressed="false">XL</button>
+    <button class="fontsize-btn" data-size="xxl" type="button" aria-pressed="false">XXL</button>
+  </div>
+  <div class="theme-toggle">
+    <button class="theme-btn" data-theme-choice="light" type="button" aria-pressed="false">Light</button>
+    <button class="theme-btn" data-theme-choice="dark"  type="button" aria-pressed="false">Dark</button>
+    <button class="theme-btn" data-theme-choice="auto"  type="button" aria-pressed="true">Auto</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
     <h1>Ham Study</h1>
-    <p>Study guide for the US amateur radio exams, from the public-domain NCVEC question pools.</p>
-    <p>Coming soon. This page is a placeholder while the release path is proven.</p>
-  </main>
-  <footer>
-    <p><a href="https://tcos.app/">tcos.app</a> &middot; <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
-  </footer>
+    <p class="lede">A free study guide for the US amateur radio exams. Every question in the three current NCVEC
+      question pools &mdash; Technician, General and Extra &mdash; with the answer first, colored by topic. Nothing to
+      sign up for, and your progress stays in your own browser.</p>
+  </div>
+
+  <div class="cards">
+  <section class="card" aria-labelledby="tiles-h">
+    <header><h2 id="tiles-h">Start here</h2></header>
+    <div class="body">
+      <div class="hi-tiles">
+        <a class="hi-tile" href="/study.html">
+          <h2>Study guide</h2>
+          <p>Every question with the answer first. Browse by group, drill with flashcards, take a practice exam scored
+            against the real passing score, and see a mastery map of everywhere you have been.</p>
+          <div class="stats" id="hi-study-stats"><div class="stat"><b>&hellip;</b><span>loading</span></div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+  </div>
+</main>
+<footer class="hint credit">
+  <p>Questions and figures are from the <a href="https://ncvec.org/index.php/amateur-question-pools">National Conference of Volunteer
+    Examiner Coordinators (NCVEC)</a> amateur question pools, which the NCVEC releases into the public domain.</p>
+  <p>Ham Study is not affiliated with the FCC, the NCVEC or the ARRL, and is not an official exam-prep service.
+    Check the current pool and the rules with your Volunteer Examiner Coordinator before you test.</p>
+  <p><a href="https://tcos.app/">tcos.app</a> &middot;
+    <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
+</footer>
+<script src="/js/shell.js"></script>
+<script src="/js/index.js" defer></script>
 </body>
 </html>
