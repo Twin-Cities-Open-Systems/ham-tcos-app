@@ -202,16 +202,7 @@
     var head = card.querySelector("[data-tc-collapse-head]");
     if (head) { head.setAttribute("aria-expanded", String(open)); }
   }
-  /* A guide card has two faces: the question and the answer. Only the visible face is
-     focusable (the CSS hides the other), so focus moves with the flip. */
-  function flipCard(card, toAnswer, moveFocus) {
-    if (!card) { return; }
-    card.setAttribute("data-flipped", String(toAnswer));
-    if (moveFocus) { var n = card.querySelector(toAnswer ? ".ham-backq" : ".ham-flipbtn"); if (n) { n.focus({ preventScroll: true }); } }
-  }
-  function flipAll(box, toAnswer) {
-    Array.prototype.forEach.call(box.querySelectorAll(".ham-flip"), function (c) { flipCard(c, toAnswer, false); });
-  }
+  var TCflip = window.TC && window.TC.flip;
   function openAll(box) {
     Array.prototype.forEach.call(box.querySelectorAll("[data-tc-collapse]"), function (c) { setOpen(c, true); });
   }
@@ -256,7 +247,7 @@
       var el = $(elId);
       if (!el) { return; }
       openAncestors(el);
-      if (el.classList.contains("ham-flip")) { flipCard(el, true, false); }
+      if (el.classList.contains("tc-flip")) { TCflip.set(el, true, false); }
       var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       el.scrollIntoView({ block: "center", behavior: still ? "auto" : "smooth" });
       el.classList.add("is-jumped");
@@ -370,24 +361,24 @@
      answer on the back, the same turn in both. */
   function flipHtml(q, cls, domId, mark, front, back) {
     var id = esc(q.id);
-    return '<li class="' + cls + ' ham-flip" id="' + domId + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-flipped="false"><div class="ham-flip-in">' +
-      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + id + '" aria-label="' + id + ": " + esc(q.question) + ' Show the answer.">' +
+    return '<li class="' + cls + ' tc-flip" id="' + domId + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-flipped="false"><div class="tc-flip-in">' +
+      '<div class="tc-face tc-front"><button type="button" class="tc-flipbtn" data-tc-flip="' + id + '" aria-label="' + id + ": " + esc(q.question) + ' Show the answer.">' +
       '<span class="ham-fq"><span class="mono">' + id + '</span> ' + esc(q.question) + mark + '</span></button>' + front +
-      '<span class="ham-flip-cue" aria-hidden="true">Show answer &#8635;</span></div>' +
-      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
-      esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
+      '<span class="tc-flip-cue" aria-hidden="true">Show answer &#8635;</span></div>' +
+      '<div class="tc-face tc-back"><button type="button" class="tc-backq" data-tc-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
+      esc(q.question) + '<span class="tc-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
   }
   /* The same two-faced card for a glossary term or a formula: its name and a real-world
-     use on the front, what it means on the back. ham-fit lets the card be as tall as
+     use on the front, what it means on the back. tc-fit lets the card be as tall as
      the face showing, not the taller of the two. */
   function flipNamedHtml(cls, domId, famAttr, key, dot, name, tag, cue, use, back) {
-    return '<li class="' + cls + ' ham-flip ham-fit" id="' + domId + '"' + famAttr + ' data-flipped="false"><div class="ham-flip-in">' +
-      '<div class="ham-face ham-front"><button type="button" class="ham-flipbtn" data-flip="' + esc(key) + '" aria-label="' + esc(name) + ". " + esc(use) + " Show the " + cue + '.">' +
+    return '<li class="' + cls + ' tc-flip tc-fit" id="' + domId + '"' + famAttr + ' data-flipped="false"><div class="tc-flip-in">' +
+      '<div class="tc-face tc-front"><button type="button" class="tc-flipbtn" data-tc-flip="' + esc(key) + '" aria-label="' + esc(name) + ". " + esc(use) + " Show the " + cue + '.">' +
       '<span class="ham-fq">' + dot + esc(name) + "</span></button>" + (tag || "") +
       '<p class="ham-use"><span class="ham-use-l">In practice</span> ' + esc(use) + "</p>" +
-      '<span class="ham-flip-cue" aria-hidden="true">Show ' + cue + " &#8635;</span></div>" +
-      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + esc(key) + '" aria-label="' + esc(name) + " " + cue + '. Show the name again.">' +
-      dot + esc(name) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
+      '<span class="tc-flip-cue" aria-hidden="true">Show ' + cue + " &#8635;</span></div>" +
+      '<div class="tc-face tc-back"><button type="button" class="tc-backq" data-tc-flip="' + esc(key) + '" aria-label="' + esc(name) + " " + cue + '. Show the name again.">' +
+      dot + esc(name) + '<span class="tc-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + back + "</div></div></li>";
   }
   /* The questions a term or formula appears in: a few ids up front, the rest one tap away. */
   var SHOWN_REFS = 4;
@@ -772,8 +763,8 @@
         choicesHtml(q, m.a) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
     };
     var flipTools = function (id) {
-      return '<div class="hs-tools"><div class="hs-seg"><button class="btn secondary" type="button" data-flipall="answers" data-target="' + id + '">Show all answers</button> ' +
-        '<button class="btn secondary" type="button" data-flipall="questions" data-target="' + id + '">Show all questions</button></div></div>';
+      return '<div class="hs-tools"><div class="hs-seg"><button class="btn secondary" type="button" data-tc-flipall="back" data-target="' + id + '">Show all answers</button> ' +
+        '<button class="btn secondary" type="button" data-tc-flipall="front" data-target="' + id + '">Show all questions</button></div></div>';
     };
     var section = function (id, title, count, inner) {
       return '<section class="ham-tgroup" id="hs-exam-' + id + '" data-tc-collapse="exam-' + id + '"><h4 data-tc-collapse-toggle>' + title +
@@ -886,14 +877,6 @@
       });
     });
     document.addEventListener("click", function (e) {
-      var f = e.target.closest("[data-flip]");
-      if (!f && !e.target.closest("a, button, input, select, textarea, summary")) {
-        f = e.target.closest(".ham-front");
-        if (!f && !String(window.getSelection && window.getSelection()).length) { f = e.target.closest(".ham-back"); }
-      }
-      if (f) { flipCard(f.closest(".ham-flip"), !f.closest(".ham-back"), true); return; }
-      var fa = e.target.closest("[data-flipall]");
-      if (fa) { flipAll($(fa.getAttribute("data-target")), fa.getAttribute("data-flipall") === "answers"); return; }
       var x = e.target.closest("[data-expand]");
       if (x && window.TC && window.TC.collapse) {
         var target = $(x.getAttribute("data-target"));
@@ -935,7 +918,7 @@
       if (state.fmode === "flip" && (e.key === "f" || (e.key === " " && tag !== "button"))) {
         e.preventDefault();
         var fc = $("hs-flash-card");
-        if (fc) { flipCard(fc, fc.getAttribute("data-flipped") !== "true", false); }
+        if (fc) { TCflip.set(fc, fc.getAttribute("data-flipped") !== "true", false); }
       } else if (n >= 0) { e.preventDefault(); pick("ABCD".charAt(n)); }
       else if (e.key === "ArrowRight") { e.preventDefault(); move(1); }
       else if (e.key === "ArrowLeft") { e.preventDefault(); move(-1); }
@@ -968,58 +951,14 @@
       }).join("") + "</tbody></table></div>";
   }
 
-  /* --- the way back ----------------------------------------------------------
-   * A long panel is a lot of scrolling, so a small pill follows the reader once the
-   * page is under way: back to the group they are inside, back to the panel's
-   * heading, back to the top. It reads the page as it scrolls, so it names
-   * whatever is actually above the reader and shows only the levels that are
-   * out of sight. */
+  /* The way-back pill is the shell's (TC.wayback); this says what it is reading. */
   function initWayBack() {
-    var nav = $("hs-jump");
-    if (!nav) { return; }
-    var btn = {};
-    Array.prototype.forEach.call(nav.querySelectorAll("[data-hs-to]"), function (b) { btn[b.getAttribute("data-hs-to")] = b; });
-    var HEAD = 76, LINE = 96, target = {}, queued = false;
-    function words(el) {
-      var c = el.cloneNode(true);
-      Array.prototype.forEach.call(c.querySelectorAll(".count,.tc-collapse-marker,.ham-famtag,.chip,[aria-hidden=true]"), function (x) { x.remove(); });
-      return c.textContent.replace(/\s+/g, " ").trim();
-    }
-    function within(panel) {
-      var hit = null;
-      Array.prototype.forEach.call(panel.querySelectorAll("details.ham-group, [data-tc-collapse]"), function (g) {
-        var r = g.getBoundingClientRect(), head = g.querySelector("summary, [data-tc-collapse-toggle]");
-        if (head && r.top <= LINE && r.bottom > LINE + 60 && head.getBoundingClientRect().bottom < HEAD) { hit = { el: head, label: words(head) }; }
-      });
-      return hit;
-    }
-    function update() {
-      queued = false;
-      var panel = $("hs-panel-" + state.mode);
-      var on = panel && window.scrollY > 320;
-      nav.setAttribute("data-show", String(!!on));
-      if (!on) { return; }
-      var hd = panel.querySelector("header"), g = within(panel);
-      var showPanel = hd && hd.getBoundingClientRect().bottom < HEAD;
-      target.group = g && g.el; target.panel = hd;
-      btn.group.hidden = !g || !g.label; if (g) { btn.group.querySelector("span").textContent = g.label; }
-      btn.panel.hidden = !showPanel;
-      if (hd) { btn.panel.querySelector("span").textContent = words(hd.querySelector("h2") || hd); }
-      nav.setAttribute("data-has-group", String(!btn.group.hidden));
-    }
-    function queue() { if (!queued) { queued = true; window.requestAnimationFrame(update); } }
-    nav.addEventListener("click", function (e) {
-      var b = e.target.closest("[data-hs-to]");
-      if (!b) { return; }
-      var to = b.getAttribute("data-hs-to"), el = target[to];
-      var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var y = to === "top" ? 0 : el ? el.getBoundingClientRect().top + window.scrollY - HEAD : null;
-      if (y !== null) { window.scrollTo({ top: Math.max(0, y), behavior: still ? "auto" : "smooth" }); }
+    if (!(window.TC && window.TC.wayback)) { return; }
+    window.TC.wayback.init($("hs-jump"), {
+      scope: function () { return $("hs-panel-" + state.mode); },
+      groups: "details.ham-group, [data-tc-collapse]",
+      strip: ".ham-famtag"
     });
-    window.addEventListener("scroll", queue, { passive: true });
-    window.addEventListener("resize", queue);
-    document.addEventListener("click", function () { window.setTimeout(queue, 60); });
-    queue();
   }
 
   function fail(msg) {

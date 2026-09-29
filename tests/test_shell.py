@@ -101,15 +101,22 @@ class Grid(unittest.TestCase):
         i = self.js.index("function flipHtml")
         card = self.js[i:self.js.index("function guideCardHtml")]
         self.assertNotIn("data-tc-collapse", card)
-        self.assertLess(card.index("ham-front"), card.index("ham-back"))
+        self.assertLess(card.index("tc-front"), card.index("tc-back"))
         self.assertIn('data-flipped="false"', card)
         g = self.js.index("function guideCardHtml")
         guide = self.js[g:self.js.index("/* --- glossary and formulas")]
         self.assertLess(guide.index("ansHtml"), guide.index("chipsHtml(q)"))
-        css = (ROOT / "css" / "study.css").read_text()
+        css = (ROOT / "css" / "shell.css").read_text()
         self.assertIn("backface-visibility:hidden", css)
-        self.assertIn('.ham-flip[data-flipped="false"] .ham-back', css)
+        self.assertIn('.tc-flip[data-flipped="false"] .tc-back', css)
         self.assertIn("prefers-reduced-motion", css)
+
+    def test_flip_pill_and_dock_are_the_shells_not_ours(self):
+        study = (ROOT / "css" / "study.css").read_text()
+        for gone in ("\n.tc-flip{", "\n.tc-jump{", "\n.tc-dock{", "backface-visibility"):
+            self.assertNotIn(gone, study)
+        self.assertIn("window.TC.wayback.init", self.js)
+        self.assertNotIn("function flipCard", self.js)
 
     def test_browse_questions_flip_like_the_guide_and_do_not_expand(self):
         i = self.js.index("function pillHtml")
