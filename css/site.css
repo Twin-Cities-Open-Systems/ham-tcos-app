@@ -53,6 +53,8 @@ input,select,textarea,button{font-family:inherit;font-variant-numeric:slashed-ze
 .top nav{display:flex;gap:.15rem}
 .top nav a{color:var(--ink);text-decoration:none;padding:.3rem .6rem;border-radius:7px;font-size:.92rem}
 .top nav a:hover,.top nav a:focus-visible,.top nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
+.top nav a.ext::after{content:"\2197";margin-left:.25em;font-size:.85em}
+@media (max-width:30rem){.top nav{flex-wrap:wrap}}
 .fontsize-toggle,.theme-toggle{display:flex;gap:.15rem;align-items:center}
 .fontsize-btn,.theme-btn{background:var(--sunk);border:1px solid var(--rule);color:var(--muted);
   border-radius:6px;padding:.22rem .45rem;font-size:.72rem;cursor:pointer;font-family:inherit}

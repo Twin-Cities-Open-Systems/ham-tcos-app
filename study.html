@@ -23,7 +23,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
 <body>
 <header class="top">
   <span class="brand"><a href="/">Ham Study</a></span>
-  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html" aria-current="page">Study guide</a></nav>
+  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html" aria-current="page">Study guide</a><a class="ext" href="https://ham.study" target="_blank" rel="noopener">HamStudy.org</a></nav>
   <div class="fontsize-toggle"><span class="fs-label">Aa</span>
     <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
     <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
@@ -43,7 +43,8 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     <h1>Study guide</h1>
     <p class="lede">Study for the amateur radio license exams from the official NCVEC question pools: Technician 2026&ndash;2030,
       General 2023&ndash;2027 and Extra 2024&ndash;2028. The <strong>Guide</strong> is the answer to every question, colored by
-      topic family, and the <strong>Mastery map</strong> shows every question at a glance. Or browse by subelement and group,
+      topic family, with the terms and formulas each question uses one tap away in the <strong>Glossary</strong> and <strong>Formulas</strong>.
+      The <strong>Mastery map</strong> shows every question at a glance. Or browse by subelement and group,
       drill with flashcards, or take a practice exam drawn the way the real one is &mdash; one question from each group &mdash;
       and scored against the passing score.</p>
     <p class="lede">Your answers are counted in this browser only &mdash; nothing is sent anywhere.</p>
@@ -70,6 +71,8 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
         <button class="tab" type="button" role="tab" data-mode="browse" aria-selected="false" aria-controls="hs-panel-browse">Browse</button>
         <button class="tab" type="button" role="tab" data-mode="flash" aria-selected="false" aria-controls="hs-panel-flash">Flashcards</button>
         <button class="tab" type="button" role="tab" data-mode="exam" aria-selected="false" aria-controls="hs-panel-exam">Practice exam</button>
+        <button class="tab" type="button" role="tab" data-mode="glossary" aria-selected="false" aria-controls="hs-panel-glossary">Glossary</button>
+        <button class="tab" type="button" role="tab" data-mode="formulas" aria-selected="false" aria-controls="hs-panel-formulas">Formulas</button>
         <button class="tab" type="button" role="tab" data-mode="mastery" aria-selected="false" aria-controls="hs-panel-mastery">Mastery map</button>
       </div>
       <p class="hint" id="hs-status" role="status" aria-live="polite"></p>
@@ -126,6 +129,25 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     </div>
   </section>
 
+  <section class="card" id="hs-panel-glossary" aria-labelledby="glossary-h" hidden>
+    <header>
+      <h2 id="glossary-h">Glossary</h2>
+      <span class="count" id="hs-glossary-count"></span>
+    </header>
+    <div class="body">
+      <p class="hs-ref-controls"><label>Search terms <input type="search" id="hs-gloss-search" placeholder="ampere" autocomplete="off"></label></p>
+      <div id="hs-glossary"></div>
+    </div>
+  </section>
+
+  <section class="card" id="hs-panel-formulas" aria-labelledby="formulas-h" hidden>
+    <header>
+      <h2 id="formulas-h">Formulas</h2>
+      <span class="count" id="hs-formulas-count"></span>
+    </header>
+    <div class="body"><div id="hs-formulas"></div></div>
+  </section>
+
   <section class="card" id="hs-panel-mastery" aria-labelledby="mastery-h" hidden>
     <header>
       <h2 id="mastery-h">Mastery map</h2>
@@ -160,7 +182,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
 <footer class="hint credit">
   <p>Questions and figures are from the <a href="https://ncvec.org/index.php/amateur-question-pools">National Conference of Volunteer
     Examiner Coordinators (NCVEC)</a> amateur question pools, which the NCVEC releases into the public domain.</p>
-  <p>Ham Study is not affiliated with the FCC, the NCVEC or the ARRL, and is not an official exam-prep service.
+  <p>Ham Study is not affiliated with the FCC, the NCVEC, the ARRL or HamStudy.org (an independent site, linked in the header), and is not an official exam-prep service.
     Check the current pool and the rules with your Volunteer Examiner Coordinator before you test.</p>
   <p><a href="https://tcos.app/">tcos.app</a> &middot;
     <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
