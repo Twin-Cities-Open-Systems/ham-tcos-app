@@ -42,7 +42,7 @@
     return modes.indexOf(g) >= 0 ? g : modes[0];
   }
   var state = {
-    groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0 },
+    groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0, browse: 0 },
     data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
     deck: [], card: 0, shuffled: false, answered: null, exam: null, showAnswer: true
   };
@@ -155,7 +155,7 @@
   }
   /* The letters on a family mark are whichever of the two inks reads better on
      its hue, by WCAG contrast; tests/test_contrast.py holds the same rule to 4.5:1. */
-  var INK_LIGHT = "#fcfbf9", INK_DARK = "#10161c";
+  var INK_LIGHT = "#fbfdff", INK_DARK = "#10161c";
   function luminance(hex) {
     var c = [1, 3, 5].map(function (i) {
       var v = parseInt(hex.substr(i, 2), 16) / 255;
@@ -210,8 +210,9 @@
    * reads its toolbar back with syncTools, so the column control is one piece of
    * code, not three. Auto (0) is CSS: one column on a phone, two on a tablet,
    * three on a desktop. */
-  function gridHtml(panel, cls, inner, bodyAttr) {
-    return '<ul class="' + cls + ' ham-grid" data-cols="' + state.cols[panel] + '"' + (bodyAttr ? " data-tc-collapse-body" : "") + ">" + inner + "</ul>";
+  function gridHtml(panel, cls, inner, bodyAttr, tag) {
+    tag = tag || "ul";
+    return "<" + tag + ' class="' + cls + ' ham-grid" data-cols="' + state.cols[panel] + '"' + (bodyAttr ? " data-tc-collapse-body" : "") + ">" + inner + "</" + tag + ">";
   }
   function pressGroup(selector, value, attr) {
     Array.prototype.forEach.call(document.querySelectorAll(selector), function (b) {
@@ -255,7 +256,7 @@
   function guideGroup(g, list) {
     return '<div class="ham-ggroup ham-pill" data-tc-collapse="grp-' + esc(g.id) + '"><h5 data-tc-collapse-toggle><span class="mono">' +
       esc(g.id) + "</span> " + esc(g.title) + '<span class="count">' + plural(list.length, "question") + "</span></h5>" +
-      gridHtml("guide", "ham-gcards", list.map(guideCardHtml).join(""), true) + "</div>";
+      '<ul class="ham-gcards" data-tc-collapse-body>' + list.map(guideCardHtml).join("") + "</ul></div>";
   }
   /* The Guide is one tree -- family > subelement > group > question -- read
      three ways. Family (default) is the tree as authored; Subelement drops the
@@ -280,7 +281,7 @@
         n += list.length;
         html.push(guideGroup(g, list));
       });
-      return { html: html.join(""), n: n };
+      return { html: n ? gridHtml("guide", "ham-ggrid", html.join(""), false, "div") : "", n: n };
     }
     var out = [];
     if (mode === "none") {
@@ -557,6 +558,7 @@
     var byGroup = {};
     qs.forEach(function (q) { (byGroup[q.group] = byGroup[q.group] || []).push(q); });
     var out = [];
+    syncTools("browse");
     p.subelements.forEach(function (s) {
       if (state.sub && s.id !== state.sub) { return; }
       s.groups.forEach(function (g) {
@@ -570,7 +572,7 @@
           '<div class="body"><ol class="ham-pills">' + list.map(pillHtml).join("") + "</ol></div></details>");
       });
     });
-    box.innerHTML = out.length ? out.join("") : "<p>" + chip("neutral", ICON.neutral, "no questions match") + "</p>";
+    box.innerHTML = out.length ? gridHtml("browse", "ham-bgrid", out.join(""), false, "div") : "<p>" + chip("neutral", ICON.neutral, "no questions match") + "</p>";
     $("hs-count").textContent = qs.length + " of " + poolQuestions().length + " questions";
   }
   function pillHtml(q) {
@@ -750,7 +752,7 @@
     if (state.group && !groups.some(function (g) { return g.id === state.group; })) { state.group = ""; }
     fillSelect($("hs-group"), groups, state.group, "all groups");
   }
-  RENDER.guide = renderGuide; RENDER.glossary = renderGlossary; RENDER.formulas = renderFormulas;
+  RENDER.guide = renderGuide; RENDER.glossary = renderGlossary; RENDER.formulas = renderFormulas; RENDER.browse = renderBrowse;
   function render() {
     ["guide", "browse", "flash", "exam", "glossary", "formulas", "mastery"].forEach(function (m) {
       $("hs-panel-" + m).hidden = m !== state.mode;

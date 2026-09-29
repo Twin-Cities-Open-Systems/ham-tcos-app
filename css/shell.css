@@ -25,8 +25,8 @@
  * --edge is what draws a component's boundary, so it carries the 3:1.
  * --bg < --surface < --sunk is the page, the card, the pill on the card. */
 :root{
-  --bg:#e4e8ec; --surface:#fcfbf9; --sunk:#eeece8; --ink:#1b2128; --muted:#3f4b57;
-  --rule:#c9d1d8; --edge:#69757f; --accent:#144a86; --accent-soft:#dbe7f4; --on-accent:#fcfbf9;
+  --bg:#e8eef5; --surface:#fbfdff; --sunk:#eef3f9; --ink:#17202a; --muted:#3a4757;
+  --rule:#ccd6e2; --edge:#66788c; --accent:#0f4c9c; --accent-soft:#d9e8fa; --on-accent:#fbfdff;
   --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
   --good-ink:#0a5c0a; --warning-ink:#6b4700; --serious-ink:#7c3210; --critical-ink:#921f1f;
   --good-bg:#e3f2e3; --warning-bg:#fbf1da; --serious-bg:#fbeae3; --critical-bg:#f8e3e3;
@@ -49,6 +49,25 @@
   --good-bg:#12291b; --warning-bg:#2a2413; --serious-bg:#2c1d16; --critical-bg:#2c1717;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.45);
 }
+/* Named themes. [data-theme] stays light or dark (the base every component and
+ * child app already keys on); [data-skin] restates only the core tokens, so a
+ * skin needs no per-component rules. Status colors keep their base. */
+:root[data-skin="paper"]{
+  --bg:#ece3d0; --surface:#faf5e8; --sunk:#f3ead6; --ink:#2a2318; --muted:#54473a;
+  --rule:#d6c9ae; --edge:#75634c; --accent:#7a3410; --accent-soft:#ecdcbf; --on-accent:#faf5e8;
+}
+:root[data-skin="contrast"]{
+  --bg:#f2f2f2; --surface:#fdfdfd; --sunk:#e9e9e9; --ink:#0a0a0a; --muted:#252525;
+  --rule:#8c8c8c; --edge:#333333; --accent:#0a2f80; --accent-soft:#d5def5; --on-accent:#fdfdfd;
+}
+:root[data-skin="midnight"]{
+  --bg:#070b1a; --surface:#101830; --sunk:#0a1024; --ink:#e6ecff; --muted:#adb9db;
+  --rule:#25325a; --edge:#7183b3; --accent:#93b7ff; --accent-soft:#1a2a55; --on-accent:#070b1a;
+}
+:root[data-skin="graphite"]{
+  --bg:#181a1d; --surface:#24272b; --sunk:#1b1d20; --ink:#e6e8ea; --muted:#adb2b8;
+  --rule:#383c42; --edge:#7d858e; --accent:#72d4cb; --accent-soft:#1f3b39; --on-accent:#181a1d;
+}
 :root[data-fs="s"]{--fs:14px}  :root[data-fs="m"]{--fs:16px}
 :root[data-fs="l"]{--fs:18px}  :root[data-fs="xl"]{--fs:21px}
 :root[data-fs="xxl"]{--fs:25px}
@@ -56,7 +75,8 @@
 /* `hidden` is a state, not a style: an author rule that sets display would
  * otherwise beat the UA's [hidden]{display:none}. */
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:slashed-zero}
+html{font-size:var(--fs)}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:slashed-zero}
 /* The zero is always slashed, in every font everywhere. font-variant-numeric does not merge:
    any rule that sets it must repeat slashed-zero, and form controls do not inherit it. */
 input,select,textarea,button{font-family:inherit;font-variant-numeric:slashed-zero}
@@ -72,6 +92,7 @@ input,select,textarea,button{font-family:inherit;font-variant-numeric:slashed-ze
 .top nav a:hover,.top nav a:focus-visible,.top nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
 .top nav a.ext::after{content:"\2197";margin-left:.25em;font-size:.85em}
 @media (max-width:30rem){.top nav{flex-wrap:wrap}}
+.theme-select{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);border-radius:6px;padding:.22rem .5rem;font:inherit;font-size:.85rem;min-height:44px;cursor:pointer}
 .fontsize-toggle,.theme-toggle{display:flex;gap:.15rem;align-items:center}
 .fontsize-btn,.theme-btn{background:var(--sunk);border:1px solid var(--edge);color:var(--muted);
   border-radius:6px;padding:.22rem .45rem;font-size:.8rem;cursor:pointer;font-family:inherit}

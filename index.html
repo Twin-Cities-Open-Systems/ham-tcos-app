@@ -36,7 +36,7 @@
 </style>
 <script>(function(){var d=document.documentElement;
 try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
-var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-theme",t);}catch(e){d.setAttribute("data-fs","m");}})();</script>
+var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-theme",{paper:"light",contrast:"light",midnight:"dark",graphite:"dark"}[t]||t);d.setAttribute("data-skin",t);}}catch(e){d.setAttribute("data-fs","m");}})();</script>
 </head>
 <body>
 <header class="top">
@@ -49,10 +49,16 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto")d.setAttribute("data-the
     <button class="fontsize-btn" data-size="xl" type="button" aria-pressed="false">XL</button>
     <button class="fontsize-btn" data-size="xxl" type="button" aria-pressed="false">XXL</button>
   </div>
-  <div class="theme-toggle">
-    <button class="theme-btn" data-theme-choice="light" type="button" aria-pressed="false">Light</button>
-    <button class="theme-btn" data-theme-choice="dark"  type="button" aria-pressed="false">Dark</button>
-    <button class="theme-btn" data-theme-choice="auto"  type="button" aria-pressed="true">Auto</button>
+  <div class="theme-toggle"><label class="fs-label" for="theme-select">Theme</label>
+    <select class="theme-select" id="theme-select">
+      <option value="auto">Auto (system)</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="paper">Paper (warm, low glare)</option>
+      <option value="contrast">High contrast</option>
+      <option value="midnight">Midnight</option>
+      <option value="graphite">Graphite</option>
+    </select>
   </div>
 </header>
 
