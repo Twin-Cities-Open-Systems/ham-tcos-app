@@ -21,3 +21,7 @@ the CI payload and its required-member check. Never commit or push to
 
 The repo is public. Nothing internal goes in it: no lab hostnames beyond what
 `deploy.sh` needs, no IP addresses, no operator details, no tokens.
+
+## Open Graph tags
+
+Every page carries the full og set (title, description, url, image with width, height and alt, locale) plus `twitter:card` `summary_large_image`, and the og image is a 1200x630 title card from the org tile generator (`tools/meme-factory/tile/tile.py`, recipe in `og.jpg.job.json`), the same card the media pages use, with provenance and branding EXIF. `tests/test_pages.py` fails when a page lacks any of it. A new page needs the tags in the same PR.
