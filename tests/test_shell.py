@@ -60,7 +60,7 @@ class Collapsible(unittest.TestCase):
 
     def test_rendered_pills_are_handed_to_collapse_js(self):
         js = (ROOT / "js" / "study.js").read_text()
-        for kind in ("fam-", "sub-", "grp-", "q-", "term-", "formula-"):
+        for kind in ("fam-", "sub-", "grp-", "term-", "formula-"):
             self.assertIn(f'data-tc-collapse="{kind}', js, kind)
         self.assertGreaterEqual(js.count("initCollapse("), 4)
         self.assertIn("openAncestors(el)", js)
@@ -97,12 +97,17 @@ class Grid(unittest.TestCase):
         self.assertIn('.ham-gcards>.ham-gcard[data-tc-collapsed="false"]', css)
         self.assertIn("grid-column:1/-1", css)
 
-    def test_a_collapsed_question_is_its_stem_and_the_answer_comes_first(self):
+    def test_a_guide_question_flips_between_its_stem_and_the_answer(self):
         i = self.js.index("function guideCardHtml")
-        card = self.js[i:i + 1600]
-        self.assertLess(card.index("data-tc-collapse-toggle"), card.index("data-tc-collapse-body"))
+        card = self.js[i:i + 1800]
+        self.assertNotIn("data-tc-collapse", card)
+        self.assertLess(card.index("ham-front"), card.index("ham-back"))
         self.assertLess(card.index("ansHtml"), card.index("chipsHtml(q)"))
-        self.assertIn('data-tc-collapse-default="collapsed"', card)
+        self.assertIn('data-flipped="false"', card)
+        css = (ROOT / "css" / "study.css").read_text()
+        self.assertIn("backface-visibility:hidden", css)
+        self.assertIn('.ham-flip[data-flipped="false"] .ham-back', css)
+        self.assertIn("prefers-reduced-motion", css)
 
     def test_prefs_are_guarded_and_motion_is_respected(self):
         self.assertIn("try { return window.localStorage.getItem", self.js)

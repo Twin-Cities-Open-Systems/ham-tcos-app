@@ -196,6 +196,16 @@
     var head = card.querySelector("[data-tc-collapse-head]");
     if (head) { head.setAttribute("aria-expanded", String(open)); }
   }
+  /* A guide card has two faces: the question and the answer. Only the visible face is
+     focusable (the CSS hides the other), so focus moves with the flip. */
+  function flipCard(card, toAnswer, moveFocus) {
+    if (!card) { return; }
+    card.setAttribute("data-flipped", String(toAnswer));
+    if (moveFocus) { var n = card.querySelector(toAnswer ? ".ham-backq" : ".ham-front"); if (n) { n.focus({ preventScroll: true }); } }
+  }
+  function flipAll(box, toAnswer) {
+    Array.prototype.forEach.call(box.querySelectorAll(".ham-flip"), function (c) { flipCard(c, toAnswer, false); });
+  }
   function openAll(box) {
     Array.prototype.forEach.call(box.querySelectorAll("[data-tc-collapse]"), function (c) { setOpen(c, true); });
   }
@@ -240,6 +250,7 @@
       var el = $(elId);
       if (!el) { return; }
       openAncestors(el);
+      if (el.classList.contains("ham-flip")) { flipCard(el, true, false); }
       var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       el.scrollIntoView({ block: "center", behavior: still ? "auto" : "smooth" });
       el.classList.add("is-jumped");
@@ -355,10 +366,13 @@
       ? '<p class="ham-gans">' + tick + ' <span class="ham-gans-lead">All of these are correct:</span></p>' +
         '<ul class="ham-gall">' + q.answers.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ul>"
       : '<p class="ham-gans">' + tick + " " + esc(q.answer) + "</p>";
-    return '<li class="ham-gcard ham-pill" id="hs-guide-' + esc(q.id) + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-tc-collapse="q-' + esc(q.id) +
-      '" data-tc-collapse-default="collapsed"><h6 data-tc-collapse-toggle><span class="mono">' + esc(q.id) + '</span> <span class="ham-gq">' +
-      esc(q.question) + '</span></h6><div data-tc-collapse-body>' + ansHtml + chipsHtml(q) + figureHtml(q) +
-      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</div></li>";
+    var id = esc(q.id);
+    return '<li class="ham-gcard ham-flip" id="hs-guide-' + id + '" style="--fam:var(--fam-' + esc(q.family) + ')" data-flipped="false"><div class="ham-flip-in">' +
+      '<button type="button" class="ham-face ham-front" data-flip="' + id + '" aria-label="' + id + ": " + esc(q.question) + ' Show the answer.">' +
+      '<span class="ham-fq"><span class="mono">' + id + '</span> ' + esc(q.question) + '</span><span class="ham-flip-cue" aria-hidden="true">Show answer &#8635;</span></button>' +
+      '<div class="ham-face ham-back"><button type="button" class="ham-backq" data-flip="' + id + '" aria-label="' + id + ' answer. Show the question again."><span class="mono">' + id + '</span> ' +
+      esc(q.question) + '<span class="ham-flip-cue" aria-hidden="true">Back &#8634;</span></button>' + ansHtml + chipsHtml(q) + figureHtml(q) +
+      (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "") + "</div></div></li>";
   }
 
   /* --- glossary and formulas ---------------------------------------------------
@@ -810,6 +824,10 @@
       });
     });
     document.addEventListener("click", function (e) {
+      var f = e.target.closest("[data-flip]");
+      if (f) { flipCard(f.closest(".ham-flip"), f.classList.contains("ham-front"), true); return; }
+      var fa = e.target.closest("[data-flipall]");
+      if (fa) { flipAll($(fa.getAttribute("data-target")), fa.getAttribute("data-flipall") === "answers"); return; }
       var x = e.target.closest("[data-expand]");
       if (x && window.TC && window.TC.collapse) {
         var target = $(x.getAttribute("data-target"));
