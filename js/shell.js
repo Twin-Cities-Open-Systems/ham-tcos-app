@@ -1,4 +1,4 @@
-/* shell.js: the header (menu, text size, theme), flip cards and the way-back pill, on every page. OWNED by tcos-app;
+/* shell.js: the header (menu, text size, theme), flip cards and the way-back pill, on every TCOS web page. OWNED by tcos-app;
  * children copy it, never edit the copy (tcos-app CLAUDE.md, "How a child app inherits").
  *
  * Choices persist in localStorage and are applied before paint by the inline

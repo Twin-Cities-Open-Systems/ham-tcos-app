@@ -1,6 +1,6 @@
-/* shell.css -- the shared stylesheet of every tcos.app app. OWNED by tcos-app;
- * children copy it (see CLAUDE.md, "How a child app inherits"), never edit the copy.
- * Derived from fleet-ops/view/assets/view.css minus the operator-only parts.
+/* shell.css -- the shared stylesheet of every TCOS web page: the *.tcos.app apps,
+ * view.lab, the tcos.us sites and the media hubs. OWNED by tcos-app; children copy
+ * it (see CLAUDE.md, "How a child inherits"), never edit the copy.
  *
  * Status colors are the reserved palette for fills, edges and icons, never
  * themed:  good #0ca30c   warning #fab219   serious #ec835a   critical #d03b3b
@@ -132,12 +132,17 @@ code{font-family:ui-monospace,monospace;font-size:.86em;background:var(--sunk);p
 /* A state that is correct and is not a status: a stopped template is not a
  * fault, so it must not borrow a status color to say so. */
 .chip.neutral{color:var(--muted);background:var(--sunk)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:1px;
+/* Flex, not grid: a grid cannot stretch a short last row, so ten tiles at a card
+   width of seven left the second row two-thirds empty (inv.lab, 2026-09-30). Each
+   tile grows to fill its row. */
+.stats{display:flex;flex-wrap:wrap;gap:1px;
        background:var(--rule);border:1px solid var(--edge);border-radius:10px;overflow:hidden}
-.stat{background:var(--surface);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.15rem}
+.stat{background:var(--surface);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.15rem;flex:1 1 8rem;min-width:8rem}
 .stat b{font-family:ui-monospace,monospace;font-size:1.7rem;font-weight:600;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums slashed-zero}
 .stat span{font-family:ui-monospace,monospace;font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
-.stat.is-good b{color:var(--good-ink)} .stat.is-critical b{color:var(--critical-ink)}
+.stat.is-good b{color:var(--good-ink)} .stat.is-critical b{color:var(--critical-ink)} .stat.is-warning b{color:var(--warning-ink)}
+/* A zero is present, not loud: an empty state should not read like a live one. */
+.stat.is-empty b,.stat.is-empty span{opacity:.45}
 .card{background:var(--surface);border:1px solid var(--edge);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
 .card>header{padding:.75rem 1rem;border-bottom:1px solid var(--rule);background:var(--sunk);
              display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
@@ -306,7 +311,10 @@ body:has(.tc-dock:not([hidden])) .tc-jump{bottom:calc(max(8px,env(safe-area-inse
 
 @media print{
   html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  :root,:root[data-theme]{--bg:#fff;--surface:#fff;--sunk:#f3f3f3;--ink:#000;--muted:#333;--edge:#555;--accent:#0b3a70}
+  /* Paper by default. A page whose own export promises "the PDF looks like the
+     screen" (view.lab's PDF button) opts out with <html data-tc-print="theme">
+     and keeps the reader's theme, dark included. */
+  :root:not([data-tc-print="theme"]),:root[data-theme]:not([data-tc-print="theme"]){--bg:#fff;--surface:#fff;--sunk:#f3f3f3;--ink:#000;--muted:#333;--edge:#555;--accent:#0b3a70}
   body{font-size:11pt;line-height:1.4}
   .top,.grip,.tc-collapse-marker,.card-tools input,.card-tools .hint{display:none!important}
   [data-tc-collapse][data-tc-collapsed='true'] [data-tc-collapse-body]{display:block!important}
