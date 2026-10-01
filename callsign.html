@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Call signs &middot; Just Another Ham Study</title>
+<meta name="description" content="Search every US amateur radio call sign the FCC has on file, by regular expression, by holder, or by any column; and check whether a call's format is one the FCC assigns.">
+<link rel="canonical" href="https://ham.tcos.app/callsign">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Just Another Ham Study">
+<meta property="og:title" content="Call signs &middot; Just Another Ham Study">
+<meta property="og:description" content="Search every US amateur radio call sign the FCC has on file, by regular expression, by holder, or by any column; and check whether a call's format is one the FCC assigns.">
+<meta property="og:url" content="https://ham.tcos.app/callsign">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ham.tcos.app/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Just Another Ham Study: US amateur radio exam study guide, 1,431 questions across the Technician, General and Extra pools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Call signs &middot; Just Another Ham Study">
+<meta name="twitter:description" content="Search every US amateur radio call sign the FCC has on file, by regular expression, by holder, or by any column; and check whether a call's format is one the FCC assigns.">
+<meta name="twitter:image" content="https://ham.tcos.app/og.jpg">
+<link rel="stylesheet" href="/css/shell.css">
+<link rel="stylesheet" href="/css/ham.css">
+<link rel="stylesheet" href="/css/callsign.css">
+<script>(function(){var d=document.documentElement;
+try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
+var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-theme",{paper:"light",contrast:"light",midnight:"dark",graphite:"dark"}[t]||t);d.setAttribute("data-skin",t);}}catch(e){d.setAttribute("data-fs","m");}})();</script>
+</head>
+<body>
+<header class="top">
+  <span class="brand"><a href="/">Just Another Ham Study</a></span>
+  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html">Study guide</a><a href="/callsign.html" aria-current="page">Call signs</a><a class="ext" href="https://ham.study" target="_blank" rel="noopener">HamStudy.org</a></nav>
+  <div class="fontsize-toggle"><span class="fs-label">Aa</span>
+    <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
+    <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
+    <button class="fontsize-btn" data-size="l"  type="button" aria-pressed="false">L</button>
+    <button class="fontsize-btn" data-size="xl" type="button" aria-pressed="false">XL</button>
+    <button class="fontsize-btn" data-size="xxl" type="button" aria-pressed="false">XXL</button>
+  </div>
+  <div class="theme-toggle"><label class="fs-label" for="theme-select">Theme</label>
+    <select class="theme-select" id="theme-select">
+      <option value="auto">Auto (system)</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="paper">Paper (warm, low glare)</option>
+      <option value="contrast">High contrast</option>
+      <option value="midnight">Midnight</option>
+      <option value="graphite">Graphite</option>
+    </select>
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
+    <h1>Call signs</h1>
+    <p class="lede">Search the full FCC amateur radio call sign database &mdash; every call on file, not a ranked
+      sample &mdash; by regular expression, look up who holds one, or narrow by any column. Holder name, city and
+      state are the FCC's own public record, from its ULS files, refreshed weekly.</p>
+  </div>
+
+  <div class="cards" data-tc-arrange="callsign">
+  <section class="card" data-tc-arrange-item="search" data-tc-collapse="callsign-search" id="card-search" aria-labelledby="search-h">
+    <header>
+      <span class="grip" data-tc-arrange-handle title="Drag to reorder" aria-hidden="true">&#10303;</span>
+      <h2 id="search-h" data-tc-collapse-toggle>Search</h2>
+      <span class="count" id="cs-count">loading&hellip;</span>
+    </header>
+    <div class="body" data-tc-collapse-body>
+      <div class="tabs cs-modes" role="tablist" aria-label="Search mode">
+        <button class="tab" type="button" role="tab" data-mode="call" aria-selected="true" aria-controls="cs-panel-call">By call (regex)</button>
+        <button class="tab" type="button" role="tab" data-mode="holder" aria-selected="false" aria-controls="cs-panel-holder">By holder</button>
+      </div>
+      <div id="cs-panel-call">
+        <div class="cs-controls">
+          <label class="wide">Call regex <small>extended, case-insensitive, matched against the call sign only</small>
+            <input type="search" id="cs-q" placeholder="^K[0-9]YAW$" autocomplete="off" spellcheck="false"
+                   aria-describedby="cs-q-error"></label>
+          <label>Status <select id="cs-status"><option value="">all</option>
+            <option value="A">active</option><option value="C">cancelled</option>
+            <option value="E">expired</option><option value="T">terminated</option></select></label>
+          <label>Class <select id="cs-class"><option value="">all</option>
+            <option value="A">A (novice)</option><option value="G">G (general)</option>
+            <option value="T">T (technician)</option><option value="E">E (extra)</option>
+            <option value="P">P (advanced)</option></select></label>
+        </div>
+        <p class="cs-error" id="cs-q-error" role="alert" hidden></p>
+      </div>
+      <div id="cs-panel-holder" hidden>
+        <div class="cs-controls">
+          <label class="wide">Name, city or state <small>plain text, case-insensitive, over the whole record</small>
+            <input type="text" id="cs-name" placeholder="Twin Cities" autocomplete="off"></label>
+        </div>
+        <p class="hint">Every column in Results is a filter too (the row above the headings), and a sort (click a
+          heading). The filters search the whole index before the 200-row cap, so they find what the first 200
+          would have hidden; a filter on its own works without a name.</p>
+      </div>
+      <p class="cs-fresh" id="cs-fresh"></p>
+    </div>
+  </section>
+
+  <section class="card" id="card-detail" data-tc-collapse="callsign-detail" aria-labelledby="detail-h" hidden>
+    <header>
+      <span class="grip" data-tc-arrange-handle title="Drag to reorder" aria-hidden="true">&#10303;</span>
+      <h2 id="detail-h" data-tc-collapse-toggle tabindex="-1">Details</h2>
+    </header>
+    <div class="body cs-detail" data-tc-collapse-body id="cs-detail-body"></div>
+  </section>
+
+  <section class="card" data-tc-arrange-item="results" data-tc-collapse="callsign-results" id="card-results" aria-labelledby="results-h">
+    <header>
+      <span class="grip" data-tc-arrange-handle title="Drag to reorder" aria-hidden="true">&#10303;</span>
+      <h2 id="results-h" data-tc-collapse-toggle>Results</h2>
+      <span class="count" id="cs-rows-count"></span>
+    </header>
+    <div class="body" data-tc-collapse-body>
+      <div class="table-wrap">
+        <table class="tc-table cs-table" id="cs-table" data-tc-table>
+          <thead>
+            <tr class="cs-filters" id="cs-filters" hidden><td><input type="search" class="cs-f" data-col="call" aria-label="Filter Call" placeholder="K0" autocomplete="off" spellcheck="false"></td><td><select class="cs-f" data-col="status" aria-label="Filter Status"><option value="">all</option><option value="A">active</option><option value="C">cancelled</option><option value="E">expired</option><option value="T">terminated</option></select></td><td><select class="cs-f" data-col="class" aria-label="Filter Class"><option value="">all</option><option value="T">T</option><option value="G">G</option><option value="E">E</option><option value="A">A</option><option value="P">P</option><option value="N">N</option></select></td><td><input type="search" class="cs-f" data-col="group" aria-label="Filter Group" placeholder="A-D" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="format" aria-label="Filter Format" placeholder="1x2" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="grant" aria-label="Filter Grant" placeholder="2024" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="expires" aria-label="Filter Expires" placeholder="2026-1" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="name" aria-label="Filter Holder" placeholder="filter" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="city" aria-label="Filter City" placeholder="filter" autocomplete="off" spellcheck="false"></td><td><input type="search" class="cs-f" data-col="state" aria-label="Filter State" placeholder="MN" autocomplete="off" spellcheck="false"></td></tr>
+            <tr>
+            <th>Call</th><th>Status</th><th>Class</th><th>Group</th><th>Format</th>
+            <th data-tc-sort="date">Grant</th><th data-tc-sort="date">Expires</th>
+            <th>Holder</th><th>City</th><th>State</th>
+          </tr></thead>
+          <tbody id="cs-rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" data-tc-arrange-item="check" data-tc-collapse="callsign-check" id="card-check" aria-labelledby="check-h">
+    <header>
+      <span class="grip" data-tc-arrange-handle title="Drag to reorder" aria-hidden="true">&#10303;</span>
+      <h2 id="check-h" data-tc-collapse-toggle>Check a format</h2>
+      <span class="count">does the FCC assign this shape at all</span>
+    </header>
+    <div class="body" data-tc-collapse-body>
+      <div class="cs-controls">
+        <label class="wide">Call sign <small>checked against 47 CFR 97.119's format rules, not the index -- a call
+          can be a valid format and still be taken, or not yet on file</small>
+          <input type="text" id="cs-check" placeholder="NO0YAW" autocomplete="off"></label>
+      </div>
+      <p class="cs-check-result" id="cs-check-result" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  </div>
+</main>
+<footer class="hint" style="max-width:64rem;margin:0 auto;padding:0 1rem 3rem">Call sign data: FCC ULS
+  (<a href="https://www.fcc.gov/uls">fcc.gov/uls</a>), public record, rebuilt weekly. The
+  <a href="https://callook.info/">callook.info</a> link on each row is a third-party convenience, not the source of
+  record.</footer>
+<nav class="tc-jump" id="cs-jump" aria-label="Back to" data-show="false"><button type="button" data-tc-to="group" hidden><span class="tc-jump-l"></span></button><button type="button" data-tc-to="panel" hidden><span class="tc-jump-l"></span></button><button type="button" data-tc-to="top" aria-label="Top of the page"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 10l5-5 5 5M3 4h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></nav>
+<script src="/js/shell.js"></script>
+<script src="/js/collapse.js"></script>
+<script src="/js/arrange.js"></script>
+<script src="/js/table.js"></script>
+<script src="/js/links.js"></script>
+<script src="/js/callsign-format.js"></script>
+<script src="/js/callsign.js"></script>
+</body>
+</html>

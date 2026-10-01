@@ -25,3 +25,15 @@ The repo is public. Nothing internal goes in it: no lab hostnames beyond what
 ## Open Graph tags
 
 Every page carries the full og set (title, description, url, image with width, height and alt, locale) plus `twitter:card` `summary_large_image`, and the og image is a 1200x630 title card from the org tile generator (`tools/meme-factory/tile/tile.py`, recipe in `og.jpg.job.json`), the same card the media pages use, with provenance and branding EXIF. `tests/test_pages.py` fails when a page lacks any of it. A new page needs the tags in the same PR.
+
+## The call sign page
+
+`callsign.html` (operator, 2026-10-01: the call sign page is this repo's) is a
+static page whose search runs on `https://man.tcos.us/cgi-bin/callsign.cgi` --
+the same CGI and protocol as the lab's, over an index the org's CI rebuilds
+weekly from the FCC's ULS files. CORS there answers `https://ham.tcos.app` and
+`https://ham-app.lab.tcos.us` only; requests are rate-limited (429 beyond a
+burst). Holder name, city and state are the FCC's public record; they are
+served by that endpoint and never stored in this repo. `js/callsign.js` and
+`js/callsign-format.js` are ports of the lab page's scripts; the FCC format
+rules in the latter are a copy -- change them at their source and copy again.
