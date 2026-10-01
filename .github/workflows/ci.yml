@@ -99,9 +99,9 @@ jobs:
           set -eu
           # The committed pages only. deploy.sh promote ships these same files
           # with no rebuild.
-          tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html study.html robots.txt sitemap.xml og.jpg css js data
+          tar -czf "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" -C . index.html study.html callsign.html robots.txt sitemap.xml og.jpg css js data
           mv "$RUNNER_TEMP/ham-tcos-app-www.tar.gz" .
-          for f in index.html study.html robots.txt sitemap.xml og.jpg css/shell.css css/ham.css css/study.css js/shell.js js/collapse.js js/arrange.js js/table.js js/links.js js/freshness.js js/study.js data/ham-study.json; do
+          for f in index.html study.html callsign.html robots.txt sitemap.xml og.jpg css/shell.css css/ham.css css/study.css js/shell.js js/collapse.js js/arrange.js js/table.js js/links.js js/freshness.js js/study.js css/callsign.css js/callsign.js js/callsign-format.js data/ham-study.json; do
             tar -tzf ham-tcos-app-www.tar.gz | grep -qx "$f" \
               || { echo "payload is missing $f -- refusing to publish"; exit 1; }
           done

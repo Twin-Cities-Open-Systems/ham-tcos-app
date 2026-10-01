@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ("index.html", "study.html")
+PAGES = ("index.html", "study.html", "callsign.html")
 NEED = ("og:title", "og:description", "og:url", "og:image", "og:image:width", "og:image:height", "og:image:alt", "og:locale")
 
 

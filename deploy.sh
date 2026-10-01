@@ -16,7 +16,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cmd="${1:-}"
 [ "$cmd" = lab ] || [ "$cmd" = promote ] || { echo "usage: $0 lab|promote" >&2; exit 1; }
-PAGES=(index.html study.html)
+PAGES=(index.html study.html callsign.html)
 ASSET_DIRS=(css js data)
 ASSET_FILES=(robots.txt sitemap.xml og.jpg)
 HOST=ham.tcos.app

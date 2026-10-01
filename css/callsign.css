@@ -1,0 +1,28 @@
+/* callsign.css -- the call sign page (ported from fleet-ops view/src/ham/callsign.html) */
+body{font-variant-numeric:slashed-zero}
+  .mono,.cs-table td,.cs-table th{font-variant-numeric:tabular-nums slashed-zero}
+  .cs-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.7rem 1rem;margin-bottom:.7rem}
+  .cs-controls label{display:flex;flex-direction:column;gap:.25rem;font-size:.82rem;color:var(--muted)}
+  .cs-controls label.wide{grid-column:1/-1}
+  .cs-controls input[type="search"],.cs-controls input[type="text"],.cs-controls select{font:inherit;font-size:.9rem;
+    padding:.4rem .5rem;color:var(--ink);background:var(--sunk);border:1px solid var(--rule);border-radius:6px;
+    font-variant-numeric:slashed-zero}
+  .cs-controls input[aria-invalid="true"]{border-color:var(--critical);outline:1px solid var(--critical)}
+  .cs-modes{padding:.55rem 0 0;margin:0 0 .6rem}
+  .cs-error{color:var(--critical);font-family:ui-monospace,monospace;font-size:.85rem;margin:.3rem 0 0}
+  .cs-call{background:none;border:0;padding:0;font-size:1em;font-weight:700;color:var(--accent);cursor:pointer;
+    font-family:ui-monospace,monospace;text-align:left}
+  .cs-call:hover,.cs-call:focus-visible{text-decoration:underline}
+  .table-wrap{overflow-x:auto}
+  /* By holder: one filter per column, above the sortable headings */
+  .cs-filters td{padding:.3rem .35rem;border-bottom:1px solid var(--rule);background:var(--sunk)}
+  .cs-filters input,.cs-filters select{width:100%;min-width:4.5rem;min-height:36px;font:inherit;font-size:.8rem;
+    padding:.2rem .4rem;border:1px solid var(--edge);border-radius:6px;background:var(--surface);color:var(--ink)}
+  .cs-filters input:focus-visible,.cs-filters select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .cs-detail dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem .8rem;margin:.4rem 0 0}
+  .cs-detail dt{color:var(--muted);font-family:ui-monospace,monospace;font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.06em;padding-top:.15rem}
+  .cs-detail dd{margin:0}
+  .cs-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.6rem}
+  .cs-check-result{margin:.4rem 0 0}
+  .cs-fresh{color:var(--muted);font-size:.82rem;margin:.5rem 0 0}
