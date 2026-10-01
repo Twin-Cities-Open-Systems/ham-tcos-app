@@ -135,5 +135,8 @@ jobs:
           | while read -r old; do
               [ -n "$old" ] || continue
               echo "pruning $old"
-              gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag
+              # Two main builds finishing together prune the same old release;
+              # the second delete finds it gone. That is the goal, not a failure.
+              gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag \
+                || echo "  $old already gone (pruned by a concurrent build)"
             done
