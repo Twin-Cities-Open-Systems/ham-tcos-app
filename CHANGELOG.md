@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing since the last release._
 
+## [1.4.0] - 2026-10-01
+
+### Added
+
+- 2026-10-01 **home**: Start here lists Call signs beside the Study guide ([#24](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/24))
+
 ## [1.3.1] - 2026-10-01
 
 ### Changed
