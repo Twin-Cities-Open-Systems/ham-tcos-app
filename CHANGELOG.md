@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing since the last release._
 
+## [1.3.1] - 2026-10-01
+
+### Changed
+
+- 2026-10-01 **shell**: sync tcos-app#12 -- the way-back pill links the section you are reading ([#21](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/21))
+- 2026-10-01 **shell**: sync tcos-app#11 -- print opt-in, flex stats row ([#20](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/20))
+
 ## [1.3.0] - 2026-09-29
 
 ### Added
