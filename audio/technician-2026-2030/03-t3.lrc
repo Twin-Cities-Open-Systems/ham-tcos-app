@@ -1,0 +1,42 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T3 - Radio Wave Propagation]
+[00:00.40]Technician answers. T3 - Radio Wave Propagation.
+[00:05.27]Group T3A.
+[00:07.23]Why do VHF signal strengths sometimes vary greatly when the antenna is moved only a few feet? Multipath propagation cancels or reinforces signals.
+[00:18.24]How does vegetation affect UHF and microwave signals? Absorbs signals, leading to poor reception of weak signals.
+[00:26.32]What antenna polarization is normally used for long-distance CW and SSB contacts on the VHF and UHF bands? Horizontal.
+[00:36.40]What is the effect of antenna cross-polarization over a line-of-sight VHF or UHF path? Received signal strength is reduced.
+[00:45.47]When using a directional antenna, how might your station be able to communicate with a distant repeater if buildings or obstructions are blocking the direct line of sight path? Try to find a path that reflects signals to the repeater.
+[00:59.37]What is the meaning of the term “picket fencing”? Rapid flutter on mobile signals due to multipath propagation.
+[01:06.63]What weather condition might decrease range at microwave frequencies? Precipitation.
+[01:11.93]What is a likely cause of irregular fading of signals propagated by the ionosphere? Random combining of signals arriving via different paths.
+[01:21.37]Which of the following results from the fact that signals propagated by the ionosphere are elliptically polarized? Either vertically or horizontally polarized antennas may be used for transmission or reception.
+[01:35.14]What effect does multi-path propagation have on data transmissions? Error rates are likely to increase.
+[01:41.95]Which region of the atmosphere can reflect HF radio waves? The ionosphere.
+[01:47.19]What effect does fog or rain have on 10-meter and 6-meter band signals? Little effect.
+[01:53.38]Group T3B.
+[01:55.36]What is the relationship between the electric and magnetic fields of an electromagnetic wave? They are at right angles.
+[02:02.71]What property of a radio wave defines its polarization? The orientation of the electric field.
+[02:09.25]What are the two components of a radio wave? Electric and magnetic fields.
+[02:14.10]What is the velocity of a radio wave traveling through free space? Speed of light.
+[02:19.40]What is the relationship between wavelength and frequency? Wavelength gets shorter as frequency increases.
+[02:26.04]What is the formula for converting frequency to approximate wavelength in meters? Wavelength in meters equals 300 divided by frequency in megahertz.
+[02:36.74]In addition to frequency, which of the following is used to identify amateur radio bands? The approximate wavelength in meters.
+[02:45.13]What frequency range is referred to as VHF? 30 MHz to 300 MHz.
+[02:51.33]What frequency range is referred to as UHF? 300 to 3000 MHz.
+[02:57.42]What frequency range is referred to as HF? 3 to 30 MHz.
+[03:02.33]What is the approximate velocity of a radio wave in free space? 300,000,000 meters per second.
+[03:09.26]Which of these frequencies travels at the highest velocity in free space? All radio frequencies travel at the same velocity.
+[03:17.75]Group T3C.
+[03:19.75]Why are simplex UHF signals rarely heard beyond their radio horizon? UHF signals are usually not propagated by the ionosphere.
+[03:29.47]What is a characteristic of HF communication compared with communications on VHF and higher frequencies? Long-distance ionospheric propagation is far more common on HF.
+[03:42.09]What is one characteristic of VHF signals received via auroral backscatter? They are distorted, with a characteristic raspy sound.
+[03:51.05]Which of the following types of propagation is most commonly associated with occasional strong signals on the 10-, 6-, and 2-meter bands from beyond the radio horizon? Sporadic E.
+[04:03.33]Which of the following effects may allow radio signals to travel beyond obstructions between the transmitting and receiving stations? Knife-edge diffraction.
+[04:13.09]What type of propagation is responsible for allowing over-the-horizon VHF and UHF communications to ranges of approximately 300 miles on a regular basis? Tropospheric ducting.
+[04:26.50]What band is best suited for communicating via meteor scatter? 6 meters.
+[04:31.50]What causes tropospheric ducting? Temperature inversions in the atmosphere.
+[04:36.33]What is generally the best time for long-distance 10-meter band propagation via the F region? From dawn to shortly after sunset during periods of high sunspot activity.
+[04:48.01]Which of the following bands may provide long-distance communications via the ionosphere’s F region during the peak of the sunspot cycle? 6 and 10 meters.
+[04:58.75]Why is the radio horizon for VHF and UHF signals more distant than the visual horizon? The atmosphere refracts radio waves slightly.

@@ -1,0 +1,52 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T7 - Practical Circuits]
+[00:00.40]Technician answers. T7 - Practical Circuits.
+[00:04.67]Group T7A.
+[00:06.69]Which term describes the ability of a receiver to detect the presence of a signal? Sensitivity.
+[00:12.91]What is a transceiver? A device that combines a receiver and transmitter.
+[00:17.57]Which of the following is used to convert a signal from one frequency to another? Mixer.
+[00:23.34]Which term describes the ability of a receiver to discriminate between multiple signals? Selectivity.
+[00:29.98]What is the name of a circuit that generates a signal at a specific frequency? Oscillator.
+[00:35.71]What device converts the RF input and output of a transceiver to another band? Transverter.
+[00:41.93]What is the function of a transceiver’s PTT input? Switches transceiver from receive to transmit when grounded.
+[00:49.62]Which of the following describes combining speech with an RF carrier signal? Modulation.
+[00:55.45]What is the function of the switch which selects either SSB or CW-FM on some VHF power amplifiers? Set the amplifier for proper operation in the selected mode.
+[01:07.88]What can be added to the output of a transceiver to increase the transmitted output power? An RF power amplifier.
+[01:15.37]What is the function of the Variable Frequency Oscillator (VFO) circuit in a transceiver? Set the receive and transmit frequency.
+[01:24.55]Group T7B.
+[01:26.62]What can you do if you are told your FM handheld or mobile transceiver is over-deviating? Talk farther away from the microphone.
+[01:34.71]What would cause a broadcast AM or FM radio to receive an amateur radio transmission unintentionally? The receiver is unable to reject strong signals outside the AM or FM band.
+[01:48.12]Which of the following can cause radio frequency interference? Fundamental overload; Harmonics; Spurious emissions; All these choices are correct.
+[01:57.83]Which of the following might be the cause of low RF power output from a solid-state transceiver? High SWR.
+[02:05.54]Which of the following might reduce interference by an amateur station to a non-amateur over-the-air radio receiver? Block the amateur signal with a filter at the antenna input of the affected receiver.
+[02:18.84]Which of the following actions should you take if a neighbor tells you that your station’s transmissions are interfering with their radio or TV reception? Make sure that your station is functioning properly and that it does not cause interference to your own radio or television when it is tuned to the same channel.
+[02:37.11]Which of the following can reduce interference to a 2-meter band transceiver from a nearby commercial FM station? Installing a band-reject filter.
+[02:46.70]What should you do if something in a neighbor’s home is causing harmful interference to your amateur station? Work with your neighbor to identify the offending device; Politely inform your neighbor that FCC rules prohibit the use of devices that cause interference; Make sure your station meets the standards of good amateur practice; All these choices are correct.
+[03:08.37]What should be the first step to resolve non-fiber optic cable TV interference caused by your amateur radio transmission? Be sure all TV feed line coaxial connectors are installed properly.
+[03:21.39]What might be a problem if you receive a report that your audio signal through an FM repeater is distorted or unintelligible? Your transmitter is slightly off frequency; You are speaking too loudly or too close to the microphone; You are in a bad location; All these choices are correct.
+[03:39.13]Which of the following can eliminate distorted voice transmissions? Adding a clip-on ferrite “choke” to the microphone cable to prevent the transmitted signal from feeding back into the transmitter.
+[03:50.99]Group T7C.
+[03:53.08]What is the primary purpose of a dummy load? To prevent transmitting signals over the air when making tests.
+[03:59.76]Which of the following is used to determine if an antenna is resonant at the desired operating frequency? An antenna analyzer.
+[04:08.22]What does a typical RF dummy load consist of? A 50-ohm non-inductive resistor mounted on a heat sink.
+[04:15.38]What reading on an SWR meter indicates a perfect impedance match between the antenna and the feed line? 1:1.
+[04:23.34]Why do most solid-state transmitters reduce output power as SWR increases beyond a certain level? To protect the RF output amplifier transistors.
+[04:34.43]What does an SWR reading of 4:1 indicate? Impedance mismatch.
+[04:39.49]What happens to power lost in a feed line? It is converted into heat.
+[04:44.07]Which instrument can be used to determine SWR? Directional wattmeter.
+[04:49.11]Which of the following causes failure of coaxial cables? Moisture contamination.
+[04:54.54]Why should the outer jacket of coaxial cable be resistant to ultraviolet light? Ultraviolet light can damage the jacket and allow water to enter the cable.
+[05:05.17]What is an advantage of foam-dielectric versus solid-dielectric coaxial cable? It has less loss per foot.
+[05:13.13]Group T7D.
+[05:15.18]Which instrument would you use to measure electric potential? A voltmeter.
+[05:19.64]How is a voltmeter connected to a component to measure applied voltage? In parallel.
+[05:25.24]When configured to measure current, how is a multimeter connected to a component? In series.
+[05:31.20]Which instrument is used to measure electric current? An ammeter.
+[05:35.42]How does an ohmmeter measure the resistance of a circuit or component? By applying a small current and measuring the resulting voltage.
+[05:43.87]Which of the following can damage a multimeter? Attempting to measure voltage when using the resistance setting.
+[05:50.84]Which of the following measurements are made using a multimeter? Voltage and resistance.
+[05:56.39]Which of the following types of solder should not be used for radio and electronic applications? Acid-core solder.
+[06:03.42]What is the characteristic appearance of a cold tin-lead solder joint? A rough or lumpy surface.
+[06:09.72]What reading indicates that an ohmmeter is connected across a large, discharged capacitor? Increasing resistance with time.
+[06:17.58]Which of the following precautions should be taken when measuring in-circuit resistance with an ohmmeter? Ensure that the circuit is not powered.

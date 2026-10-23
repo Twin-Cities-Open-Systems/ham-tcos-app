@@ -1,0 +1,42 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T6 - Electronic and Electrical Components]
+[00:00.40]Technician answers. T6 - Electronic and Electrical Components.
+[00:05.80]Group T6A.
+[00:07.72]What electrical component opposes the flow of current in a DC circuit? Resistor.
+[00:13.34]What type of component is often used as an adjustable volume control? Potentiometer.
+[00:19.09]What electrical parameter is controlled by a potentiometer? Resistance.
+[00:23.94]What electrical component stores energy in an electric field? Capacitor.
+[00:28.96]What type of electrical component consists of conductive surfaces separated by an insulator? Capacitor.
+[00:36.20]What type of electrical component stores energy in a magnetic field? Inductor.
+[00:41.63]What electrical component is typically constructed as a coil of wire? Inductor.
+[00:46.99]What is the function of an SPDT switch? A single circuit is switched between one of two other circuits.
+[00:53.64]Which of the following battery chemistries is rechargeable? Nickel-metal hydride; Lithium-ion; Lead-acid; All these choices are correct.
+[01:02.73]Which of the following battery chemistries is not rechargeable? Carbon-zinc.
+[01:08.07]Group T6B.
+[01:10.07]Which is true about forward voltage drop in a diode? It is lower in some diode types than in others.
+[01:16.53]What electronic component allows current to flow in only one direction? Diode.
+[01:21.78]Which of these components can be used as an electronic switch? Transistor.
+[01:26.49]Which of the following components can consist of three regions of semiconductor material? Transistor.
+[01:33.04]What type of transistor has a gate, drain, and source? Field-effect.
+[01:37.58]How is the cathode lead of a semiconductor diode often marked on the package? With a stripe.
+[01:43.58]What causes a light-emitting diode (LED) to emit light? Forward current.
+[01:48.56]What does the abbreviation FET stand for? Field Effect Transistor.
+[01:53.20]What are the names for the electrodes of a diode? Anode and cathode.
+[01:57.47]Which of the following can provide power gain? Transistor.
+[02:01.13]What does the term gain mean in amplifiers? The output signal voltage relative to the input signal voltage; The output signal current relative to the input signal current; The output signal power relative to the input signal power; All these choices are correct.
+[02:17.97]What are the names of the electrodes of a bipolar junction transistor? Emitter, base, collector.
+[02:24.53]Group T6C.
+[02:26.51]What is an electrical diagram using standard component symbols called? Schematic.
+[02:31.89]Which of the following is accurately represented in electrical schematics? Component connections.
+[02:38.40]Group T6D.
+[02:40.40]Which of the following devices or circuits changes an alternating current into a varying direct current signal? Rectifier.
+[02:48.78]What is a relay? An electrically-controlled switch.
+[02:52.07]Which of the following is a reason to use shielded wire? To prevent coupling of unwanted signals to or from the wire.
+[02:59.82]Which of the following displays an electrical quantity as a numeric value? Meter.
+[03:05.38]What type of circuit controls the amount of voltage from a power supply? Regulator.
+[03:10.62]What component changes 120 V AC power to a lower AC voltage for other uses? Transformer.
+[03:18.20]Which of the following is commonly used as a visual indicator? LED.
+[03:22.75]Which of the following is combined with an inductor to make a resonant circuit? Capacitor.
+[03:28.44]What is the name of a device that combines several semiconductors and other components into one package? Integrated circuit.
+[03:36.32]Which of the following is a resonant or tuned circuit? An inductor and a capacitor in series or parallel.

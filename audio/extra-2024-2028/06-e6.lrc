@@ -1,0 +1,72 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E6 - Circuit Components]
+[00:00.40]Extra answers. E6 - Circuit Components.
+[00:04.31]Group E6A.
+[00:06.18]In what application is gallium arsenide used as a semiconductor material? In microwave circuits.
+[00:13.12]Which of the following semiconductor materials contains excess free electrons? N-type.
+[00:19.00]Why does a PN-junction diode not conduct current when reverse biased? Holes in P-type material and electrons in the N-type material are separated by the applied voltage, widening the depletion region.
+[00:32.88]What is the name given to an impurity atom that adds holes to a semiconductor crystal structure? Acceptor impurity.
+[00:40.39]How does DC input impedance at the gate of a field-effect transistor (FET) compare with that of a bipolar transistor? An FET has higher input impedance.
+[00:51.69]What is the beta of a bipolar junction transistor? The change in collector current with respect to the change in base current.
+[00:59.91]Which of the following indicates that a silicon NPN junction transistor is biased on? Base-to-emitter voltage of approximately 0.6 volts to 0.7 volts.
+[01:12.21]What is the term for the frequency at which the grounded-base current gain of a bipolar junction transistor has decreased to 0.7 of the gain obtainable at 1 kHz? Alpha cutoff frequency.
+[01:25.87]What is a depletion-mode field-effect transistor (FET)? An FET that exhibits a current flow between source and drain when no gate voltage is applied.
+[01:36.40]What is the purpose of connecting Zener diodes between a MOSFET gate and its source or drain? To protect the gate from static damage.
+[01:45.32]Group E6B.
+[01:47.26]What is the most useful characteristic of a Zener diode? A constant voltage drop under conditions of varying current.
+[01:55.10]Which characteristic of a Schottky diode makes it a better choice than a silicon junction diode for use as a power supply rectifier? Lower forward voltage drop.
+[02:05.84]What property of an LED's semiconductor material determines its forward voltage drop? Band gap.
+[02:12.59]What type of semiconductor device is designed for use as a voltage-controlled capacitor? Varactor diode.
+[02:19.59]What characteristic of a PIN diode makes it useful as an RF switch? Low junction capacitance.
+[02:26.00]Which of the following is a common use of a Schottky diode? As a VHF/UHF mixer or detector.
+[02:33.20]What causes a junction diode to fail from excessive current? Excessive junction temperature.
+[02:39.08]Which of the following is a Schottky barrier diode? Metal-semiconductor junction.
+[02:44.31]What is a common use for point-contact diodes? As an RF detector.
+[02:49.08]What is used to control the attenuation of RF signals by a PIN diode? Forward DC bias current.
+[02:56.74]Group E6C.
+[02:58.66]What is the function of hysteresis in a comparator? To prevent input noise from causing unstable output signals.
+[03:06.20]What happens when the level of a comparator’s input signal crosses the threshold voltage? The comparator changes its output state.
+[03:14.61]What is tri-state logic? Logic devices with 0, 1, and high-impedance output states.
+[03:21.13]Which of the following is an advantage of BiCMOS logic? It has the high input impedance of CMOS and the low output impedance of bipolar transistors.
+[03:31.70]Which of the following digital logic families has the lowest power consumption? CMOS.
+[03:37.57]Why do CMOS digital integrated circuits have high immunity to noise on the input signal or power supply? The input switching threshold is about half the power supply voltage.
+[03:49.40]What best describes a pull-up or pull-down resistor? A resistor connected to the positive or negative supply used to establish a voltage when an input or output is an open circuit.
+[04:01.98]What is used to design the configuration of a field-programmable gate array (FPGA)? Hardware description language (HDL).
+[04:11.30]Group E6D.
+[04:13.24]What is piezoelectricity? A characteristic of materials that generate a voltage when stressed and that flex when a voltage is applied.
+[04:21.70]What is the equivalent circuit of a quartz crystal? Series RLC in parallel with a shunt C representing electrode and stray capacitance.
+[04:31.14]Which of the following is an aspect of the piezoelectric effect? Mechanical deformation of material due to the application of a voltage.
+[04:40.00]Why are cores of inductors and transformers sometimes constructed of thin layers? To reduce power loss from eddy currents in the core.
+[04:48.56]How do ferrite and powdered iron compare for use in an inductor core? Ferrite cores generally require fewer turns to produce a given inductance value.
+[04:58.86]What core material property determines the inductance of an inductor? Permeability.
+[05:04.24]Which of the following materials has the highest temperature stability of its magnetic characteristics? Powdered iron.
+[05:11.50]What devices are commonly used as VHF and UHF parasitic suppressors at the input and output terminals of a transistor HF amplifier? Ferrite beads.
+[05:22.93]What is a primary advantage of using a toroidal core instead of a solenoidal core in an inductor? Toroidal cores confine most of the magnetic field within the core material.
+[05:34.18]Which type of core material decreases inductance when inserted into a coil? Brass.
+[05:39.65]What causes inductor saturation? Operation at excessive magnetic flux.
+[05:45.37]Group E6E.
+[05:47.22]Why is gallium arsenide (GaAs) useful for semiconductor devices operating at UHF and higher frequencies? Higher electron mobility.
+[05:57.30]Which of the following device packages is a through-hole type? DIP.
+[06:01.62]Which of the following materials supports the highest frequency of operation when used in MMICs? Gallium nitride.
+[06:09.78]Which is the most common input and output impedance of MMICs? 50 ohms.
+[06:15.21]Which of the following noise figure values is typical of a low-noise UHF preamplifier? 0.5 dB.
+[06:23.32]What characteristics of MMICs make them a popular choice for VHF through microwave circuits? Controlled gain, low noise figure, and constant input and output impedance over the specified frequency range.
+[06:37.37]What type of transmission line is often used for connections to MMICs? Microstrip.
+[06:43.33]How is power supplied to the most common type of MMIC? Through a resistor and/or RF choke connected to the amplifier output lead.
+[06:52.77]Which of the following component package types have the least parasitic effects at frequencies above the HF range? Surface mount.
+[07:00.99]What advantage does surface-mount technology offer at RF compared to using through-hole components? Smaller circuit area; Shorter circuit board traces; Components have less parasitic inductance and capacitance; All these choices are correct.
+[07:16.64]What is a characteristic of DIP packaging used for integrated circuits? Two rows of connecting pins on opposite sides of package (dual in-line package).
+[07:26.57]Why are DIP through-hole package ICs not typically used at UHF and higher frequencies? Excessive lead length.
+[07:34.47]Group E6F.
+[07:36.38]What absorbs the energy from light falling on a photovoltaic cell? Electrons.
+[07:41.62]What happens to photoconductive material when light shines on it? Resistance decreases.
+[07:47.34]What is the most common configuration of an optoisolator or optocoupler? An LED and a phototransistor.
+[07:54.86]What is the photovoltaic effect? The conversion of light to electrical energy.
+[08:00.08]Which of the following describes an optical shaft encoder? A device that detects rotation by interrupting a light source with a patterned wheel.
+[08:09.03]Which of these materials is most commonly used to create photoconductive devices? Crystalline semiconductor.
+[08:16.35]What is a solid-state relay? A device that uses semiconductors to implement the functions of an electromechanical relay.
+[08:24.30]Why are optoisolators often used in conjunction with solid-state circuits that control 120 VAC circuits? Optoisolators provide an electrical isolation between a control circuit and the circuit being switched.
+[08:38.94]What is the efficiency of a photovoltaic cell? The relative fraction of light that is converted to current.
+[08:45.76]What is the most common material used in power-generating photovoltaic cells? Silicon.
+[08:51.74]What is the approximate open-circuit voltage produced by a fully illuminated silicon photovoltaic cell? 0.5 volts.

@@ -1,0 +1,31 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G0 - Electrical and RF Safety]
+[00:00.40]General answers. G0 - Electrical and RF Safety.
+[00:05.40]Group G0A.
+[00:07.42]What is one way that RF energy can affect human body tissue? It heats body tissue.
+[00:12.97]Which of the following is used to determine RF exposure from a transmitted signal? Its duty cycle; Its frequency; Its power density; All these choices are correct.
+[00:24.16]How can you determine that your station complies with FCC RF exposure regulations? By calculation based on FCC OET Bulletin 65; By calculation based on computer modeling; By measurement of field strength using calibrated equipment; All these choices are correct.
+[00:43.16]What does “time averaging” mean when evaluating RF radiation exposure? The total RF exposure averaged over a certain period.
+[00:52.00]What must you do if an evaluation of your station shows that the RF energy radiated by your station exceeds permissible limits for possible human absorption? Take action to prevent human exposure to the excessive RF fields.
+[01:07.35]What must you do if your station fails to meet the FCC RF exposure exemption criteria? Perform an RF exposure evaluation in accordance with FCC OET Bulletin 65.
+[01:20.50]What is the effect of modulation duty cycle on RF exposure? A lower duty cycle permits greater power levels to be transmitted.
+[01:29.28]Which of the following steps must an amateur operator take to ensure compliance with RF safety regulations? Perform a routine RF exposure evaluation and prevent access to any identified high exposure areas.
+[01:43.81]What type of instrument can be used to accurately measure an RF field strength? A calibrated field strength meter with a calibrated antenna.
+[01:52.65]What should be done if evaluation shows that a neighbor might experience more than the allowable limit of RF exposure from the main lobe of a directional antenna? Take precautions to ensure that the antenna cannot be pointed in their direction when they are present.
+[02:08.71]What precaution should be taken if you install an indoor transmitting antenna? Make sure that MPE limits are not exceeded in occupied areas.
+[02:17.93]What stations are subject to the FCC rules on RF exposure? All stations with a time-averaged transmission of more than one milliwatt.
+[02:27.69]Group G0B.
+[02:29.79]Which wire or wires in a four-conductor 240 VAC circuit should be attached to fuses or circuit breakers? Only the hot wires.
+[02:39.25]According to the National Electrical Code, what is the minimum wire size that may be used safely for wiring with a 20-ampere circuit breaker? AWG number 12.
+[02:50.08]Which size of fuse or circuit breaker would be appropriate to use with a circuit that uses AWG number 14 wiring? 15 amperes.
+[02:59.73]Where should the station’s lightning protection ground system be located? Outside the building.
+[03:05.29]Which of the following conditions will cause a ground fault circuit interrupter (GFCI) to disconnect AC power? Current flowing from one or more of the hot wires directly to ground.
+[03:17.37]Which of the following is covered by the National Electrical Code? Electrical safety of the station.
+[03:23.69]Which of these choices should be observed when climbing a tower using a safety harness? Confirm that the harness is rated for the weight of the climber and that it is within its allowable service life.
+[03:35.25]What should be done before climbing a tower that supports electrically powered devices? Make sure all circuits that supply power to the tower are locked out and tagged.
+[03:45.24]Which of the following is true of an emergency generator installation? The generator should be operated in a well-ventilated area.
+[03:53.63]Which of the following is a danger from lead-tin solder? Lead can contaminate food if hands are not washed carefully after handling the solder.
+[04:02.71]Which of the following is required for lightning protection ground rods? They must be bonded together with all other grounds.
+[04:09.84]What is the purpose of a power supply interlock? To ensure that dangerous voltages are removed if the cabinet is opened.
+[04:17.70]Where should lightning arrestors be located? Where the feed lines enter the building.

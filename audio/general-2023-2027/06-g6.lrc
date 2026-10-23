@@ -1,0 +1,29 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G6 - Circuit Components]
+[00:00.40]General answers. G6 - Circuit Components.
+[00:04.48]Group G6A.
+[00:06.46]What is the minimum allowable discharge voltage for maximum life of a standard 12-volt lead-acid battery? 10.5 volts.
+[00:15.81]What is an advantage of batteries with low internal resistance? High discharge current.
+[00:21.47]What is the approximate forward threshold voltage of a germanium diode? 0.3 volts.
+[00:28.12]Which of the following is characteristic of an electrolytic capacitor? High capacitance for a given volume.
+[00:35.04]What is the approximate forward threshold voltage of a silicon junction diode? 0.7 volts.
+[00:42.09]Why should wire-wound resistors not be used in RF circuits? The resistor’s inductance could make circuit performance unpredictable.
+[00:50.91]What are the operating points for a bipolar transistor used as a switch? Saturation and cutoff.
+[00:57.70]Which of the following is characteristic of low voltage ceramic capacitors? Comparatively low cost.
+[01:04.50]Which of the following describes MOSFET construction? The gate is separated from the channel by a thin insulating layer.
+[01:11.95]Which element of a vacuum tube regulates the flow of electrons between cathode and plate? Control grid.
+[01:18.89]What happens when an inductor is operated above its self-resonant frequency? It becomes capacitive.
+[01:25.13]What is the primary purpose of a screen grid in a vacuum tube? To reduce grid-to-plate capacitance.
+[01:31.73]Group G6B.
+[01:33.75]What determines the performance of a ferrite core at different frequencies? The composition, or “mix,” of materials used.
+[01:41.23]What is meant by the term MMIC? Monolithic Microwave Integrated Circuit.
+[01:46.70]Which of the following is an advantage of CMOS integrated circuits compared to TTL integrated circuits? Low power consumption.
+[01:55.67]What is a typical upper frequency limit for low SWR operation of 50-ohm BNC connectors? 4 GHz.
+[02:03.85]What is an advantage of using a ferrite core toroidal inductor? Large values of inductance may be obtained; The magnetic properties of the core may be optimized for a specific range of frequencies; Most of the magnetic field is contained in the core; All these choices are correct.
+[02:21.67]What kind of device is an integrated circuit operational amplifier? Analog.
+[02:26.97]Which of the following describes a type N connector? A moisture-resistant RF connector useful to 10 GHz.
+[02:34.55]How is an LED biased when emitting light? Forward biased.
+[02:38.47]How does a ferrite bead or core reduce common-mode RF current on the shield of a coaxial cable? By creating an impedance in the current’s path.
+[02:48.12]What is an SMA connector? A small threaded connector suitable for signals up to several GHz.
+[02:54.72]Which of these connector types is commonly used for low frequency or dc signal connections to a transceiver? RCA Phono.

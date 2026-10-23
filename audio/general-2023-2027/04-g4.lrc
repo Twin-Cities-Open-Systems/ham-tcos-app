@@ -1,0 +1,69 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G4 - Amateur Radio Practices]
+[00:00.40]General answers. G4 - Amateur Radio Practices.
+[00:05.05]Group G4A.
+[00:07.06]What is the purpose of the notch filter found on many HF transceivers? To reduce interference from carriers in the receiver passband.
+[00:15.62]What is the benefit of using the opposite or “reverse” sideband when receiving CW? It may be possible to reduce or eliminate interference from other signals.
+[00:26.04]How does a noise blanker work? By reducing receiver gain during a noise pulse.
+[00:31.00]What is the effect on plate current of the correct setting of a vacuum-tube RF power amplifier’s TUNE control? A pronounced dip.
+[00:39.41]Why is automatic level control (ALC) used with an RF power amplifier? To prevent excessive drive.
+[00:47.21]What is the purpose of an antenna tuner? Increase power transfer from the transmitter to the feed line.
+[00:53.47]What happens as a receiver’s noise reduction control level is increased? Received signals may become distorted.
+[01:00.80]What is the correct adjustment for the LOAD or COUPLING control of a vacuum tube RF power amplifier? Desired power output without exceeding maximum allowable plate current.
+[01:12.54]What is the purpose of delaying RF output after activating a transmitter’s keying line to an external amplifier? To allow time for the amplifier to switch the antenna between the transceiver and the amplifier output.
+[01:26.46]What is the function of an electronic keyer? Automatic generation of dots and dashes for CW operation.
+[01:34.02]Why should the ALC system be inactive when transmitting AFSK data signals? The ALC action distorts the signal.
+[01:42.33]Which of the following is a common use of the dual-VFO feature on a transceiver? To transmit on one frequency and listen on another.
+[01:50.95]What is the purpose of using a receive attenuator? To prevent receiver overload from strong incoming signals.
+[01:58.30]Group G4B.
+[02:00.32]What item of test equipment contains horizontal and vertical channel amplifiers? An oscilloscope.
+[02:06.75]Which of the following is an advantage of an oscilloscope versus a digital voltmeter? Complex waveforms can be measured.
+[02:14.55]Which of the following is the best instrument to use for checking the keying waveform of a CW transmitter? An oscilloscope.
+[02:22.49]What signal source is connected to the vertical input of an oscilloscope when checking the RF envelope pattern of a transmitted signal? The attenuated RF output of the transmitter.
+[02:34.45]Why do voltmeters have high input impedance? It decreases the loading on circuits being measured.
+[02:40.60]What is an advantage of a digital multimeter as compared to an analog multimeter? Higher precision.
+[02:47.16]What signals are used to conduct a two-tone test? Two non-harmonically related audio signals.
+[02:53.33]What transmitter performance parameter does a two-tone test analyze? Linearity.
+[02:58.40]When is an analog multimeter preferred to a digital multimeter? When adjusting circuits for maximum or minimum values.
+[03:06.39]Which of the following can be determined with a directional wattmeter? Standing wave ratio.
+[03:11.84]Which of the following must be connected to an antenna analyzer when it is being used for SWR measurements? Antenna and feed line.
+[03:20.57]What effect can strong signals from nearby transmitters have on an antenna analyzer? Received power that interferes with SWR readings.
+[03:29.99]Which of the following can be measured with an antenna analyzer? Impedance of coaxial cable.
+[03:36.52]Group G4C.
+[03:38.50]Which of the following might be useful in reducing RF interference to audio frequency circuits? Bypass capacitor.
+[03:46.19]Which of the following could be a cause of interference covering a wide range of frequencies? Arcing at a poor electrical connection.
+[03:54.29]What sound is heard from an audio device experiencing RF interference from a single sideband phone transmitter? Distorted speech.
+[04:03.11]What sound is heard from an audio device experiencing RF interference from a CW transmitter? On-and-off humming or clicking.
+[04:12.05]What is a possible cause of high voltages that produce RF burns? The ground wire has high impedance on that frequency.
+[04:20.11]What is a possible effect of a resonant ground connection? High RF voltages on the enclosures of station equipment.
+[04:27.86]Why should soldered joints not be used in lightning protection ground connections? A soldered joint will likely be destroyed by the heat of a lightning strike.
+[04:37.19]Which of the following would reduce RF interference caused by common-mode current on an audio cable? Place a ferrite choke on the cable.
+[04:45.82]How can the effects of ground loops be minimized? Bond equipment enclosures together.
+[04:51.08]What could be a symptom caused by a ground loop in your station’s audio connections? You receive reports of “hum” on your station’s transmitted signal.
+[04:59.87]What technique helps to minimize RF “hot spots” in an amateur station? Bonding all equipment enclosures together.
+[05:07.27]Why must all metal enclosures of station equipment be grounded? It ensures that hazardous voltages cannot appear on the chassis.
+[05:15.97]Group G4D.
+[05:17.97]What is the purpose of a speech processor in a transceiver? Increase the apparent loudness of transmitted voice signals.
+[05:25.19]How does a speech processor affect a single sideband phone signal? It increases average power.
+[05:31.41]What is the effect of an incorrectly adjusted speech processor? Distorted speech; Excess intermodulation products; Excessive background noise; All these choices are correct.
+[05:42.86]What does an S meter measure? Received signal strength.
+[05:46.19]How does a signal that reads 20 dB over S9 compare to one that reads S9 on a receiver, assuming a properly calibrated S meter? It is 100 times more powerful.
+[05:58.43]How much change in signal strength is typically represented by one S unit? 6 dB.
+[06:04.45]How much must the power output of a transmitter be raised to change the S meter reading on a distant receiver from S8 to S9? Approximately 4 times.
+[06:15.00]What frequency range is occupied by a 3 kHz LSB signal when the displayed carrier frequency is set to 7.178 MHz? 7.175 MHz to 7.178 MHz.
+[06:30.80]What frequency range is occupied by a 3 kHz USB signal with the displayed carrier frequency set to 14.347 MHz? 14.347 MHz to 14.350 MHz.
+[06:47.00]How close to the lower edge of a band’s phone segment should your displayed carrier frequency be when using 3 kHz wide LSB? At least 3 kHz above the edge of the segment.
+[06:58.72]How close to the upper edge of a band’s phone segment should your displayed carrier frequency be when using 3 kHz wide USB? At least 3 kHz below the edge of the band.
+[07:10.69]Group G4E.
+[07:12.71]What is the purpose of a capacitance hat on a mobile antenna? To electrically lengthen a physically short antenna.
+[07:19.76]What is the purpose of a corona ball on an HF mobile antenna? To reduce RF voltage discharge from the tip of the antenna while transmitting.
+[07:29.44]Which of the following direct, fused power connections would be the best for a 100-watt HF mobile installation? To the battery using heavy-gauge wire.
+[07:39.73]Why should DC power for a 100-watt HF transceiver not be supplied by a vehicle’s auxiliary power socket? The socket’s wiring may be inadequate for the current drawn by the transceiver.
+[07:52.69]Which of the following most limits an HF mobile installation? Efficiency of the electrically short antenna.
+[08:00.01]What is one disadvantage of using a shortened mobile antenna as opposed to a full-size antenna? Operating bandwidth may be very limited.
+[08:08.98]Which of the following may cause receive interference to an HF transceiver installed in a vehicle? The battery charging system; The fuel delivery system; The control computers; All these choices are correct.
+[08:22.03]In what configuration are the individual cells in a solar panel connected together? Series-parallel.
+[08:28.63]What is the approximate open-circuit voltage from a fully illuminated silicon photovoltaic cell? 0.5 VDC.
+[08:37.47]Why should a series diode be connected between a solar panel and a storage battery that is being charged by the panel? To prevent discharge of the battery through the panel during times of low or no illumination.
+[08:50.71]What precaution should be taken when connecting a solar panel to a lithium iron phosphate battery? The solar panel must have a charge controller.

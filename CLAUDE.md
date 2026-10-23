@@ -15,7 +15,8 @@ hook is not installed.
 what ships, and `deploy.sh promote` deploys them with no rebuild. After any
 change under `ham/`, run `python3 build.py` and commit `data/`; CI and
 `deploy.sh` refuse stale data. New shipped paths must be added to `deploy.sh`,
-the CI payload and its required-member check. Never commit or push to
+the CI payload and its required-member check. The `audio/` directory and its
+contents are shipped through the same process. Never commit or push to
 `main`; branch, then PR. Release only through
 `hee release -lab | -cut | -promote`.
 

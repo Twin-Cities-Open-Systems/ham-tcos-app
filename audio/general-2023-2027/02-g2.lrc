@@ -1,0 +1,69 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G2 - Operating Procedures]
+[00:00.40]General answers. G2 - Operating Procedures.
+[00:04.65]Group G2A.
+[00:06.59]Which mode is most commonly used for voice communications on frequencies of 14 MHz or higher? Upper sideband.
+[00:14.34]Which mode is most commonly used for voice communications on the 160-, 75-, and 40-meter bands? Lower sideband.
+[00:23.18]Which mode is most commonly used for SSB voice communications in the VHF and UHF bands? Upper sideband.
+[00:31.28]Which mode is most commonly used for voice communications on the 17- and 12-meter bands? Upper sideband.
+[00:38.50]Which mode of voice communication is most commonly used on the HF amateur bands? Single sideband.
+[00:45.33]Which of the following is an advantage of using single sideband, as compared to other analog voice modes on the HF amateur bands? Less bandwidth used and greater power efficiency.
+[00:57.25]Which of the following statements is true of single sideband (SSB)? Only one sideband is transmitted; the other sideband and carrier are suppressed.
+[01:07.20]What is the recommended way to break into a phone contact? Say your call sign once.
+[01:12.33]Why do most amateur stations use lower sideband on the 160-, 75-, and 40-meter bands? It is commonly accepted amateur practice.
+[01:22.43]Which of the following statements is true of VOX operation versus PTT operation? It allows “hands free” operation.
+[01:30.88]Generally, who should respond to a station in the contiguous 48 states calling “CQ DX”? Any stations outside the lower 48 states.
+[01:40.07]What control is typically adjusted for proper ALC setting on a single sideband transceiver? Transmit audio or microphone gain.
+[01:49.48]Group G2B.
+[01:51.44]Which of the following is true concerning access to frequencies? Except during emergencies, no amateur station has priority access to any frequency.
+[02:01.28]What is the first thing you should do if you are communicating with another amateur station and hear a station in distress break in? Acknowledge the station in distress and determine what assistance may be needed.
+[02:13.62]What is good amateur practice if propagation changes during a contact creating interference from other stations using the frequency? Attempt to resolve the interference problem with the other stations in a mutually acceptable manner.
+[02:28.75]When selecting a CW transmitting frequency, what minimum separation from other stations should be used to minimize interference to stations on adjacent frequencies? 150 Hz to 500 Hz.
+[02:42.59]When selecting an SSB transmitting frequency, what minimum separation should be used to minimize interference to stations on adjacent frequencies? 2 kHz to 3 kHz.
+[02:54.25]How can you avoid harmful interference on an apparently clear frequency before calling CQ on CW or phone? Send “QRL?” on CW, followed by your call sign; or, if using phone, ask if the frequency is in use, followed by your call sign.
+[03:11.30]Which of the following complies with commonly accepted amateur practice when choosing a frequency on which to initiate a call? Follow the voluntary band plan.
+[03:21.34]What is the voluntary band plan restriction for US stations transmitting within the 48 contiguous states in the 50.1 MHz to 50.125 MHz band segment? Only contacts with stations not within the 48 contiguous states.
+[03:38.73]Who may be the control operator of an amateur station transmitting in RACES to assist relief operations during a disaster? Only a person holding an FCC-issued amateur operator license.
+[03:51.35]Which of the following is good amateur practice for net management? Have a backup frequency in case of interference or poor conditions.
+[03:59.83]How often may RACES training drills and tests be routinely conducted without special authorization? No more than 1 hour per week.
+[04:08.98]Group G2C.
+[04:10.96]Which of the following describes full break-in CW operation (QSK)? Transmitting stations can receive between code characters and elements.
+[04:21.02]What should you do if a CW station sends “QRS?” Send slower.
+[04:25.55]What does it mean when a CW operator sends “KN” at the end of a transmission? Listening only for a specific station or stations.
+[04:34.37]What does the Q signal “QRL?” mean? “Are you busy?” or “Is this frequency in use?”.
+[04:40.10]What is the best speed to use when answering a CQ in Morse code? The fastest speed at which you are comfortable copying, but no faster than the CQ.
+[04:49.43]What does the term “zero beat” mean in CW operation? Matching the transmit frequency to the frequency of a received signal.
+[04:57.83]When sending CW, what does a “C” mean when added to the RST report? Chirpy or unstable signal.
+[05:05.32]What prosign is sent to indicate the end of a formal message when using CW? AR.
+[05:11.45]What does the Q signal “QSL” mean? I have received and understood.
+[05:15.94]What does the Q signal “QRN” mean? I am troubled by static.
+[05:20.16]What does the Q signal “QRV” mean? I am ready to receive.
+[05:24.49]Group G2D.
+[05:26.43]What is the Volunteer Monitor Program? Amateur volunteers who are formally enlisted to monitor the airwaves for rules violations.
+[05:35.16]Which of the following are objectives of the Volunteer Monitor Program? To encourage amateur radio operators to self-regulate and comply with the rules.
+[05:44.81]What procedure may be used by Volunteer Monitors to localize a station whose continuous carrier is holding a repeater on in their area? Compare beam headings on the repeater input from their home locations with that of other Volunteer Monitors.
+[06:00.29]Which of the following describes an azimuthal projection map? A map that shows true bearings and distances from a specific location.
+[06:08.58]Which of the following indicates that you are looking for an HF contact with any station? Repeat “CQ” a few times, followed by “this is,” then your call sign a few times, then pause to listen, repeat as necessary.
+[06:22.18]How is a directional antenna pointed when making a “long-path” contact with another station? 180 degrees from the station’s short-path heading.
+[06:31.83]Which of the following are examples of the NATO Phonetic Alphabet? Alpha, Bravo, Charlie, Delta.
+[06:38.64]Why do many amateurs keep a station log? To help with a reply if the FCC requests information about your station.
+[06:46.23]Which of the following is required when participating in a contest on HF frequencies? Identify your station according to normal FCC regulations.
+[06:56.54]What is QRP operation? Low-power transmit operation.
+[07:00.62]Why are signal reports typically exchanged at the beginning of an HF contact? To allow each station to operate according to conditions.
+[07:09.82]Group G2E.
+[07:11.78]Which mode is normally used when sending RTTY signals via AFSK with an SSB transmitter? LSB.
+[07:20.05]What is VARA? A digital protocol used with Winlink.
+[07:23.81]What symptoms may result from other signals interfering with a PACTOR or VARA transmission? Frequent retries or timeouts; Long pauses in message transmission; Failure to establish a connection between stations; All these choices are correct.
+[07:39.69]Which of the following is good practice when choosing a transmitting frequency to answer a station calling CQ using FT8? Find a clear frequency during the alternate time slot to the calling station.
+[07:52.82]What is the standard sideband for JT65, JT9, FT4, or FT8 digital signal when using AFSK? USB.
+[08:03.15]What is the most common frequency shift for RTTY emissions in the amateur HF bands? 170 Hz.
+[08:10.97]Which of the following is required when using FT8? Computer time accurate to within approximately 1 second.
+[08:18.49]In what segment of the 20-meter band are most digital mode operations commonly found? Between 14.070 MHz and 14.100 MHz.
+[08:31.19]How do you join a contact between two stations using the PACTOR protocol? Joining an existing contact is not possible, PACTOR connections are limited to two stations.
+[08:41.89]Which of the following is a way to establish contact with a digital messaging system gateway station? Transmit a connect message on the station’s published frequency.
+[08:52.55]What is the primary purpose of an Amateur Radio Emergency Data Network (AREDN) mesh network? To provide high-speed data services during an emergency or community event.
+[09:04.37]Which of the following describes Winlink? An amateur radio wireless network to send and receive email on the internet; A form of Packet Radio; A wireless network capable of both VHF and HF band operation; All these choices are correct.
+[09:21.19]What is another name for a Winlink Remote Message Server? Gateway.
+[09:25.45]What could be wrong if you cannot decode an RTTY or other FSK signal even though it is apparently tuned in properly? The mark and space frequencies may be reversed; You may have selected the wrong baud rate; You may be listening on the wrong sideband; All these choices are correct.
+[09:43.16]Which of the following is a common location for FT8? Approximately 14.074 MHz to 14.077 MHz.

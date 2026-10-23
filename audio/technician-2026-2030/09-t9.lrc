@@ -1,0 +1,29 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T9 - Antennas and Feed Lines]
+[00:00.40]Technician answers. T9 - Antennas and Feed Lines.
+[00:04.97]Group T9A.
+[00:06.86]What is a beam antenna? An antenna that concentrates signals in one direction.
+[00:11.87]Which of the following describes a type of antenna loading? Electrically lengthening by inserting inductors in radiating elements.
+[00:19.96]How is the polarization of an antenna described? By the orientation of the electric field.
+[00:26.11]What is a disadvantage of a handheld radio transceiver’s short flexible antenna compared to a full-sized quarter-wave antenna? It has low efficiency.
+[00:35.85]Which of the following increases the resonant frequency of a dipole antenna? Shortening it.
+[00:41.51]Which of the following types of antennas offers the greatest gain? Yagi.
+[00:46.13]What is a potential drawback of using a handheld VHF transceiver inside a vehicle that lacks an externally mounted antenna? Signal strength is reduced due to the shielding effect of the vehicle.
+[00:58.64]Why is a 19-inch-long vertical antenna often used on 2 meters? It is a resonant quarter-wave.
+[01:05.65]What is an advantage of a 5/8-wavelength whip antenna for VHF or UHF mobile service compared to a 1/4-wave antenna? It has more gain.
+[01:16.58]In which direction does a half-wave dipole antenna radiate the strongest signal? Broadside to the antenna.
+[01:23.42]What is antenna gain? The increase in signal strength in a specified direction compared to a reference antenna.
+[01:30.97]Group T9B.
+[01:32.95]Which of the following connectors should be carefully taped for weather protection when used outdoors? PL259; BNC; Type N; All these choices are correct.
+[01:43.99]What is the most common impedance of coaxial cables used in amateur radio? 50 ohms.
+[01:50.29]Why is coaxial cable the most common feed line for amateur radio antenna systems? It is easy to use and requires few special installation considerations.
+[02:01.20]What is the major function of an antenna tuner (antenna coupler)? It matches the antenna system impedance to the transceiver's output impedance.
+[02:10.39]What happens as the frequency of a signal in coaxial cable is increased? The loss increases.
+[02:16.77]Which of the following connector types is most suitable as an RF connector for frequencies above 400 MHz? Type N.
+[02:25.32]Which of the following is true of PL-259 type coax connectors? They are commonly used at HF and VHF frequencies.
+[02:34.05]Which of the following is a source of loss in coaxial feed line? Water intrusion into coaxial connectors; High SWR; Multiple connectors in the line; All these choices are correct.
+[02:46.71]What can cause erratic changes in SWR? Loose connection in the antenna or feed line.
+[02:52.99]What is the electrical difference between RG-58 and RG-213 coaxial cable? RG-213 cable has less loss at a given frequency.
+[03:04.84]Which of the following types of feed line has the lowest loss? Air-insulated hardline.
+[03:10.38]What is standing wave ratio (SWR)? A measure of how well a load is matched to a transmission line.

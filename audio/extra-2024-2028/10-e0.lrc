@@ -1,0 +1,17 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E0 - Safety]
+[00:00.40]Extra answers. E0 - Safety.
+[00:03.75]Group E0A.
+[00:05.73]What is the primary function of an external earth connection or ground rod? Lightning charge dissipation.
+[00:12.48]When evaluating RF exposure levels from your station at a neighbor’s home, what must you do? Ensure signals from your station are less than the uncontrolled maximum permissible exposure (MPE) limits.
+[00:25.78]Over what range of frequencies are the FCC human body RF exposure limits most restrictive? 30 - 300 MHz.
+[00:34.54]When evaluating a site with multiple transmitters operating at the same time, the operators and licensees of which transmitters are responsible for mitigating over-exposure situations? Each transmitter that produces 5 percent or more of its MPE limit in areas where the total MPE limit is exceeded.
+[00:54.01]What hazard is created by operating at microwave frequencies? The high gain antennas commonly used can result in high exposure levels.
+[01:03.38]Why are there separate electric (E) and magnetic (H) MPE limits at frequencies below 300 MHz? The body reacts to electromagnetic radiation from both the E and H fields; Ground reflections and scattering cause the field strength to vary with location; E field and H field radiation intensity peaks can occur at different locations; All these choices are correct.
+[01:28.18]What is meant by “100% tie-off” regarding tower safety? At least one lanyard attached to the tower at all times.
+[01:35.97]What does SAR measure? The rate at which RF energy is absorbed by the body.
+[01:41.38]Which of the following types of equipment are exempt from RF exposure evaluations? Hand-held transceivers sold before May 3, 2021.
+[01:51.33]When must an RF exposure evaluation be performed on an amateur station operating on 80 meters? An evaluation must always be performed.
+[02:01.39]To what should lanyards be attached while climbing? Tower legs.
+[02:05.22]Where should a shock-absorbing lanyard be attached to a tower when working above ground? Above the climber’s head level.

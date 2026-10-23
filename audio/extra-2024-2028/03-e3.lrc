@@ -1,0 +1,46 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E3 - Radio Wave Propagation]
+[00:00.40]Extra answers. E3 - Radio Wave Propagation.
+[00:04.84]Group E3A.
+[00:06.74]What is the approximate maximum separation measured along the surface of the Earth between two stations communicating by EME? 12,000 miles, if the moon is “visible” by both stations.
+[00:19.25]What characterizes libration fading of an EME signal? A fluttery, irregular fading.
+[00:25.46]When scheduling EME contacts, which of these conditions will generally result in the least path loss? When the Moon is at perigee.
+[00:34.22]In what direction does an electromagnetic wave travel? It travels at a right angle to the electric and magnetic fields.
+[00:41.70]How are the component fields of an electromagnetic wave oriented? They are at right angles.
+[00:47.42]What should be done to continue a long-distance contact when the MUF for that path decreases due to darkness? Switch to a lower frequency HF band.
+[00:57.16]Atmospheric ducts capable of propagating microwave signals often form over what geographic feature? Large bodies of water.
+[01:05.83]When a meteor strikes the Earth’s atmosphere, a linear ionized region is formed at what region of the ionosphere? The E region.
+[01:14.12]Which of the following frequency ranges is most suited for meteor-scatter communications? 28 MHz - 148 MHz.
+[01:22.96]What determines the speed of electromagnetic waves through a medium? The index of refraction.
+[01:28.96]What is a typical range for tropospheric duct propagation of microwave signals? 100 miles to 300 miles.
+[01:37.25]What is most likely to result in auroral propagation? Severe geomagnetic storms.
+[01:42.93]Which of these emission modes is best for auroral propagation? CW.
+[01:47.83]What are circularly polarized electromagnetic waves? Waves with rotating electric and magnetic fields.
+[01:55.41]Group E3B.
+[01:57.34]Where is transequatorial propagation (TEP) most likely to occur? Between points separated by 2,000 miles to 3,000 miles over a path perpendicular to the geomagnetic equator.
+[02:10.45]What is the approximate maximum range for signals using transequatorial propagation? 5,000 miles.
+[02:18.01]At what time of day is transequatorial propagation most likely to occur? Afternoon or early evening.
+[02:25.06]What are “extraordinary” and “ordinary” waves? Independently propagating, elliptically polarized waves created in the ionosphere.
+[02:33.43]Which of the following paths is most likely to support long-distance propagation on 160 meters? A path entirely in darkness.
+[02:42.74]On which of the following amateur bands is long-path propagation most frequent? 40 meters and 20 meters.
+[02:50.24]What effect does lowering a signal’s transmitted elevation angle have on ionospheric HF skip propagation? The distance covered by each hop increases.
+[03:00.49]How does the maximum range of ground-wave propagation change when the signal frequency is increased? It decreases.
+[03:08.29]At what time of year is sporadic-E propagation most likely to occur? Around the solstices, especially the summer solstice.
+[03:16.30]What is the effect of chordal-hop propagation? The signal experiences less loss compared to multi-hop propagation, which uses Earth as a reflector.
+[03:26.33]At what time of day is sporadic-E propagation most likely to occur? Between sunrise and sunset.
+[03:32.87]What is chordal-hop propagation? Successive ionospheric refractions without an intermediate reflection from the ground.
+[03:40.56]What type of polarization is supported by ground-wave propagation? Vertical.
+[03:46.13]Group E3C.
+[03:48.07]What is the cause of short-term radio blackouts? Solar flares.
+[03:52.24]What is indicated by a rising A-index or K-index? Increasing disturbance of the geomagnetic field.
+[03:59.56]Which of the following signal paths is most likely to experience high levels of absorption when the A-index or K-index is elevated? Through the auroral oval.
+[04:09.98]What does the value of Bz (B sub z) represent? North-south strength of the interplanetary magnetic field.
+[04:17.35]What orientation of Bz (B sub z) increases the likelihood that charged particles from the Sun will cause disturbed conditions? Southward.
+[04:27.07]How does the VHF/UHF radio horizon compare to the geographic horizon? It is approximately 15 percent farther.
+[04:36.00]Which of the following indicates the greatest solar flare intensity? Class X.
+[04:40.74]Which of the following is the space-weather term for an extreme geomagnetic storm? G5.
+[04:46.62]What type of data is reported by amateur radio propagation reporting networks? Digital-mode and CW signals.
+[04:54.82]What does the 304A solar parameter measure? UV emissions at 304 angstroms, correlated to the solar flux index.
+[05:04.04]What does VOACAP software model? HF propagation.
+[05:07.89]Which of the following is indicated by a sudden rise in radio background noise across a large portion of the HF spectrum? A coronal mass ejection impact or a solar flare has occurred.

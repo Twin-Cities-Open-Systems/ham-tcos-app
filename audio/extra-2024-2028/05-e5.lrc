@@ -1,0 +1,54 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E5 - Electrical Principles]
+[00:00.40]Extra answers. E5 - Electrical Principles.
+[00:04.52]Group E5A.
+[00:06.37]What can cause the voltage across reactances in a series RLC circuit to be higher than the voltage applied to the entire circuit? Resonance.
+[00:15.94]What is the resonant frequency of an RLC circuit if R is 22 ohms, L is 50 microhenries, and C is 40 picofarads? 3.56 MHz.
+[00:27.77]What is the magnitude of the impedance of a series RLC circuit at resonance? Approximately equal to circuit resistance.
+[00:35.97]What is the magnitude of the impedance of a parallel RLC circuit at resonance? Approximately equal to circuit resistance.
+[00:44.30]What is the result of increasing the Q of an impedance-matching circuit? Matching bandwidth is decreased.
+[00:50.77]What is the magnitude of the circulating current within the components of a parallel LC circuit at resonance? It is at a maximum.
+[00:59.29]What is the magnitude of the current at the input of a parallel RLC circuit at resonance? Minimum.
+[01:05.87]What is the phase relationship between the current through and the voltage across a series resonant circuit at resonance? The voltage and current are in phase.
+[01:15.91]How is the Q of an RLC parallel resonant circuit calculated? Resistance divided by the reactance of either the inductance or capacitance.
+[01:26.16]What is the resonant frequency of an RLC circuit if R is 33 ohms, L is 50 microhenries, and C is 10 picofarads? 7.12 MHz.
+[01:37.92]What is the half-power bandwidth of a resonant circuit that has a resonant frequency of 7.1 MHz and a Q of 150? 47.3 kHz.
+[01:49.09]What is the half-power bandwidth of a resonant circuit that has a resonant frequency of 3.7 MHz and a Q of 118? 31.4 kHz.
+[02:00.45]What is an effect of increasing Q in a series resonant circuit? Internal voltages increase.
+[02:06.87]Group E5B.
+[02:08.85]What is the term for the time required for the capacitor in an RC circuit to be charged to 63.2% of the applied voltage or to discharge to 36.8% of its initial voltage? One time constant.
+[02:24.12]What letter is commonly used to represent susceptance? B.
+[02:28.09]How is impedance in polar form converted to an equivalent admittance? Take the reciprocal of the magnitude and change the sign of the angle.
+[02:37.30]What is the time constant of a circuit having two 220-microfarad capacitors and two 1-megohm resistors, all in parallel? 220 seconds.
+[02:48.04]What is the effect on the magnitude of pure reactance when it is converted to susceptance? It is replaced by its reciprocal.
+[02:55.88]What is susceptance? The imaginary part of admittance.
+[02:59.51]What is the phase angle between the voltage across and the current through a series RLC circuit if XC is 500 ohms, R is 1 kilohm, and XL is 250 ohms? 14.0 degrees with the voltage lagging the current.
+[03:16.10]What is the phase angle between the voltage across and the current through a series RLC circuit if XC is 300 ohms, R is 100 ohms, and XL is 100 ohms? 63 degrees with the voltage lagging the current.
+[03:31.85]What is the relationship between the AC current through a capacitor and the voltage across a capacitor? Current leads voltage by 90 degrees.
+[03:41.31]What is the relationship between the AC current through an inductor and the voltage across an inductor? Voltage leads current by 90 degrees.
+[03:50.62]What is the phase angle between the voltage across and the current through a series RLC circuit if XC is 25 ohms, R is 100 ohms, and XL is 75 ohms? 27 degrees with the voltage leading the current.
+[04:06.27]What is admittance? The inverse of impedance.
+[04:09.69]Group E5C.
+[04:11.64]Which of the following represents pure capacitive reactance of 100 ohms in rectangular notation? 0 - j100.
+[04:20.36]How are impedances described in polar coordinates? By magnitude and phase angle.
+[04:26.15]Which of the following represents a pure inductive reactance in polar coordinates? A positive 90 degree phase angle.
+[04:34.05]What type of Y-axis scale is most often used for graphs of circuit frequency response? Logarithmic.
+[04:40.82]What kind of diagram is used to show the phase relationship between impedances at a given frequency? Phasor diagram.
+[04:48.77]What does the impedance 50 - j25 ohms represent? 50 ohms resistance in series with 25 ohms capacitive reactance.
+[04:58.55]Where is the impedance of a pure resistance plotted on rectangular coordinates? On the horizontal axis.
+[05:05.68]What coordinate system is often used to display the phase angle of a circuit containing resistance, inductive, and/or capacitive reactance? Polar coordinates.
+[05:16.81]When using rectangular coordinates to graph the impedance of a circuit, what do the axes represent? The X axis represents the resistive component, and the Y axis represents the reactive component.
+[05:30.08]Group E5D.
+[05:32.06]What is the result of conductor skin effect? Resistance increases as frequency increases because RF current flows closer to the surface.
+[05:41.48]Why is it important to keep lead lengths short for components used in circuits for VHF and above? To minimize inductive reactance.
+[05:50.51]What is the phase relationship between current and voltage for reactive power? They are 90 degrees out of phase.
+[05:57.56]Why are short connections used at microwave frequencies? To reduce phase shift along the connection.
+[06:03.91]What parasitic characteristic causes electrolytic capacitors to be unsuitable for use at RF? Inductance.
+[06:11.57]What parasitic characteristic creates an inductor’s self-resonance? Inter-turn capacitance.
+[06:17.56]What combines to create the self-resonance of a component? The component’s nominal and parasitic reactance.
+[06:24.52]What is the primary cause of loss in film capacitors at RF? Skin effect.
+[06:29.56]What happens to reactive power in ideal inductors and capacitors? Energy is stored in magnetic or electric fields, but power is not dissipated.
+[06:39.75]As a conductor’s diameter increases, what is the effect on its electrical length? It increases.
+[06:46.07]How much real power is consumed in a circuit consisting of a 100-ohm resistor in series with a 100-ohm inductive reactance drawing 1 ampere? 100 watts.
+[06:58.07]What is reactive power? Wattless, nonproductive power.

@@ -1,0 +1,55 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T8 - Signals and Emissions]
+[00:00.40]Technician answers. T8 - Signals and Emissions.
+[00:04.69]Group T8A.
+[00:06.50]Which of the following is a form of amplitude modulation? Single sideband.
+[00:11.67]What type of modulation is commonly used for VHF packet radio transmissions? FM or PM.
+[00:18.87]Which type of voice mode is often used for long-distance (weak signal) contacts on the VHF and UHF bands? SSB.
+[00:27.31]Which type of modulation is commonly used for VHF and UHF voice repeaters? FM or PM.
+[00:34.81]Which of the following signal types has the narrowest bandwidth? CW.
+[00:39.66]Which sideband is normally used for 10-meter HF, VHF, and UHF single-sideband communications? Upper sideband.
+[00:48.50]What is one characteristic of single sideband (SSB) compared to FM? SSB signals have narrower bandwidth.
+[00:56.40]What is the approximate bandwidth of a typical single sideband (SSB) voice signal? 3 kHz.
+[01:03.24]What is the approximate bandwidth of an FM voice signal on VHF repeaters? Between 10 and 15 kHz.
+[01:10.93]What is the approximate bandwidth of AM fast-scan TV transmissions? About 6 MHz.
+[01:16.97]What is the approximate bandwidth required to transmit a CW signal? 150 Hz.
+[01:23.53]Which of the following is a disadvantage of FM compared with single sideband? Only one signal can be received at a time.
+[01:31.77]Group T8B.
+[01:33.73]What telemetry information is typically transmitted by satellite beacons? Health and status of the satellite.
+[01:40.93]What is the impact of using excessive effective radiated power on a satellite uplink? Blocking access by other users.
+[01:48.68]Which of the following are provided by satellite tracking programs? Maps showing the real-time position of the satellite track over Earth; The time, azimuth, and elevation of the start, maximum altitude, and end of a pass; The apparent frequency of the satellite transmission, including effects of Doppler shift; All these choices are correct.
+[02:10.49]What mode of transmission is commonly used by amateur radio satellites? SSB; FM; CW/data; All these choices are correct.
+[02:20.49]What is a satellite beacon? A transmission from a satellite that contains status information.
+[02:26.45]Which of the following are inputs to a satellite tracking program? The Keplerian elements.
+[02:31.75]What is Doppler shift in reference to satellite communications? An observed change in signal frequency caused by relative motion between the satellite and Earth station.
+[02:42.81]What does it mean if a satellite is operating in U/V mode? The satellite uplink is in the 70-centimeter band and the downlink is in the 2-meter band.
+[02:52.84]What causes spin fading of satellite signals? Rotation of the satellite and its antennas.
+[02:58.89]What does the term LEO mean in reference to communication satellites? Low Earth Orbit, which has a period of around 100 minutes.
+[03:07.31]Who is permitted to receive telemetry from an amateur radio satellite? Anyone.
+[03:12.37]Which of the following is a way to determine whether your satellite uplink power into a linear transponder satellite is neither too low nor too high? Your signal strength on the downlink should be about the same as the beacon.
+[03:26.13]Group T8C.
+[03:28.07]Which of the following methods is used to locate sources of noise interference or jamming? Radio direction finding.
+[03:35.87]Which of these items would be useful for a hidden transmitter hunt? A directional antenna.
+[03:41.17]What operating activity involves contacting as many stations as possible during a specified period? Contesting.
+[03:48.86]Which of the following is good practice when contacting another station in a contest? Sending only the minimum information needed for proper identification and the contest exchange.
+[04:00.45]What is a grid locator? A letter-number designator assigned to a geographic location.
+[04:06.11]How is over the air access to Internet Radio Linking Project (IRLP) nodes accomplished? By using Dual-Tone Multi-Frequency (DTMF) signals.
+[04:16.94]What is Voice Over Internet Protocol (VoIP)? A method of delivering voice communications over the internet using digital techniques.
+[04:26.51]What is the Internet Radio Linking Project (IRLP)? A technique to connect amateur radio systems, such as repeaters, via the internet.
+[04:36.03]Which of the following protocols enables an amateur station to transmit through a repeater without using a radio to initiate the transmission? EchoLink.
+[04:45.89]What is required before using the EchoLink system? Register your call sign and provide proof of license.
+[04:52.71]What is an amateur radio station that connects other amateur stations to the internet? A gateway.
+[04:59.39]Group T8D.
+[05:01.31]Which of the following is a digital communications mode? Packet radio; IEEE 802.11; FT8; All these choices are correct.
+[05:11.81]What is FT8? A digital mode capable of low signal-to-noise operation.
+[05:17.24]What kind of data can be transmitted by APRS? GPS position data; Text messages; Weather data; All these choices are correct.
+[05:26.79]What is meant by the term "NTSC?" An analog fast-scan color TV signal.
+[05:32.47]Which of the following is an application of APRS? Providing real-time tactical digital communications in conjunction with a map showing the locations of stations.
+[05:42.97]What does the abbreviation "PSK" mean? Phase Shift Keying.
+[05:46.91]Which of the following describes DMR? A technique for time-multiplexing two digital voice signals on a single 12.5 kHz repeater channel.
+[05:57.03]Which of the following is included in packet radio transmissions? A checksum that permits error detection; A header that contains the call sign of the station to which the information is being sent; Automatic repeat request in case of error; All these choices are correct.
+[06:14.17]What is CW? Another name for a Morse code transmission.
+[06:18.19]Which of the following operating activities is supported by digital mode software in the WSJT-X software suite? Earth-Moon-Earth; Weak signal propagation beacons; Meteor scatter; All these choices are correct.
+[06:32.51]What is the role of ARQ in a transmission system? An error correction method in which the receiving station detects errors and sends a request for retransmission.
+[06:42.89]Which of the following best describes an amateur radio mesh network? An amateur-radio data network using commercial Wi-Fi equipment with modified firmware.

@@ -1,0 +1,29 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T4 - Amateur Radio Practices]
+[00:00.40]Technician answers. T4 - Amateur Radio Practices.
+[00:05.23]Group T4A.
+[00:07.21]Which of the following is an appropriate power supply rating for a typical 50-watt output mobile FM transceiver? 13.8 volts at 12 amperes.
+[00:17.69]Which of the following should be considered when selecting an accessory SWR meter? The frequency and power level at which the measurements will be made.
+[00:27.21]Why are short, heavy-gauge wires used for a transceiver’s DC power connection? To minimize voltage drop when transmitting.
+[00:35.54]How are the audio input and output of a transceiver connected in a station configured to operate using FT8? To the audio output and input of a computer running FT8 software.
+[00:48.03]Where should an RF power meter be installed? In the feed line, between the transmitter and antenna.
+[00:54.29]What signals are used in a computer-radio interface for digital mode operation? Receive audio, transmit audio, and transmitter keying.
+[01:03.22]Which of the following is one of the connections required between a computer and a transceiver to operate digital modes? Computer “line in” to transceiver speaker connector.
+[01:13.68]Which of the following conductors is preferred for bonding at RF? Flat copper strap.
+[01:19.15]How can you determine the length of time that equipment can be powered from a battery? Divide the battery ampere-hour rating by the average current draw of the equipment.
+[01:29.10]What function does a digital mode hotspot perform for nearby transceivers? Communication with a digital voice or data network.
+[01:37.28]Where should the negative power return of a mobile transceiver be connected in a vehicle? At the 12-volt battery chassis ground.
+[01:45.04]What is an electronic keyer? A device that assists in manual sending of Morse code.
+[01:50.89]Group T4B.
+[01:52.87]What is the effect of excessive microphone gain on SSB transmissions? Distorted transmitted audio.
+[01:59.98]Which of the following can be used to enter a transceiver’s operating frequency? The keypad or VFO knob.
+[02:06.92]How is squelch adjusted so that a weak FM signal can be heard? Set the squelch threshold so that receiver output audio is on all the time.
+[02:16.17]What does an FM signal sound like when received slightly off frequency? The audio becomes distorted.
+[02:22.83]What does the scanning function of an FM transceiver do? Tunes through a range of frequencies to check for activity.
+[02:29.80]Which of the following controls could be used if the voice pitch of a single-sideband signal returning to your CQ call seems too high or low? The RIT or Clarifier.
+[02:40.92]What is a DMR “code plug”? Configuration data loaded onto your radio to access repeaters and talkgroups.
+[02:48.42]What is the advantage of having a choice of receiver filter bandwidths in a multimode transceiver? Permits noise or interference reduction by selecting a bandwidth matching the mode.
+[03:00.05]How is a specific group of stations selected on a DMR digital voice transceiver? By entering the group’s identification code.
+[03:08.43]Which of the following receiver filter bandwidths provides the best signal-to-noise ratio for SSB reception? 2400 Hz.
+[03:17.46]Which of the following must be programmed into a D-STAR digital transceiver before transmitting? Your call sign.

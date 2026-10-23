@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Listen &middot; Just Another Ham Study</title>
+<meta name="description" content="Listen to the Technician, General and Extra question pools read aloud, synced to the words as they play, with the speed adjustable.">
+<link rel="canonical" href="https://ham.tcos.app/listen">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Just Another Ham Study">
+<meta property="og:title" content="Listen &middot; Just Another Ham Study">
+<meta property="og:description" content="Listen to the Technician, General and Extra question pools read aloud, synced to the words as they play, with the speed adjustable.">
+<meta property="og:url" content="https://ham.tcos.app/listen">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ham.tcos.app/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Just Another Ham Study: US amateur radio exam study guide, 1,431 questions across the Technician, General and Extra pools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Listen &middot; Just Another Ham Study">
+<meta name="twitter:description" content="Listen to the Technician, General and Extra question pools read aloud, synced to the words as they play, with the speed adjustable.">
+<meta name="twitter:image" content="https://ham.tcos.app/og.jpg">
+<link rel="stylesheet" href="/css/shell.css">
+<link rel="stylesheet" href="/css/ham.css">
+<link rel="stylesheet" href="/css/listen.css">
+<script>(function(){var d=document.documentElement;
+try{d.setAttribute("data-fs",localStorage.getItem("tc-fs")||"m");
+var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-theme",{paper:"light",contrast:"light",midnight:"dark",graphite:"dark"}[t]||t);d.setAttribute("data-skin",t);}}catch(e){d.setAttribute("data-fs","m");}})();</script>
+</head>
+<body>
+<header class="top">
+  <span class="brand"><a href="/">Just Another Ham Study</a></span>
+  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html">Study guide</a><a href="/callsign.html">Call signs</a><a href="/listen.html" aria-current="page">Listen</a><a class="ext" href="https://ham.study" target="_blank" rel="noopener">HamStudy.org</a></nav>
+  <div class="fontsize-toggle"><span class="fs-label">Aa</span>
+    <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
+    <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
+    <button class="fontsize-btn" data-size="l"  type="button" aria-pressed="false">L</button>
+    <button class="fontsize-btn" data-size="xl" type="button" aria-pressed="false">XL</button>
+    <button class="fontsize-btn" data-size="xxl" type="button" aria-pressed="false">XXL</button>
+  </div>
+  <div class="theme-toggle"><label class="fs-label" for="theme-select">Theme</label>
+    <select class="theme-select" id="theme-select">
+      <option value="auto">Auto (system)</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="paper">Paper (warm, low glare)</option>
+      <option value="contrast">High contrast</option>
+      <option value="midnight">Midnight</option>
+      <option value="graphite">Graphite</option>
+    </select>
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
+    <h1>Listen</h1>
+    <p class="lede">The Technician, General and Extra question pools, read aloud track by track with the text
+      highlighted as it plays; the speed is adjustable from quarter speed to double.</p>
+  </div>
+
+  <div class="cards">
+
+  <section class="card" id="card-listen" aria-labelledby="listen-h">
+    <header>
+      <h2 id="listen-h">Player</h2>
+      <span class="count" id="hl-count">loading&hellip;</span>
+    </header>
+    <div class="body">
+      <div id="hl-player"></div>
+      <p class="hint" id="hl-credit"></p>
+    </div>
+  </section>
+
+  <div class="cards" id="hl-albums"></div>
+
+  </div>
+</main>
+<footer class="hint credit">
+  <p>Questions and figures are from the <a href="https://ncvec.org/index.php/amateur-question-pools">National Conference of Volunteer
+    Examiner Coordinators (NCVEC)</a> amateur question pools, which the NCVEC releases into the public domain.</p>
+  <p>Just Another Ham Study is not affiliated with the FCC, the NCVEC, the ARRL or HamStudy.org (an independent site, linked in the header), and is not an official exam-prep service.
+    Check the current pool and the rules with your Volunteer Examiner Coordinator before you test.</p>
+  <p><a href="https://tcos.app/">tcos.app</a> &middot;
+    <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
+</footer>
+<script src="/js/shell.js"></script>
+<script src="/js/links.js"></script>
+<script src="/js/listen.js"></script>
+<script>(function () {
+  "use strict";
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmtTime(s) {
+    s = Math.round(s || 0);
+    var m = Math.floor(s / 60), r = s % 60;
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  }
+  var box = document.getElementById("hl-albums");
+  box.addEventListener("click", function (e) {
+    var b = e.target.closest(".hl-track");
+    if (!b) { return; }
+    window.HamListen && window.HamListen.open({ pool: b.getAttribute("data-pool"), n: parseInt(b.getAttribute("data-n"), 10) });
+  });
+  fetch("/data/ham-audio.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+    document.getElementById("hl-credit").textContent = data.credit || "";
+    box.innerHTML = (data.albums || []).map(function (album) {
+      return '<section class="card" aria-labelledby="hl-' + esc(album.pool) + '-h">' +
+        '<header><h2 id="hl-' + esc(album.pool) + '-h">' + esc(album.title) + '</h2>' +
+        '<span class="count">' + album.tracks.length + " tracks</span></header>" +
+        '<div class="body"><ol class="hl-tracks">' + album.tracks.map(function (t) {
+          return '<li><button type="button" class="hl-track" data-pool="' + esc(album.pool) + '" data-n="' + t.n + '">' +
+            '<span class="mono">' + t.n + '</span> ' + esc(t.title) + ' <span class="hint">' + fmtTime(t.seconds) + "</span></button></li>";
+        }).join("") + "</ol></div></section>";
+    }).join("");
+    document.getElementById("hl-count").textContent = (data.albums || []).length + " albums";
+    window.HamListen && window.HamListen.init(document.getElementById("hl-player"), data, { compact: false });
+  }).catch(function () {
+    document.getElementById("hl-count").textContent = "unavailable";
+  });
+}());</script>
+</body>
+</html>

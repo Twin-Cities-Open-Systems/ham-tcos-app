@@ -1,0 +1,83 @@
+/* listen.css -- the read-along audio player (js/listen.js) and the pill that
+ * carries it beside the flashcards. Every color and font comes from shell.css's
+ * variables (--ink, --muted, --accent, --card et al.) -- never a literal --
+ * so both themes and every named skin stay correct for free. The pill mirrors
+ * .tc-jump (shell.css), on the opposite bottom corner, at the same z-index
+ * band and the same safe-area insets; shell.css itself is never edited here.
+ *
+ * .hl-player is shared by the standalone page and the pill (js/listen.js adds
+ * .hl-compact for the pill's smaller build); the same ids and classes exist
+ * in both so this one sheet styles them without a second set of rules.
+ */
+
+.hl-player{display:flex;flex-direction:column;gap:.6rem;font:inherit;color:var(--ink)}
+.hl-audio{display:none}
+
+.hl-title{margin:0;font-weight:600;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Touch targets stay >=44px, same rule as the rest of the shell. */
+.hl-transport{display:flex;align-items:center;justify-content:center;gap:.35rem}
+.hl-btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  min-width:44px;min-height:44px;border:1px solid var(--edge);border-radius:8px;background:var(--sunk);
+  color:var(--ink);font-size:1.1rem;line-height:1;cursor:pointer}
+.hl-btn:hover{color:var(--accent);border-color:var(--accent)}
+.hl-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hl-btn:disabled{opacity:.45;cursor:default}
+.hl-play[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+
+/* Speed: a segmented group, the chosen rate always visibly pressed -- the
+ * same look as study.css's .hs-seg-btn, so a reader who knows one knows both. */
+.hl-speed{display:flex;flex-wrap:wrap;gap:.2rem;justify-content:center}
+.hl-seg-btn{all:unset;box-sizing:border-box;background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+  border-radius:6px;padding:.22rem .55rem;min-height:36px;font:inherit;font-size:.78rem;cursor:pointer;text-align:center}
+.hl-seg-btn:hover{border-color:var(--accent)}
+.hl-seg-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hl-seg-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+
+/* Read-along: its own scroll box. This box scrolls; the page around it never
+ * does -- js/listen.js moves scrollTop by hand instead of scrollIntoView. */
+.hl-lines{list-style:none;margin:0;padding:.3rem;max-height:16rem;overflow-y:auto;
+  border:1px solid var(--edge);border-radius:8px;background:var(--sunk);
+  display:flex;flex-direction:column;gap:.15rem;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){.hl-lines{scroll-behavior:auto}}
+.hl-line{margin:0;padding:.35rem .5rem;border-radius:6px;cursor:pointer;line-height:1.4;font-size:.9rem;color:var(--muted)}
+.hl-line:hover{background:var(--surface)}
+.hl-line-heading{font-weight:700;color:var(--ink)}
+.hl-line-group{font-weight:600;color:var(--ink);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+.hl-line-question{color:var(--ink)}
+/* The current line: a filled rail, never color alone -- aria-current carries
+ * the same state for anything not looking at pixels. */
+.hl-line.is-now{background:var(--accent-soft);color:var(--accent);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
+
+.hl-status{margin:0;color:var(--muted);font-size:.85rem}
+
+/* --- compact: the pill's own build -----------------------------------------
+ * One transport row, then the current line and the next, nothing else. */
+.hl-compact{gap:.35rem}
+.hl-compact .hl-title{font-size:.85rem}
+.hl-compact .hl-btn{min-width:38px;min-height:38px;font-size:.95rem}
+.hl-now-line,.hl-next-line{margin:0;font-size:.82rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hl-now-line{color:var(--ink);font-weight:600}
+.hl-next-line{color:var(--muted)}
+.hl-next-line::before{content:"Next: "}
+
+/* --- the pill: aside.hl-pill, the mirror of .tc-jump ------------------------
+ * .tc-jump sits bottom-right; this sits bottom-left, same insets, same
+ * z-index band (one below .tc-dock's 14... here the pill IS the dock-like
+ * control, so it takes 14 itself), same hidden-by-attribute convention. */
+aside.hl-pill{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));
+  z-index:14;max-width:min(22rem,calc(100vw - 24px));
+  border:1px solid var(--edge);border-radius:14px;padding:.7rem .8rem;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:var(--shadow);opacity:.96;transition:opacity .2s,transform .2s,visibility 0s}
+aside.hl-pill:hover,aside.hl-pill:focus-within{opacity:1}
+aside.hl-pill[data-show="false"]{opacity:0;visibility:hidden;transform:translateY(10px);pointer-events:none;
+  transition:opacity .2s,transform .2s,visibility 0s .2s}
+@media(prefers-reduced-motion:reduce){aside.hl-pill,aside.hl-pill[data-show="false"]{transition:none}}
+@media print{aside.hl-pill{display:none!important}}
+
+@media(max-width:30rem){
+  aside.hl-pill{left:max(8px,env(safe-area-inset-left));bottom:max(8px,env(safe-area-inset-bottom));padding:.55rem .6rem}
+  .hl-lines{max-height:40vh}
+}

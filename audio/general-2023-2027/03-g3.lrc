@@ -1,0 +1,44 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G3 - Radio Wave Propagation]
+[00:00.40]General answers. G3 - Radio Wave Propagation.
+[00:05.08]Group G3A.
+[00:07.03]How does a higher sunspot number affect HF propagation? Higher sunspot numbers generally indicate a greater probability of good propagation at higher frequencies.
+[00:18.03]What effect does a sudden ionospheric disturbance have on the daytime ionospheric propagation? It disrupts signals on lower frequencies more than those on higher frequencies.
+[00:29.50]Approximately how long does it take the increased ultraviolet and X-ray radiation from a solar flare to affect radio propagation on Earth? 8 minutes.
+[00:39.79]Which of the following are the least reliable bands for long-distance communications during periods of low solar activity? 15 meters, 12 meters, and 10 meters.
+[00:51.15]What is the solar flux index? A measure of solar radiation with a wavelength of 10.7 centimeters.
+[00:58.58]What is a geomagnetic storm? A temporary disturbance in Earth’s geomagnetic field.
+[01:04.20]At what point in the solar cycle does the 20-meter band usually support worldwide propagation during daylight hours? At any point.
+[01:13.28]How can a geomagnetic storm affect HF propagation? Degrade high-latitude HF propagation.
+[01:20.39]How can high geomagnetic activity benefit radio communications? Creates auroras that can reflect VHF signals.
+[01:28.55]What causes HF propagation conditions to vary periodically in a 26- to 28-day cycle? Rotation of the Sun’s surface layers around its axis.
+[01:39.35]How long does it take a coronal mass ejection to affect radio propagation on Earth? 15 hours to several days.
+[01:47.28]What does the K-index measure? The short-term stability of Earth’s geomagnetic field.
+[01:52.51]What does the A-index measure? The long-term stability of Earth’s geomagnetic field.
+[01:57.73]How is long distance radio communication usually affected by the charged particles that reach Earth from solar coronal holes? HF communication is disturbed.
+[02:09.42]Group G3B.
+[02:11.42]What is a characteristic of skywave signals arriving at your location by both short-path and long-path propagation? A slightly delayed echo might be heard.
+[02:21.63]What factors affect the MUF? Path distance and location; Time of day and season; Solar radiation and ionospheric disturbances; All these choices are correct.
+[02:33.16]Which frequency will have the least attenuation for long-distance skip propagation? Just below the MUF.
+[02:40.12]Which of the following is a way to determine current propagation on a desired band from your station? Use a network of automated receiving stations on the internet to see where your transmissions are being received.
+[02:53.66]How does the ionosphere affect radio waves with frequencies below the MUF and above the LUF? They are refracted back to Earth.
+[03:02.41]What usually happens to radio waves with frequencies below the LUF? They are attenuated before reaching the destination.
+[03:10.36]What does LUF stand for? The Lowest Usable Frequency for communications between two specific points.
+[03:17.26]What does MUF stand for? The Maximum Usable Frequency for communications between two points.
+[03:23.88]What is the approximate maximum distance along the Earth’s surface normally covered in one hop using the F2 region? 2,500 miles.
+[03:33.85]What is the approximate maximum distance along the Earth’s surface normally covered in one hop using the E region? 1,200 miles.
+[03:43.59]What happens to HF propagation when the LUF exceeds the MUF? Propagation via ordinary skywave communications is not possible over that path.
+[03:54.44]Which of the following is typical of the lower HF frequencies during the summer? High levels of atmospheric noise or static.
+[04:02.78]Group G3C.
+[04:04.81]Which ionospheric region is closest to the surface of Earth? The D region.
+[04:09.55]What is meant by the term “critical frequency” at a given incidence angle? The highest frequency which is refracted back to Earth.
+[04:17.79]Why is skip propagation via the F2 region longer than that via the other ionospheric regions? Because it is the highest.
+[04:26.06]What does the term “critical angle” mean, as applied to radio wave propagation? The highest takeoff angle that will return a radio wave to Earth under specific ionospheric conditions.
+[04:37.89]Why is long-distance communication on the 40-, 60-, 80-, and 160-meter bands more difficult during the day? The D region absorbs signals at these frequencies during daylight hours.
+[04:51.42]What is a characteristic of HF scatter? Signals have a fluttering sound.
+[04:56.13]What makes HF scatter signals often sound distorted? Energy is scattered into the skip zone through several different paths.
+[05:04.05]Why are HF scatter signals in the skip zone usually weak? Only a small part of the signal energy is scattered into the skip zone.
+[05:12.55]What type of propagation allows signals to be heard in the transmitting station’s skip zone? Scatter.
+[05:18.89]What is near vertical incidence skywave (NVIS) propagation? Short distance MF or HF propagation at high elevation angles.
+[05:28.76]Which ionospheric region is the most absorbent of signals below 10 MHz during daylight hours? The D region.

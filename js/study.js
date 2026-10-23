@@ -25,8 +25,10 @@
   "use strict";
 
   var DATA_URL = "/data/ham-study.json";
+  var AUDIO_URL = "/data/ham-audio.json";
   var STORE = "ham-study-progress-v1";
   var SHOW_KEY = "ham-study-show-answer-v1";
+  var LISTEN_KEY = "ham.listen.flash";
   var ICON = { good: "✔", critical: "✖", neutral: "○", warning: "▲" };
 
   var GROUPBY_KEY = "ham-groupby-";
@@ -36,6 +38,7 @@
   var $ = function (id) { return document.getElementById(id); };
   function pref(key, fallback) { try { return window.localStorage.getItem(key) || fallback; } catch (e) { return fallback; } }
   function setPref(key, value) { try { window.localStorage.setItem(key, value); } catch (e) { /* forgets */ } }
+  function clearPref(key) { try { window.localStorage.removeItem(key); } catch (e) { /* forgets */ } }
   function loadCols(panel) { var n = parseInt(pref(COLS_KEY + panel, "0"), 10); return n >= 1 && n <= 4 ? n : 0; }
   function loadGroupBy(panel) {
     var modes = GROUP_MODES[panel], g = pref(GROUPBY_KEY + panel, modes[0]);
@@ -44,7 +47,8 @@
   var state = {
     groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0, browse: 0 },
     data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
-    deck: [], card: 0, shuffled: false, answered: null, exam: null, fmode: "memorize"
+    deck: [], card: 0, shuffled: false, answered: null, exam: null, fmode: "memorize",
+    listenOn: pref(LISTEN_KEY, "") === "1", audioData: null
   };
 
   function esc(s) {
@@ -613,6 +617,44 @@
       choicesHtml(q, null) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
   }
 
+  /* --- listen-along pill ---------------------------------------------------
+   * The flashcards toggle hands the current card to HamListen (js/listen.js,
+   * loaded after this file); every call is guarded, so a blocked or missing
+   * player script still leaves flashcards working. */
+  function loadAudio(cb) {
+    if (state.audioData) { cb(state.audioData); return; }
+    fetch(AUDIO_URL, { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+      state.audioData = data;
+      cb(data);
+    }).catch(function () { /* the pill just stays quiet */ });
+  }
+  function openListenFor(q) {
+    if (!q) { return; }
+    window.HamListen && window.HamListen.open({ pool: state.pool, qid: q.id });
+  }
+  function hideListenPill() {
+    var pill = $("hl-pill");
+    if (pill) { pill.setAttribute("data-show", "false"); }
+  }
+  function showListenPill() {
+    var pill = $("hl-pill");
+    if (!pill) { return; }
+    loadAudio(function (data) {
+      /* Init once: every render in flashcard mode comes through here, and a
+         re-init tears the player down mid-track (CORRECTNESS-2, review of
+         2026-10-24). After the first, only the card to open changes. */
+      var first = !pill.hasAttribute("data-hl-ready");
+      if (first) {
+        window.HamListen && window.HamListen.init(pill, data, { compact: true });
+        pill.setAttribute("data-hl-ready", "1");
+      }
+      pill.setAttribute("data-show", "true");
+      /* renderFlash() already opened the card shown; only the first show
+         needs to catch up (the verifier's note, 2026-10-24). */
+      if (first && state.deck.length) { openListenFor(state.byId[state.deck[state.card]]); }
+    });
+  }
+
   /* --- flashcards --------------------------------------------------------- */
   function shuffle(a) {
     for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
@@ -633,6 +675,7 @@
       return;
     }
     var q = state.byId[state.deck[state.card]];
+    if (state.listenOn) { openListenFor(q); }
     /* Memorize and quiz look different at a glance: a solid green rail and a star
        versus a dashed blue rail and a question mark, each named in words. */
     Array.prototype.forEach.call(document.querySelectorAll("[data-fmode]"), function (b) {
@@ -641,14 +684,14 @@
     $("hs-flash-pos").textContent = (state.card + 1) + " / " + state.deck.length;
     if (state.fmode === "flip") {
       box.className = "ham-flash is-flip";
-      box.innerHTML = '<p class="ham-mode"><span aria-hidden="true">\u21BB</span> Flip: question, then answer</p>' +
+      box.innerHTML = '<p class="ham-mode"><span aria-hidden="true">↻</span> Flip: question, then answer</p>' +
         '<ul class="ham-flipone">' + flipHtml(q, "ham-fcard", "hs-flash-card", "", choicesHtml(q, null, true) + figureHtml(q),
           choicesHtml(q, null) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : "")) + "</ul>";
       return;
     }
     var memorize = state.fmode === "memorize";
     box.className = "ham-flash " + (memorize ? "is-memorize" : "is-quiz");
-    var h = '<p class="ham-mode"><span aria-hidden="true">' + (memorize ? "\u2605" : "?") + "</span> " +
+    var h = '<p class="ham-mode"><span aria-hidden="true">' + (memorize ? "★" : "?") + "</span> " +
       (memorize ? "Memorize: answers shown" : "Quiz: pick an answer") + "</p>" +
       '<p class="ham-flash-q"><span class="mono">' + esc(q.id) + "</span> " + esc(q.question) + "</p>" + figureHtml(q);
     if (memorize) {
@@ -828,7 +871,8 @@
     });
     if (state.mode === "guide") { renderGuide(); }
     if (state.mode === "browse") { renderBrowse(); }
-    if (state.mode === "flash") { buildDeck(); renderFlash(); }
+    if (state.mode === "flash") { buildDeck(); renderFlash(); if (state.listenOn) { showListenPill(); } }
+    if (state.mode !== "flash") { hideListenPill(); }
     if (state.mode === "exam") { renderExam(); }
     if (state.mode === "glossary") { renderGlossary(); }
     if (state.mode === "formulas") { renderFormulas(); }
@@ -909,6 +953,15 @@
       this.setAttribute("aria-pressed", String(state.shuffled));
       buildDeck();
       renderFlash();
+    });
+    var flashListenBtn = $("hs-flash-listen");
+    flashListenBtn.setAttribute("aria-pressed", String(state.listenOn));
+    flashListenBtn.addEventListener("click", function () {
+      state.listenOn = !state.listenOn;
+      flashListenBtn.setAttribute("aria-pressed", String(state.listenOn));
+      if (state.listenOn) { setPref(LISTEN_KEY, "1"); } else { clearPref(LISTEN_KEY); }
+      if (state.mode !== "flash") { return; }
+      if (state.listenOn) { showListenPill(); } else { hideListenPill(); }
     });
     document.addEventListener("keydown", function (e) {
       if (state.mode !== "flash" || e.altKey || e.ctrlKey || e.metaKey) { return; }

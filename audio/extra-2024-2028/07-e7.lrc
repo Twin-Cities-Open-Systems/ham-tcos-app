@@ -1,0 +1,101 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E7 - Practical Circuits]
+[00:00.40]Extra answers. E7 - Practical Circuits.
+[00:04.41]Group E7A.
+[00:06.35]Which circuit is bistable? A flip-flop.
+[00:09.39]What is the function of a decade counter? It produces one output pulse for every 10 input pulses.
+[00:16.01]Which of the following can divide the frequency of a pulse train by 2? A flip-flop.
+[00:21.21]How many flip-flops are required to divide a signal frequency by 16? 4.
+[00:26.63]Which of the following circuits continuously alternates between two states without an external clock signal? Astable multivibrator.
+[00:35.09]What is a characteristic of a monostable multivibrator? It switches temporarily to an alternate state for a set time.
+[00:42.85]What logical operation does a NAND gate perform? It produces a 0 at its output only if all inputs are 1.
+[00:50.51]What logical operation does an OR gate perform? It produces a 1 at its output if any input is 1.
+[00:57.52]What logical operation is performed by a two-input exclusive NOR gate? It produces a 0 at its output if one and only one of its inputs is 1.
+[01:07.60]What is a truth table? A list of inputs and corresponding outputs for a digital device.
+[01:13.39]What does “positive logic” mean in reference to logic devices? High voltage represents a 1, low voltage a 0.
+[01:21.93]Group E7B.
+[01:23.93]For what portion of the signal cycle does each active element in a push-pull, Class AB amplifier conduct? More than 180 degrees but less than 360 degrees.
+[01:35.88]What is a Class D amplifier? An amplifier that uses switching technology to achieve high efficiency.
+[01:42.78]What circuit is required at the output of an RF switching amplifier? A filter to remove harmonic content.
+[01:50.05]What is the operating point of a Class A common emitter amplifier? Approximately halfway between saturation and cutoff.
+[01:58.12]What can be done to prevent unwanted oscillations in an RF power amplifier? Install parasitic suppressors and/or neutralize the stage.
+[02:07.94]What is a characteristic of a grounded-grid amplifier? Low input impedance.
+[02:12.97]Which of the following is the likely result of using a Class C amplifier to amplify a single-sideband phone signal? Signal distortion and excessive bandwidth.
+[02:23.60]Why are switching amplifiers more efficient than linear amplifiers? The switching device is at saturation or cutoff most of the time.
+[02:32.61]What is characteristic of an emitter follower (or common collector) amplifier? Input and output signals in-phase.
+[02:40.40]Group E7C.
+[02:42.40]How are the capacitors and inductors of a low-pass filter Pi-network arranged between the network’s input and output? A capacitor is connected between the input and ground, another capacitor is connected between the output and ground, and an inductor is connected between the input and output.
+[03:00.42]What is the frequency response of a T-network with series capacitors and a shunt inductor? High-pass.
+[03:07.02]What is the purpose of adding an inductor to a Pi-network to create a Pi-L-network? Greater harmonic suppression.
+[03:14.35]How does an impedance-matching circuit transform a complex impedance to a resistive impedance? It cancels the reactive part of the impedance and changes the resistive part to the desired value.
+[03:27.33]Which filter type has ripple in the passband and a sharp cutoff? A Chebyshev filter.
+[03:32.65]What are the characteristics of an elliptical filter? Extremely sharp cutoff with one or more notches in the stop band.
+[03:40.23]Which describes a Pi-L network? A Pi-network with an additional output series inductor.
+[03:46.02]Which of the following is most frequently used as a band-pass or notch filter in VHF and UHF transceivers? A helical filter.
+[03:54.95]What is a crystal lattice filter? A filter for low-level signals made using quartz crystals.
+[04:01.06]Which of the following filters is used in a 2-meter band repeater duplexer? A cavity filter.
+[04:07.15]Which of the following measures a filter’s ability to reject signals in adjacent channels? Shape factor.
+[04:14.36]Group E7D.
+[04:16.36]How does a linear electronic voltage regulator work? The conduction of a control element is varied to maintain a constant output voltage.
+[04:25.44]How does a switchmode voltage regulator work? By varying the duty cycle of pulses input to a filter.
+[04:32.23]What device is used as a stable voltage reference? A Zener diode.
+[04:36.87]Which of the following describes a three-terminal voltage regulator? A series regulator.
+[04:42.49]Which of the following types of linear voltage regulator operates by loading the unregulated voltage source? A shunt regulator.
+[04:50.76]How is battery operating time calculated? Capacity in amp-hours divided by average current.
+[04:57.57]Why is a switching type power supply less expensive and lighter than an equivalent linear power supply? The high frequency inverter design uses much smaller transformers and filter components for an equivalent power output.
+[05:11.83]What is the purpose of an inverter connected to a solar panel output? Convert the panel’s output from DC to AC.
+[05:19.48]What is the dropout voltage of a linear voltage regulator? Minimum input-to-output voltage required to maintain regulation.
+[05:28.13]Which of the following calculates power dissipated by a series linear voltage regulator? Voltage difference from input to output multiplied by output current.
+[05:38.76]What is the purpose of connecting equal-value resistors across power supply filter capacitors connected in series? Equalize the voltage across each capacitor; Discharge the capacitors when voltage is removed; Provide a minimum load on the supply; All these choices are correct.
+[05:57.07]What is the purpose of a step-start circuit in a high-voltage power supply? To allow the filter capacitors to charge gradually.
+[06:05.44]Group E7E.
+[06:07.42]Which of the following can be used to generate FM phone signals? Reactance modulation of a local oscillator.
+[06:15.02]What is the function of a reactance modulator? Produce PM or FM signals by varying a capacitance.
+[06:22.24]What is a frequency discriminator? A circuit for detecting FM signals.
+[06:27.12]What is one way to produce a single-sideband phone signal? Use a balanced modulator followed by a filter.
+[06:34.10]What is added to an FM speech channel to boost the higher audio frequencies? A pre-emphasis network.
+[06:40.70]Why is de-emphasis used in FM communications receivers? For compatibility with transmitters using phase modulation.
+[06:49.05]What is meant by the term “baseband” in radio communications? The frequency range occupied by a message signal prior to modulation.
+[06:57.94]What are the principal frequencies that appear at the output of a mixer? The two input frequencies along with their sum and difference frequencies.
+[07:06.69]What occurs when the input signal levels to a mixer are too high? Spurious mixer products are generated.
+[07:13.27]How does a diode envelope detector function? By rectification and filtering of RF signals.
+[07:19.79]Which type of detector is used for demodulating SSB signals? Product detector.
+[07:25.87]Group E7F.
+[07:27.90]What is meant by “direct sampling” in software defined radios? Incoming RF is digitized by an analog-to-digital converter without being mixed with a local oscillator signal.
+[07:39.58]What kind of digital signal processing audio filter is used to remove unwanted noise from a received SSB signal? An adaptive filter.
+[07:48.82]What type of digital signal processing filter is used to generate an SSB signal? A Hilbert-transform filter.
+[07:56.53]Which method generates an SSB signal using digital signal processing? Signals are combined in quadrature phase relationship.
+[08:05.65]How frequently must an analog signal be sampled to be accurately reproduced? At least twice the rate of the highest frequency component of the signal.
+[08:15.11]What is the minimum number of bits required to sample a signal with a range of 1 volt at a resolution of 1 millivolt? 10 bits.
+[08:23.78]What function is performed by a Fast Fourier Transform? Converting signals from the time domain to the frequency domain.
+[08:31.66]What is the function of decimation? Reducing the effective sample rate by removing samples.
+[08:37.75]Why is an anti-aliasing filter required in a decimator? It removes high-frequency signal components that would otherwise be reproduced as lower frequency components.
+[08:48.88]What aspect of receiver analog-to-digital conversion determines the maximum receive bandwidth of a direct-sampling software defined radio (SDR)? Sample rate.
+[09:00.15]What sets the minimum detectable signal level for a direct-sampling software defined receiver in the absence of atmospheric or thermal noise? Reference voltage level and sample width in bits.
+[09:12.77]Which of the following is generally true of Finite Impulse Response (FIR) filters? FIR filters can delay all frequency components of the signal by the same amount.
+[09:24.43]What is the function of taps in a digital signal processing filter? Provide incremental signal delays for filter algorithms.
+[09:32.50]Which of the following would allow a digital signal processing filter to create a sharper filter response? More taps.
+[09:40.20]Group E7G.
+[09:42.23]What is the typical output impedance of an op-amp? Very low.
+[09:46.44]What is the frequency response of the circuit in E7-3 if a capacitor is added across the feedback resistor? Low-pass filter.
+[09:55.62]What is the typical input impedance of an op-amp? Very high.
+[09:59.71]What is meant by the term “op-amp input offset voltage”? The differential input voltage needed to bring the open loop output voltage to zero.
+[10:08.89]How can unwanted ringing and audio instability be prevented in an op-amp audio filter? Restrict both gain and Q.
+[10:16.85]What is the gain-bandwidth of an operational amplifier? The frequency at which the open-loop gain of the amplifier equals one.
+[10:25.42]How does the gain of an ideal operational amplifier vary with frequency? It does not vary with frequency.
+[10:32.47]What is an operational amplifier? A high-gain, direct-coupled differential amplifier with very high input impedance and very low output impedance.
+[10:42.86]Group E7H.
+[10:44.93]What are three common oscillator circuits? Colpitts, Hartley, and Pierce.
+[10:49.46]What is a microphonic? Changes in oscillator frequency caused by mechanical vibration.
+[10:55.89]What is a phase-locked loop? An electronic servo loop consisting of a phase detector, a low-pass filter, a voltage-controlled oscillator, and a stable reference oscillator.
+[11:06.89]How is positive feedback supplied in a Colpitts oscillator? Through a capacitive divider.
+[11:12.78]How is positive feedback supplied in a Pierce oscillator? Through a quartz crystal.
+[11:18.13]Which of these functions can be performed by a phase-locked loop? Frequency synthesis and FM demodulation.
+[11:25.30]How can an oscillator’s microphonic responses be reduced? Mechanically isolate the oscillator circuitry from its enclosure.
+[11:33.46]Which of the following components can be used to reduce thermal drift in crystal oscillators? NP0 capacitors.
+[11:41.28]What type of frequency synthesizer circuit uses a phase accumulator, lookup table, digital-to-analog converter, and a low-pass anti-alias filter? A direct digital synthesizer.
+[11:53.26]What information is contained in the lookup table of a direct digital synthesizer (DDS)? Amplitude values that represent the desired waveform.
+[12:03.23]What are the major spectral impurity components of direct digital synthesizers? Spurious signals at discrete frequencies.
+[12:11.05]Which of the following ensures that a crystal oscillator operates on the frequency specified by the crystal manufacturer? Provide the crystal with a specified parallel capacitance.
+[12:22.83]Which of the following is a technique for providing highly accurate and stable oscillators needed for microwave transmission and reception? Use a GPS signal reference; Use a rubidium stabilized reference oscillator; Use a temperature-controlled high Q dielectric resonator; All these choices are correct.
