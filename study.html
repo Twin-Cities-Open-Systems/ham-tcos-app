@@ -31,7 +31,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
 <body>
 <header class="top">
   <span class="brand"><a href="/">Just Another Ham Study</a></span>
-  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html" aria-current="page">Study guide</a><a href="/callsign.html">Call signs</a><a class="ext" href="https://ham.study" target="_blank" rel="noopener">HamStudy.org</a></nav>
+  <nav aria-label="Main"><a href="/">Home</a><a href="/study.html" aria-current="page">Study guide</a><a href="/callsign.html">Call signs</a><a href="/listen.html">Listen</a><a class="ext" href="https://ham.study" target="_blank" rel="noopener">HamStudy.org</a></nav>
   <div class="fontsize-toggle"><span class="fs-label">Aa</span>
     <button class="fontsize-btn" data-size="s"  type="button" aria-pressed="false">S</button>
     <button class="fontsize-btn" data-size="m"  type="button" aria-pressed="true">M</button>
@@ -115,6 +115,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     <header>
       <h2 id="flash-h" data-tc-collapse-toggle>Flashcards</h2>
       <span class="count mono" id="hs-flash-pos">0 / 0</span>
+      <button type="button" id="hs-flash-listen" aria-pressed="false">Listen</button>
     </header>
     <div class="body" data-tc-collapse-body>
       <div class="hs-seg" role="group" aria-label="Flashcard mode"><span class="hs-seg-label">Mode</span><button type="button" class="hs-seg-btn" data-fmode="memorize" aria-pressed="true">Memorize</button><button type="button" class="hs-seg-btn" data-fmode="quiz" aria-pressed="false">Quiz</button><button type="button" class="hs-seg-btn" data-fmode="flip" aria-pressed="false">Flip</button></div>
@@ -210,6 +211,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     <a href="https://github.com/Twin-Cities-Open-Systems/ham-tcos-app">Source</a></p>
 </footer>
 <nav class="tc-jump" id="hs-jump" aria-label="Back to" data-show="false"><button type="button" data-tc-to="group" hidden><span class="tc-jump-l"></span></button><button type="button" data-tc-to="panel" hidden><span class="tc-jump-l"></span></button><button type="button" data-tc-to="top" aria-label="Top of the page"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 10l5-5 5 5M3 4h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></nav>
+<aside id="hl-pill" class="hl-pill" data-show="false" aria-label="Listen along"></aside>
 <script src="/js/shell.js"></script>
 <script src="/js/links.js"></script>
 <script src="/js/collapse.js"></script>
@@ -217,5 +219,6 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
 <script src="/js/table.js"></script>
 <script src="/js/freshness.js"></script>
 <script src="/js/study.js" defer></script>
+<script src="/js/listen.js" defer></script>
 </body>
 </html>

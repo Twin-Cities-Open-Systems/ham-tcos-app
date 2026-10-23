@@ -8,6 +8,13 @@ into data/ham-study.json, which the page reads, and copies the figures the
 questions reference into data/ham-figures/. Both outputs are committed: a
 release ships the committed files and never rebuilds.
 
+It also stages and describes the read-along audio: `--stage-audio DIR` copies
+the three answer albums from DIR into audio/<pool>/<nn>-<subelement>.{mp3,lrc};
+the normal build then reads every audio/*/*.lrc present and writes
+data/ham-audio.json, matching each spoken question line against the question
+ids this same build already produced. Audio is optional -- a tree with no
+audio/ ships a manifest with no albums.
+
 WHAT IT REFUSES -- exit 2, nothing written
   * a group card that lists a question with no Pill, or a Pill no group card
     lists;
@@ -25,17 +32,28 @@ WHAT IT REFUSES -- exit 2, nothing written
     no question, a formula that lists a question the pool does not have, or a
     duplicate term or formula key. (tests/test_notes.py separately proves every
     formula's worked example and its answers against the pool.)
+  * `--stage-audio DIR` when DIR does not have all three albums; it does not
+    touch audio/ at all in that case. An unmatched spoken question line is a
+    WARNING, not a refusal -- the audio ships with a null qid rather than not
+    shipping at all.
 
 USAGE
-  build.py           write data/ham-study.json and data/ham-figures/
-  build.py --check   write nothing; exit 2 if the committed files differ from
-                     what the pools produce (CI runs this)
+  build.py                   write data/ham-study.json, data/ham-figures/ and
+                             data/ham-audio.json
+  build.py --check           write nothing; exit 2 if the committed files
+                             differ from what the pools and audio/ produce
+                             (CI runs this)
+  build.py --stage-audio DIR copy the three albums' .mp3/.lrc from DIR into
+                             audio/, then exit (run build.py again to update
+                             the manifest)
 
-EXIT  0 OK   2 CRITICAL a count disagrees, or the committed data is stale
+EXIT  0 OK   2 CRITICAL a count disagrees, the committed data is stale, or
+      --stage-audio's DIR is missing an album
       3 usage
 """
 import argparse
 import json
+import math
 import os
 import re
 import shutil
@@ -57,11 +75,36 @@ FAMILIES_SCHEMA = "ham-tcos-app.families.v1"
 NCVEC_POOLS = "https://ncvec.org/index.php/amateur-question-pools"
 CHOICES = ("A", "B", "C", "D")
 
+AUDIO_DIR = ROOT / "audio"
+AUDIO_URL = "/audio"
+AUDIO_JSON_OUT = ROOT / "data" / "ham-audio.json"
+AUDIO_SCHEMA = "ham-audio/1"
+AUDIO_CREDIT = ("Spoken by HRV with Kokoro from the answers-only guide; "
+                "question pools NCVEC, public domain.")
+# The three source albums as the dispatcher's disk names them (CONTRACT.md
+# section 1) and the pool each stages into, matching data/ham-study.json.
+ALBUMS = (
+    {"dir": "Technician Answers - 2026-2030", "pool": "technician-2026-2030"},
+    {"dir": "General Answers - 2023-2027", "pool": "general-2023-2027"},
+    {"dir": "Extra Answers - 2024-2028", "pool": "extra-2024-2028"},
+)
+# A source file as the albums carry it, e.g. "01 - T1 - Commission's Rules.mp3".
+SRC_TRACK_RE = re.compile(r"(\d{2}) - ([A-Za-z]\d) - .+\.(mp3|lrc)")
+# A staged file's stem, e.g. "01-t1".
+AUDIO_TRACK_RE = re.compile(r"(\d{2})-([a-z0-9]+)")
+LRC_LINE_RE = re.compile(r"^\[(\d+):(\d+(?:\.\d+)?)\](.*)$")
+LRC_HEADER_RE = re.compile(r"^\[(ar|al|ti):(.*)\]$")
+LRC_GROUP_RE = re.compile(r"^Group (\S+)\.$")
+
 ALL_ANSWERS_RE = re.compile(r"^all(?: of)? (?:these|the above)(?: choices)?(?: are correct)?\.?$", re.I)
 
 
 class Mismatch(Exception):
     """The pools disagree with their own cards, or the families map is wrong."""
+
+
+class StageError(Exception):
+    """A --stage-audio DIR does not have all three albums."""
 
 
 def expand_answer(q):
@@ -308,6 +351,145 @@ def build(files, families_path=FAMILIES_FILE, notes=None):
     return doc, figures
 
 
+def collapse_ws(s):
+    """Whitespace-collapsed text, for comparing an .lrc line against a
+    question stem regardless of how either wraps its spaces."""
+    return re.sub(r"\s+", " ", (s or "").strip())
+
+
+def parse_lrc(text):
+    """[{"t": seconds, "kind": "heading"|"group"|"question", "text": ...}] for
+    one track's .lrc body. Header lines ([ar:], [al:], [ti:]) and blank lines
+    do not match the timestamp pattern and are skipped. The first timed line
+    is the heading; a line reading "Group <id>." is a group; everything else
+    is a question (qid is not resolved here -- see match_qid)."""
+    rows = []
+    for raw in text.splitlines():
+        m = LRC_LINE_RE.match(raw.strip())
+        if not m:
+            continue
+        minutes, seconds, line_text = m.groups()
+        t = round(int(minutes) * 60 + float(seconds), 2)
+        line_text = line_text.strip()
+        if not rows:
+            kind = "heading"
+        elif LRC_GROUP_RE.match(line_text):
+            kind = "group"
+        else:
+            kind = "question"
+        rows.append({"t": t, "kind": kind, "text": line_text})
+    return rows
+
+
+def lrc_header(text):
+    """{"ar":..., "al":..., "ti":...} from an .lrc file's bracket header tags
+    (whichever of the three are present)."""
+    tags = {}
+    for raw in text.splitlines():
+        m = LRC_HEADER_RE.match(raw.strip())
+        if m:
+            tags[m.group(1)] = m.group(2).strip()
+    return tags
+
+
+def match_qid(line_text, questions):
+    """The id of the question in `questions` (already filtered to one pool)
+    whose question text is an exact prefix of line_text, both with whitespace
+    collapsed -- a question line is its stem followed by a space and the
+    answer text, and the .lrc carries no ids of its own. None if none match;
+    the caller warns."""
+    collapsed = collapse_ws(line_text)
+    hits = [(len(stem), q["id"]) for q in questions
+            for stem in [collapse_ws(q.get("question"))] if stem and collapsed.startswith(stem)]
+    if not hits:
+        return None
+    if len(hits) > 1:
+        # Two stems match when one question's text is a prefix of another's;
+        # the longer stem is the line's own question. Measured 2026-10-24
+        # across all three pools: zero such pairs, so this is a guard, not a
+        # workaround; it says so when it ever fires.
+        hits.sort(reverse=True)
+        print(f"WARNING ambiguous question line {collapsed[:60]!r}: {[h[1] for h in hits]} -- taking {hits[0][1]}", file=sys.stderr)
+    return max(hits)[1]
+
+
+def stage_audio(src_dir, audio_dir=AUDIO_DIR):
+    """Copy the three albums' .mp3/.lrc from src_dir (laid out as the source
+    disk has them, e.g. "Technician Answers - 2026-2030/01 - T1 - ....mp3")
+    into audio/<pool>/<nn>-<subelement>.{mp3,lrc}; returns the number of files
+    copied or already in place. Refuses (StageError, nothing copied) a src_dir
+    missing any of the three albums; other albums and files under src_dir
+    (e.g. cover.jpg) are ignored. Copying the same DIR again is a no-op."""
+    src_dir = Path(src_dir)
+    missing = [a["dir"] for a in ALBUMS if not (src_dir / a["dir"]).is_dir()]
+    if missing:
+        raise StageError(f"{src_dir} is missing album(s): {', '.join(missing)}")
+    n = 0
+    for album in ALBUMS:
+        dest_dir = Path(audio_dir) / album["pool"]
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        for src in sorted((src_dir / album["dir"]).iterdir()):
+            m = SRC_TRACK_RE.fullmatch(src.name)
+            if not src.is_file() or not m:
+                continue  # cover.jpg or anything not a numbered track
+            nn, subelement, ext = m.group(1), m.group(2).lower(), m.group(3)
+            dest = dest_dir / f"{nn}-{subelement}.{ext}"
+            data = src.read_bytes()
+            if not dest.is_file() or dest.read_bytes() != data:
+                write_atomic(dest, data)
+            n += 1
+    return n
+
+
+def build_audio(doc, audio_dir=AUDIO_DIR):
+    """(manifest document, warnings) for data/ham-audio.json: every
+    audio/<pool>/*.lrc present, albums ordered as doc["pools"] (license
+    order), each question line matched against doc["questions"] for the same
+    pool. An unmatched line warns rather than refusing. {"albums": []} when
+    audio_dir does not exist at all."""
+    audio_dir = Path(audio_dir)
+    if not audio_dir.is_dir():
+        return {"schema": AUDIO_SCHEMA, "credit": AUDIO_CREDIT, "albums": []}, []
+    by_pool = {}
+    for q in doc["questions"]:
+        by_pool.setdefault(q["pool"], []).append(q)
+    albums, warnings = [], []
+    for p in doc["pools"]:
+        pool = p["pool"]
+        pool_dir = audio_dir / pool
+        if not pool_dir.is_dir():
+            continue
+        tracks, album_title = [], None
+        for lrc_path in sorted(pool_dir.glob("*.lrc")):
+            m = AUDIO_TRACK_RE.fullmatch(lrc_path.stem)
+            if not m:
+                continue  # not a track name this build recognizes
+            text = lrc_path.read_text(encoding="utf-8")
+            tags = lrc_header(text)
+            album_title = album_title or tags.get("al") or pool
+            ti = tags.get("ti", "").split(" - ", 1)
+            subelement = ti[0].strip() if ti and ti[0].strip() else m.group(2).upper()
+            title = ti[1].strip() if len(ti) > 1 else ""
+            lines = []
+            for row in parse_lrc(text):
+                qid = None
+                if row["kind"] == "question":
+                    qid = match_qid(row["text"], by_pool.get(pool, []))
+                    if qid is None:
+                        warnings.append(f"{pool}/{lrc_path.name} [{row['t']}]: no question matches {row['text']!r}")
+                lines.append({"t": row["t"], "kind": row["kind"], "text": row["text"], "qid": qid})
+            seconds = math.ceil(max((r["t"] for r in lines), default=0.0))
+            stem = lrc_path.stem
+            tracks.append({"n": int(m.group(1)), "subelement": subelement, "title": title,
+                           "mp3": f"{AUDIO_URL}/{pool}/{stem}.mp3", "lrc": f"{AUDIO_URL}/{pool}/{stem}.lrc",
+                           "seconds": seconds, "lines": lines})
+        if tracks:
+            albums.append({"pool": pool, "title": album_title,
+                           "label": album_title.split()[0] if album_title else "",
+                           "tracks": sorted(tracks, key=lambda t: t["n"])})
+    return {"schema": AUDIO_SCHEMA, "credit": AUDIO_CREDIT, "albums": albums}, warnings
+
+
 def encode(doc):
     return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8") + b"\n"
 
@@ -358,37 +540,68 @@ def drift(files, figures, data, json_out, figures_out):
     return reasons
 
 
+def audio_drift(data, json_out=AUDIO_JSON_OUT):
+    """Reasons the committed data/ham-audio.json differs from a fresh build of
+    audio/; empty if none."""
+    json_out = Path(json_out)
+    if not json_out.is_file() or json_out.read_bytes() != data:
+        return [f"{json_out.name} is not what audio/ produces"]
+    return []
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="build.py", description="Build the study page's data from ham/pools.")
     ap.add_argument("--check", action="store_true", help="write nothing; fail if the committed data is stale")
+    ap.add_argument("--stage-audio", metavar="DIR", help="copy the three answer albums from DIR into audio/, then exit")
     try:
         a = ap.parse_args(argv)
     except SystemExit as exc:
         return 0 if exc.code == 0 else 3
+    if a.stage_audio:
+        try:
+            n = stage_audio(a.stage_audio)
+        except StageError as exc:
+            print(f"CRITICAL {exc} -- nothing copied", file=sys.stderr)
+            return 2
+        except OSError as exc:
+            print(f"CRITICAL cannot stage audio: {exc}", file=sys.stderr)
+            return 2
+        print(f"OK staged {n} files into {AUDIO_DIR}")
+        return 0
     try:
         files = read_tree(ROOT)
         doc, figures = build(files, notes=read_notes())
     except Mismatch as exc:
         print(f"CRITICAL {exc} -- nothing written", file=sys.stderr)
         return 2
-    data = encode(doc)
+    audio_doc, audio_warnings = build_audio(doc)
+    for w in audio_warnings:
+        print(f"WARNING {w}", file=sys.stderr)
+    data, audio_data = encode(doc), encode(audio_doc)
     if a.check:
-        reasons = drift(files, figures, data, JSON_OUT, FIGURES_OUT)
+        reasons = drift(files, figures, data, JSON_OUT, FIGURES_OUT) + audio_drift(audio_data, AUDIO_JSON_OUT)
         if reasons:
             for r in reasons:
                 print(f"CRITICAL {r} -- run: python3 build.py", file=sys.stderr)
             return 2
-        print(f"OK committed data matches the pools ({len(doc['questions'])} questions)")
+        print(f"OK committed data matches the pools ({len(doc['questions'])} questions, "
+              f"{len(audio_doc['albums'])} albums)")
         return 0
     try:
         write_figures(files, figures, FIGURES_OUT)
         write_atomic(JSON_OUT, data)
+        write_atomic(AUDIO_JSON_OUT, audio_data)
     except OSError as exc:
         print(f"CRITICAL cannot write: {exc}", file=sys.stderr)
         return 2
+    if AUDIO_DIR.is_dir():
+        audio_msg = f"{len(audio_doc['albums'])} albums, {sum(len(al['tracks']) for al in audio_doc['albums'])} tracks"
+    else:
+        audio_msg = "no audio/ directory, data/ham-audio.json has no albums"
     print(f"OK {len(doc['questions'])} questions in {len(doc['pools'])} pools, "
           f"{len(doc['families'])} families, {len(figures)} figures, "
-          f"{sum(len(p['terms']) for p in doc['pools'])} terms, {sum(len(p['formulas']) for p in doc['pools'])} formulas")
+          f"{sum(len(p['terms']) for p in doc['pools'])} terms, {sum(len(p['formulas']) for p in doc['pools'])} formulas; "
+          f"{audio_msg}")
     return 0
 
 

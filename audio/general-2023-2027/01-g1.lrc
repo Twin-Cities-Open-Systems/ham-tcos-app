@@ -1,0 +1,61 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G1 - Commission's Rules]
+[00:00.40]General answers. G1 - Commission's Rules.
+[00:04.24]Group G1A.
+[00:06.14]On which HF and/or MF amateur bands are there portions where General class licensees cannot transmit? 80 meters, 40 meters, 20 meters, and 15 meters.
+[00:18.07]On which of the following bands is phone operation prohibited? 30 meters.
+[00:23.01]On which of the following bands is image transmission prohibited? 30 meters.
+[00:28.03]On which of the following frequencies are General class licensees prohibited from operating as control operator? 7.125 MHz to 7.175 MHz.
+[00:41.27]Which of the following applies when the FCC rules designate the amateur service as a secondary user on a band? Amateur stations must not cause harmful interference to primary users and must accept interference from primary users.
+[00:56.49]On which amateur frequencies in the 10-meter band may stations with a General class control operator transmit CW emissions? The entire band.
+[01:06.40]Which HF bands have segments exclusively allocated to Amateur Extra licensees? 80 meters, 40 meters, 20 meters, and 15 meters.
+[01:16.39]Which of the following frequencies is within the General class portion of the 15-meter band? 21300 kHz.
+[01:24.89]What portion of the 10-meter band is available for repeater use? The portion above 29.5 MHz.
+[01:32.49]When General class licensees are not permitted to use the entire voice portion of a band, which portion of the voice segment is available to them? The upper frequency portion.
+[01:43.61]Group G1B.
+[01:45.59]What is the maximum height above ground for an antenna structure not near a public use airport without requiring notification to the FAA and registration with the FCC? 200 feet.
+[01:58.17]With which of the following conditions must beacon stations comply? No more than one beacon station may transmit in the same band from the same station location.
+[02:08.65]Which of the following is a purpose of a beacon station as identified in the FCC rules? Observation of propagation and reception.
+[02:17.81]Which of the following transmissions is permitted for all amateur stations? Occasional retransmission of weather and propagation forecast information from US government stations.
+[02:29.41]Which of the following one-way transmissions are permitted? Transmissions to assist with learning the International Morse code.
+[02:36.73]Under what conditions are state and local governments permitted to regulate amateur radio antenna structures? Amateur Service communications must be reasonably accommodated, and regulations must constitute the minimum practical to accommodate a legitimate purpose of the state or local entity.
+[02:55.71]What are the restrictions on the use of abbreviations or procedural signals in the amateur service? They may be used if they do not obscure the meaning of a message.
+[03:05.83]When is it permissible to communicate with amateur stations in countries outside the areas administered by the Federal Communications Commission? When the contact is with amateurs in any country except those whose administrations have notified the ITU that they object to such communications.
+[03:23.69]On what HF frequencies are automatically controlled beacons permitted? 28.20 MHz to 28.30 MHz.
+[03:33.75]What is the power limit for beacon stations? 100 watts PEP output.
+[03:38.88]Who or what determines “good engineering and good amateur practice,” as applied to the operation of an amateur station in all respects not covered by the Part 97 rules? The FCC.
+[03:52.07]Group G1C.
+[03:54.07]What is the maximum transmitter power an amateur station may use on 10.140 MHz? 200 watts PEP output.
+[04:03.64]What is the maximum transmitter power an amateur station may use on the 12-meter band? 1500 watts PEP output.
+[04:12.65]What is the maximum bandwidth permitted by FCC rules for amateur radio stations transmitting on USB frequencies in the 60-meter band? 2.8 kHz.
+[04:24.18]Which of the following is required by the FCC rules when operating in the 60-meter band? If you are using an antenna other than a dipole, you must keep a record of the gain of your antenna.
+[04:36.45]What is the limit for transmitter power on the 28 MHz band for a General Class control operator? 1500 watts PEP output.
+[04:46.58]What is the limit for transmitter power on the 1.8 MHz band? 1500 watts PEP output.
+[04:54.56]What must be done before using a new digital protocol on the air? Publicly document the technical characteristics of the protocol.
+[05:02.85]What measurement is specified by FCC rules that regulate maximum power? PEP output from the transmitter.
+[05:10.83]Group G1D.
+[05:12.79]Who may receive partial credit for the elements represented by an expired amateur radio license? Any person who can demonstrate that they once held an FCC-issued General, Advanced, or Amateur Extra class license that was not revoked by the FCC.
+[05:29.63]What license examinations may you administer as an accredited Volunteer Examiner holding a General class operator license? Technician only.
+[05:39.54]On which of the following band segments may you operate if you are a Technician class operator and have an unexpired Certificate of Successful Completion of Examination (CSCE) for General class privileges? On any General or Technician class band segment.
+[05:56.55]Who must observe the administration of a Technician class license examination? At least three Volunteer Examiners of General class or higher.
+[06:05.95]When operating a US station by remote control from outside the country, what license is required of the control operator? A US operator/primary station license.
+[06:17.76]Until an upgrade to General class is shown in the FCC database, when must a Technician licensee identify with “AG” after their call sign? Whenever they operate using General class frequency privileges.
+[06:31.48]Volunteer Examiners are accredited by what organization? A Volunteer Examiner Coordinator.
+[06:37.91]Which of the following criteria must be met for a non-US citizen to be an accredited Volunteer Examiner? The person must hold an FCC granted amateur radio license of General class or above.
+[06:51.43]How long is a Certificate of Successful Completion of Examination (CSCE) valid for exam element credit? 365 days.
+[07:01.08]What is the minimum age that one must be to qualify as an accredited Volunteer Examiner? 18 years.
+[07:07.98]What action is required to obtain a new General class license after a previously held license has expired and the two-year grace period has passed? The applicant must show proof of the appropriate expired license grant and pass the current Element 2 exam.
+[07:24.33]When operating a station in South America by remote control over the internet from the US, what regulations apply? Only those of the remote station’s country.
+[07:35.43]Group G1E.
+[07:37.34]Which of the following would disqualify a third party from participating in sending a message via an amateur station? The third party’s amateur license has been revoked and not reinstated.
+[07:49.70]When may a 10-meter repeater retransmit the 2-meter signal from a station that has a Technician class control operator? Only if the 10-meter repeater control operator holds at least a General class license.
+[08:03.00]What is required to conduct communications with a digital station operating under automatic control outside the automatic control band segments? The station initiating the contact must be under local or remote control.
+[08:17.39]Which of the following conditions require a licensed amateur radio operator to take specific steps to avoid harmful interference to other users or facilities? When operating within one mile of an FCC Monitoring Station; When using a band where the Amateur Service is secondary; When a station is transmitting spread spectrum emissions; All these choices are correct.
+[08:40.27]What are the restrictions on messages sent to a third party in a country with which there is a Third-Party Agreement? They must relate to amateur radio, or remarks of a personal character, or messages relating to emergencies or disaster relief.
+[08:56.02]The frequency allocations of which ITU region apply to radio amateurs operating in North and South America? Region 2.
+[09:04.93]In what part of the 2.4 GHz band may an amateur station communicate with non-licensed Wi-Fi stations? No part.
+[09:13.90]What is the maximum PEP output allowed for spread spectrum transmissions? 10 watts.
+[09:19.97]Why should an amateur operator normally avoid transmitting on 14.100, 18.110, 21.150, 24.930 and 28.200 MHz? A system of propagation beacon stations operates on those frequencies.
+[09:40.63]On what bands may automatically controlled stations transmitting RTTY or data emissions communicate with other automatically controlled digital stations? Anywhere in the 6-meter or shorter wavelength bands, and in limited segments of some of the HF bands.
+[09:57.77]When may third-party messages be transmitted via remote control? Under any circumstances in which third party messages are permitted by FCC rules.

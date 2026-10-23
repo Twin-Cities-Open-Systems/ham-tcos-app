@@ -1,0 +1,54 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G9 - Antennas and Feed Lines]
+[00:00.40]General answers. G9 - Antennas and Feed Lines.
+[00:04.80]Group G9A.
+[00:06.74]Which of the following factors determine the characteristic impedance of a parallel conductor feed line? The distance between the centers of the conductors and the radius of the conductors.
+[00:18.50]What is the relationship between high standing wave ratio (SWR) and transmission line loss? High SWR increases loss in a lossy transmission line.
+[00:29.60]What is the nominal characteristic impedance of “window line” transmission line? 450 ohms.
+[00:36.25]What causes reflected power at an antenna’s feed point? A difference between feed line impedance and antenna feed point impedance.
+[00:44.58]How does the attenuation of coaxial cable change with increasing frequency? Attenuation increases.
+[00:51.77]In what units is RF feed line loss usually expressed? Decibels per 100 feet.
+[00:57.76]What must be done to prevent standing waves on a feed line connected to an antenna? The antenna feed point impedance must be matched to the characteristic impedance of the feed line.
+[01:08.90]If the SWR on an antenna feed line is 5:1, and a matching network at the transmitter end of the feed line is adjusted to present a 1:1 SWR to the transmitter, what is the resulting SWR on the feed line? 5:1.
+[01:25.27]What standing wave ratio results from connecting a 50-ohm feed line to a 200-ohm resistive load? 4:1.
+[01:33.20]What standing wave ratio results from connecting a 50-ohm feed line to a 10-ohm resistive load? 5:1.
+[01:40.78]What is the effect of transmission line loss on SWR measured at the input to the line? Higher loss reduces SWR measured at the input to the line.
+[01:51.84]Group G9B.
+[01:53.86]What is a characteristic of a random-wire HF antenna connected directly to the transmitter? Station equipment may carry significant RF current.
+[02:03.79]Which of the following is a common way to adjust the feed point impedance of an elevated quarter-wave ground-plane vertical antenna to be approximately 50 ohms? Slope the radials downward.
+[02:16.13]Which of the following best describes the radiation pattern of a quarter-wave ground-plane vertical antenna? Omnidirectional in azimuth.
+[02:25.08]What is the radiation pattern of a dipole antenna in free space in a plane containing the conductor? It is a figure-eight at right angles to the antenna.
+[02:35.22]How does antenna height affect the azimuthal radiation pattern of a horizontal dipole HF antenna at elevation angles higher than about 45 degrees? If the antenna is less than 1/2 wavelength high, the azimuthal pattern is almost omnidirectional.
+[02:52.79]Where should the radial wires of a ground-mounted vertical antenna system be placed? On the surface or buried a few inches below the ground.
+[03:01.73]How does the feed point impedance of a horizontal 1/2 wave dipole antenna change as the antenna height is reduced to 1/10 wavelength above ground? It steadily decreases.
+[03:13.69]How does the feed point impedance of a 1/2 wave dipole change as the feed point is moved from the center toward the ends? It steadily increases.
+[03:23.41]Which of the following is an advantage of using a horizontally polarized as compared to a vertically polarized HF antenna? Lower ground losses.
+[03:33.12]What is the approximate length for a 1/2 wave dipole antenna cut for 14.250 MHz? 33 feet.
+[03:42.22]What is the approximate length for a 1/2 wave dipole antenna cut for 3.550 MHz? 132 feet.
+[03:51.70]What is the approximate length for a 1/4 wave monopole antenna cut for 28.5 MHz? 8 feet.
+[04:00.17]Group G9C.
+[04:02.17]Which of the following would increase the bandwidth of a Yagi antenna? Larger-diameter elements.
+[04:08.14]What is the approximate length of the driven element of a Yagi antenna? 1/2 wavelength.
+[04:14.08]How do the lengths of a three-element Yagi reflector and director compare to that of the driven element? The reflector is longer, and the director is shorter.
+[04:23.81]How does antenna gain in dBi compare to gain stated in dBd for the same antenna? Gain in dBi is 2.15 dB higher.
+[04:33.93]What is the primary effect of increasing boom length and adding directors to a Yagi antenna? Gain increases.
+[04:40.96]What does “front-to-back ratio” mean in reference to a Yagi antenna? The power radiated in the major lobe compared to that in the opposite direction.
+[04:50.59]What is meant by the “main lobe” of a directive antenna? The direction of maximum radiated field strength from the antenna.
+[04:58.45]In free space, how does the gain of two three-element, horizontally polarized Yagi antennas spaced vertically 1/2 wavelength apart typically compare to the gain of a single three-element Yagi? Approximately 3 dB higher.
+[05:13.89]Which of the following can be adjusted to optimize forward gain, front-to-back ratio, or SWR bandwidth of a Yagi antenna? The physical length of the boom; The number of elements on the boom; The spacing of each element along the boom; All these choices are correct.
+[05:30.81]What is a beta or hairpin match? A shorted transmission line stub placed at the feed point of a Yagi antenna to provide impedance matching.
+[05:40.08]Which of the following is a characteristic of using a gamma match with a Yagi antenna? It does not require the driven element to be insulated from the boom.
+[05:50.05]Group G9D.
+[05:52.03]Which of the following antenna types will be most effective as a near vertical incidence skywave (NVIS) antenna for short-skip communications on 40 meters during the day? A horizontal dipole placed between 1/10 and 1/4 wavelength above the ground.
+[06:09.15]What is the feed point impedance of an end-fed half-wave antenna? Very high.
+[06:14.08]In which direction is the maximum radiation from a VHF/UHF “halo” antenna? Omnidirectional in the plane of the halo.
+[06:22.97]What is the primary function of antenna traps? To enable multiband operation.
+[06:28.20]What is an advantage of vertically stacking horizontally polarized Yagi antennas? It narrows the main lobe in elevation.
+[06:36.09]Which of the following is an advantage of a log-periodic antenna? Wide bandwidth.
+[06:41.64]Which of the following describes a log-periodic antenna? Element length and spacing vary logarithmically along the boom.
+[06:49.61]How does a “screwdriver” mobile antenna adjust its feed point impedance? By varying the base loading inductance.
+[06:56.68]What is the primary use of a Beverage antenna? Directional receiving for MF and low HF bands.
+[07:03.47]In which direction or directions does an electrically small loop (less than 1/10 wavelength in circumference) have nulls in its radiation pattern? Broadside to the loop.
+[07:14.60]Which of the following is a disadvantage of multiband antennas? They have poor harmonic rejection.
+[07:21.11]What is the common name of a dipole with a single central support? Inverted V.

@@ -1,0 +1,43 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T0 - Safety]
+[00:00.40]Technician answers. T0 - Safety.
+[00:04.03]Group T0A.
+[00:06.03]Which of the following is a safety hazard of a 12-volt storage battery that lacks internal protection circuitry? Shorting the terminals can cause burns, fire, or an explosion.
+[00:17.67]What health hazard is posed by electrical current flowing through the body? It may cause injury by heating body tissue; It may disrupt the electrical functions of cells; It may cause involuntary muscle contractions; All these choices are correct.
+[00:33.19]In the United States, what circuit does black wire insulation indicate in a three-wire 120 V AC cable? Hot.
+[00:41.49]What is the purpose of a fuse in an electrical circuit? To remove power in case of an overload.
+[00:47.80]Why should a 5-ampere fuse never be replaced with a 20-ampere fuse? Excessive current could cause a fire.
+[00:54.78]What is a good way to guard against electrical shock at your station? Use three-wire cords and plugs for all AC powered equipment; Connect all AC powered station equipment to a common safety ground; Ensure all capacitors used for high-voltage DC are fully discharged before working inside equipment; All these choices are correct.
+[01:16.53]Where should a lightning arrester be installed in a coaxial feed line? On a grounded panel near where feed lines enter the building.
+[01:24.07]Where should a fuse or circuit breaker be installed in a 120V AC power circuit? In series with the hot conductor only.
+[01:32.95]What should be done to all external ground rods or earth connections? Bond them together with heavy wire or conductive strap.
+[01:40.75]What hazard exists when rapidly charging or discharging an unprotected battery? Overheating or out-gassing.
+[01:48.40]What hazard exists in a power supply immediately after turning it off? Charge stored in filter capacitors.
+[01:55.21]Which of the following precautions should be taken when measuring high voltages with a voltmeter? Ensure that the voltmeter and its leads are rated for use at the voltages being measured.
+[02:06.67]Group T0B.
+[02:08.76]Which of the following is good practice when installing ground wires on a tower for lightning protection? Ensure that connections are short and direct.
+[02:18.13]What is required when climbing an antenna tower? Have sufficient training on safe tower climbing techniques; Use appropriate tie-off to the tower at all times; Always wear an approved climbing harness; All these choices are correct.
+[02:32.63]Under what circumstances is it safe to climb a tower without a helper or observer? Never.
+[02:38.72]Which of the following is an important safety precaution to observe when putting up an antenna tower? Look for and stay clear of any overhead electrical wires.
+[02:48.97]What is the purpose of a safety wire through a turnbuckle used to tension guy lines? Prevent loosening of the turnbuckle from vibration.
+[02:57.62]What is the minimum safe distance from a power line to allow when installing an antenna? Enough so that if the antenna falls, no part of it can come within 10 feet of the power wires.
+[03:08.97]Which of the following is an important safety rule to remember when using a crank-up tower? This type of tower must not be climbed unless it is retracted, or mechanical safety locking devices have been installed.
+[03:22.64]Which is a proper grounding method for a tower? Separate eight-foot ground rods for each tower leg, bonded to the tower and each other.
+[03:30.88]Why should you avoid attaching an antenna to a utility pole? The antenna could contact high-voltage power lines.
+[03:38.08]Which of the following is true when installing grounding conductors used for lightning protection? Sharp bends must be avoided.
+[03:46.05]Which of the following establishes grounding requirements for an amateur radio tower or antenna? Local electrical codes.
+[03:54.37]Group T0C.
+[03:56.44]What type of radiation are radio signals? Non-ionizing radiation.
+[04:01.44]Which of the following bands has the lowest maximum permissible exposure for RF safety? 50 MHz.
+[04:08.57]How does the allowable power density for RF safety change if duty cycle changes from 100 percent to 50 percent? It increases by a factor of 2.
+[04:19.27]What factors affect the RF exposure of people near an amateur station antenna? Frequency and power level of the RF field; Distance from the antenna to a person; Radiation pattern of the antenna; All these choices are correct.
+[04:34.57]Why do exposure limits vary with frequency? The human body absorbs more RF energy at some frequencies than at others.
+[04:42.93]Which of the following is an acceptable method to determine whether your station complies with FCC RF exposure regulations? By calculation based on FCC OET Bulletin 65; By calculation based on computer modeling; By measurement of field strength using calibrated equipment; All these choices are correct.
+[05:03.82]What hazard is created by touching an antenna during a transmission? RF burn to skin.
+[05:09.50]Which of the following actions can reduce exposure to RF radiation? Relocate antennas.
+[05:15.91]How can you make sure your station stays in compliance with RF safety regulations? By re-evaluating the station whenever an item in the transmitter or antenna system is changed.
+[05:27.19]Why is duty cycle one of the factors used to determine safe RF radiation exposure levels? It affects the average exposure to radiation.
+[05:37.16]What is the definition of duty cycle during the averaging time for RF exposure? The percentage of time that a transmitter is transmitting.
+[05:46.11]How does RF radiation differ from ionizing radiation (radioactivity)? RF radiation does not have sufficient energy to cause chemical changes in cells and damage DNA.
+[05:59.19]Who is responsible for ensuring that no person is exposed to RF energy above the FCC exposure limits? The station licensee.

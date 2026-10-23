@@ -1,0 +1,69 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E2 - Operating Procedures]
+[00:00.40]Extra answers. E2 - Operating Procedures.
+[00:04.50]Group E2A.
+[00:06.35]What is the direction of an ascending pass for an amateur satellite? From south to north.
+[00:11.69]Which of the following is characteristic of an inverting linear transponder? Doppler shift is reduced because the uplink and downlink shifts are in opposite directions; Signal position in the band is reversed; Upper sideband on the uplink becomes lower sideband on the downlink, and vice versa; All these choices are correct.
+[00:32.01]How is an upload signal processed by an inverting linear transponder? The signal is mixed with a local oscillator signal and the difference product is transmitted.
+[00:42.07]What is meant by the “mode” of an amateur radio satellite? The satellite’s uplink and downlink frequency bands.
+[00:49.14]What do the letters in a satellite’s mode designator specify? The uplink and downlink frequency ranges.
+[00:55.83]What are Keplerian elements? Parameters that define the orbit of a satellite.
+[01:00.64]Which of the following types of signals can be relayed through a linear transponder? FM and CW; SSB and SSTV; PSK and packet; All these choices are correct.
+[01:12.81]Why should effective radiated power (ERP) be limited to a satellite that uses a linear transponder? To avoid reducing the downlink power to all other users.
+[01:23.82]What do the terms “L band” and “S band” specify? The 23- and 13-centimeter bands.
+[01:30.00]What type of satellite appears to stay in one position in the sky? Geostationary.
+[01:35.43]What type of antenna can be used to minimize the effects of spin modulation and Faraday rotation? A circularly polarized antenna.
+[01:44.57]What is the purpose of digital store-and-forward functions on an amateur radio satellite? To hold digital messages in the satellite for later download.
+[01:54.64]Group E2B.
+[01:56.49]In digital television, what does a coding rate of 3/4 mean? 25% of the data sent is forward error correction data.
+[02:05.01]How many horizontal lines make up a fast-scan (NTSC) television frame? 525.
+[02:12.15]How is an interlaced scanning pattern generated in a fast-scan (NTSC) television system? By scanning odd-numbered lines in one field and even-numbered lines in the next.
+[02:24.13]How is color information sent in analog SSTV? Color lines are sent sequentially.
+[02:30.21]Which of the following describes the use of vestigial sideband in analog fast-scan TV transmissions? Vestigial sideband reduces the bandwidth while increasing the fidelity of low frequency video components.
+[02:44.15]What is vestigial sideband modulation? Amplitude modulation in which one complete sideband and a portion of the other are transmitted.
+[02:53.29]Which types of modulation are used for amateur television DVB-T signals? QAM and QPSK.
+[03:00.71]What technique allows commercial analog TV receivers to be used for fast-scan TV operations on the 70-centimeter band? Transmitting on channels shared with cable TV.
+[03:12.79]What kind of receiver can be used to receive and decode SSTV using the Digital Radio Mondiale (DRM) protocol? SSB.
+[03:21.93]What aspect of an analog slow-scan television signal encodes the brightness of the picture? Tone frequency.
+[03:29.11]What is the function of the vertical interval signaling (VIS) code sent as part of an SSTV transmission? To identify the SSTV mode being used.
+[03:39.89]What signals SSTV receiving software to begin a new picture line? Specific tone frequencies.
+[03:46.93]Group E2C.
+[03:48.83]What indicator is required to be used by US-licensed operators when operating a station via remote control and the remote transmitter is located in the US? No additional indicator is required.
+[04:02.41]Which of the following file formats is used for exchanging amateur radio log data? ADIF.
+[04:08.90]From which of the following bands is amateur radio contesting generally excluded? 30 meters.
+[04:15.20]Which of the following frequencies can be used for amateur radio mesh networks? Frequencies shared with various unlicensed wireless data services.
+[04:25.28]What is the function of a DX QSL Manager? Handle the receiving and sending of confirmations for a DX station.
+[04:33.19]During a VHF/UHF contest, in which band segment would you expect to find the highest level of SSB or CW activity? In the weak signal segment of the band, with most of the activity near the calling frequency.
+[04:48.51]What is the Cabrillo format? A standard for submission of electronic contest logs.
+[04:53.88]Which of the following contacts may be confirmed through the Logbook of The World (LoTW)? Special event contacts between stations in the US; Contacts between a US station and a non-US station; Contacts for Worked All States credit; All these choices are correct.
+[05:11.76]What type of equipment is commonly used to implement an amateur radio mesh network? A wireless router running custom firmware.
+[05:20.03]Why do DX stations often transmit and receive on different frequencies? Because the DX station may be transmitting on a frequency that is prohibited to some responding stations; To separate the calling stations from the DX station; To improve operating efficiency by reducing interference; All these choices are correct.
+[05:40.90]How should you generally identify your station when attempting to contact a DX station during a contest or in a pileup? Send your full call sign once or twice.
+[05:51.45]What indicates the delay between a control operator action and the corresponding change in the transmitted signal? Latency.
+[05:59.82]Group E2D.
+[06:01.69]Which of the following digital modes is designed for meteor scatter communications? MSK144.
+[06:09.29]What information replaces signal-to-noise ratio when using the FT8 or FT4 modes in a VHF contest? Grid square.
+[06:18.45]Which of the following digital modes is designed for EME communications? Q65.
+[06:24.74]What technology is used for real-time tracking of balloons carrying amateur radio transmitters? APRS.
+[06:32.17]What is the characteristic of the JT65 mode? Decodes signals with a very low signal-to-noise ratio.
+[06:39.84]Which of the following is a method for establishing EME contacts? Time-synchronous transmissions alternating between stations.
+[06:48.06]What digital protocol is used by APRS? AX.25.
+[06:52.93]What type of packet frame is used to transmit APRS beacon data? Unnumbered Information.
+[06:59.28]What type of modulation is used by JT65? Multitone AFSK.
+[07:05.07]What does the packet path WIDE3-1 designate? Three digipeater hops are requested with one remaining.
+[07:12.23]How do APRS stations relay data? By packet digipeaters.
+[07:17.39]Group E2E.
+[07:19.24]Which of the following types of modulation is used for data emissions below 30 MHz? FSK.
+[07:26.14]Which of the following synchronizes WSJT-X digital mode transmit/receive timing? Synchronization of computer clocks.
+[07:35.16]To what does the "4" in FT4 refer? Four-tone continuous-phase frequency shift keying.
+[07:40.93]Which of the following is characteristic of the FST4 mode? Four-tone Gaussian frequency shift keying; Variable transmit/receive periods; Seven different tone spacings; All these choices are correct.
+[07:54.55]Which of these digital modes does not support keyboard-to-keyboard operation? WSPR.
+[07:59.78]What is the length of an FT8 transmission cycle? 15 seconds.
+[08:04.36]How does Q65 differ from JT65? Multiple receive cycles are averaged.
+[08:10.91]Which of the following HF digital modes can be used to transfer binary files? PACTOR.
+[08:16.77]Which of the following HF digital modes uses variable-length character coding? PSK31.
+[08:23.58]Which of these digital modes has the narrowest bandwidth? FT8.
+[08:27.99]What is the difference between direct FSK and audio FSK? Direct FSK modulates the transmitter VFO.
+[08:36.34]How do ALE stations establish contact? ALE constantly scans a list of frequencies, activating the radio when the designated call sign is received.
+[08:47.01]Which of these digital modes has the highest data throughput under clear communication conditions? PACTOR IV.

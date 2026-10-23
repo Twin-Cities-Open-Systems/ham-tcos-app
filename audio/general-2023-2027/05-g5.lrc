@@ -1,0 +1,47 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G5 - Electrical Principles]
+[00:00.40]General answers. G5 - Electrical Principles.
+[00:04.61]Group G5A.
+[00:06.57]What happens when inductive and capacitive reactance are equal in a series LC circuit? Resonance causes impedance to be very low.
+[00:15.49]What is reactance? Opposition to the flow of alternating current caused by capacitance or inductance.
+[00:22.58]Which of the following is opposition to the flow of alternating current in an inductor? Reactance.
+[00:28.72]Which of the following is opposition to the flow of alternating current in a capacitor? Reactance.
+[00:34.91]How does an inductor react to AC? As the frequency of the applied AC increases, the reactance increases.
+[00:42.43]How does a capacitor react to AC? As the frequency of the applied AC increases, the reactance decreases.
+[00:50.03]What is the term for the inverse of impedance? Admittance.
+[00:53.69]What is impedance? The ratio of voltage to current.
+[00:57.31]What unit is used to measure reactance? Ohm.
+[01:00.54]Which of the following devices can be used for impedance matching at radio frequencies? A transformer; A Pi-network; A length of transmission line; All these choices are correct.
+[01:12.09]What letter is used to represent reactance? X.
+[01:15.51]What occurs in an LC circuit at resonance? Inductive reactance and capacitive reactance cancel.
+[01:22.77]Group G5B.
+[01:24.83]What dB change represents a factor of two increase or decrease in power? Approximately 3 dB.
+[01:31.93]How does the total current relate to the individual currents in a circuit of parallel resistors? It equals the sum of the currents through each branch.
+[01:41.00]How many watts of electrical power are consumed if 400 VDC is supplied to an 800-ohm load? 200 watts.
+[01:49.69]How many watts of electrical power are consumed by a 12 VDC light bulb that draws 0.2 amperes? 2.4 watts.
+[01:59.11]How many watts are consumed when a current of 7.0 milliamperes flows through a 1,250-ohm resistance? Approximately 61 milliwatts.
+[02:10.23]What is the PEP produced by 200 volts peak-to-peak across a 50-ohm dummy load? 100 watts.
+[02:17.71]What value of an AC signal produces the same power dissipation in a resistor as a DC voltage of the same value? The RMS value.
+[02:27.58]What is the peak-to-peak voltage of a sine wave with an RMS voltage of 120 volts? 339.4 volts.
+[02:36.97]What is the RMS voltage of a sine wave with a value of 17 volts peak? 12 volts.
+[02:43.45]What percentage of power loss is equivalent to a loss of 1 dB? 20.6 percent.
+[02:49.64]What is the ratio of PEP to average power for an unmodulated carrier? 1.00.
+[02:56.46]What is the RMS voltage across a 50-ohm dummy load dissipating 1200 watts? 245 volts.
+[03:05.51]What is the output PEP of an unmodulated carrier if the average power is 1060 watts? 1060 watts.
+[03:14.46]What is the output PEP of 500 volts peak-to-peak across a 50-ohm load? 625 watts.
+[03:22.65]Group G5C.
+[03:24.74]What causes a voltage to appear across the secondary winding of a transformer when an AC voltage source is connected across its primary winding? Mutual inductance.
+[03:35.37]What is the output voltage if an input signal is applied to the secondary winding of a 4:1 voltage step-down transformer instead of the primary winding? The input voltage is multiplied by 4.
+[03:48.55]What is the total resistance of a 10-, a 20-, and a 50-ohm resistor connected in parallel? 5.9 ohms.
+[03:56.62]What is the approximate total resistance of a 100- and a 200-ohm resistor in parallel? 67 ohms.
+[04:04.65]Why is the primary winding wire of a voltage step-up transformer usually a larger size than that of the secondary winding? To accommodate the higher current of the primary.
+[04:16.20]What is the voltage output of a transformer with a 500-turn primary and a 1500-turn secondary when 120 VAC is applied to the primary? 360 volts.
+[04:29.63]What transformer turns ratio matches an antenna’s 600-ohm feed point impedance to a 50-ohm coaxial cable? 3.5 to 1.
+[04:39.56]What is the equivalent capacitance of two 5.0-nanofarad capacitors and one 750-picofarad capacitor connected in parallel? 10.750 nanofarads.
+[04:53.09]What is the capacitance of three 100-microfarad capacitors connected in series? 33.3 microfarads.
+[05:01.91]What is the inductance of three 10-millihenry inductors connected in parallel? 3.3 millihenries.
+[05:08.88]What is the inductance of a circuit with a 20-millihenry inductor connected in series with a 50-millihenry inductor? 70 millihenries.
+[05:17.87]What is the capacitance of a 20-microfarad capacitor connected in series with a 50-microfarad capacitor? 14.3 microfarads.
+[05:28.14]Which of the following components should be added to a capacitor to increase the capacitance? A capacitor in parallel.
+[05:35.32]Which of the following components should be added to an inductor to increase the inductance? An inductor in series.

@@ -1,0 +1,56 @@
+[ar:HRV]
+[al:Extra Answers - 2024-2028]
+[ti:E8 - Signals and Emissions]
+[00:00.40]Extra answers. E8 - Signals and Emissions.
+[00:04.37]Group E8A.
+[00:06.20]What technique shows that a square wave is made up of a sine wave and its odd harmonics? Fourier analysis.
+[00:13.04]Which of the following is a type of analog-to-digital conversion? Successive approximation.
+[00:19.02]Which of the following describes a signal in the time domain? Amplitude at different times.
+[00:24.58]What is “dither” with respect to analog-to-digital converters? A small amount of noise added to the input signal to reduce quantization noise.
+[00:33.53]What is the benefit of making voltage measurements with a true-RMS calculating meter? RMS is measured for both sinusoidal and non-sinusoidal signals.
+[00:44.22]What is the approximate ratio of PEP-to-average power in an unprocessed single-sideband phone signal? 2.5 to 1.
+[00:52.91]What determines the PEP-to-average power ratio of an unprocessed single-sideband phone signal? Speech characteristics.
+[01:00.88]Why are direct or flash conversion analog-to-digital converters used for a software defined radio? Very high speed allows digitizing high frequencies.
+[01:11.62]How many different input levels can be encoded by an analog-to-digital converter with 8-bit resolution? 256.
+[01:19.89]What is the purpose of a low-pass filter used at the output of a digital-to-analog converter? Remove spurious sampling artifacts from the output signal.
+[01:29.94]Which of the following is a measure of the quality of an analog-to-digital converter? Total harmonic distortion.
+[01:37.67]Group E8B.
+[01:39.54]What is the modulation index of an FM signal? The ratio of frequency deviation to modulating signal frequency.
+[01:47.94]How does the modulation index of a phase-modulated emission vary with RF carrier frequency? It does not depend on the RF carrier frequency.
+[01:57.72]What is the modulation index of an FM phone signal having a maximum frequency deviation of 3000 Hz either side of the carrier frequency if the highest modulating frequency is 1000 Hz? 3.
+[02:12.34]What is the modulation index of an FM phone signal having a maximum carrier deviation of plus or minus 6 kHz if the highest modulating frequency is 2 kHz? 3.
+[02:24.96]What is the deviation ratio of an FM phone signal having a maximum frequency swing of plus or minus 5 kHz if the highest modulation frequency is 3 kHz? 1.67.
+[02:38.43]What is the deviation ratio of an FM phone signal having a maximum frequency swing of plus or minus 7.5 kHz if the highest modulation frequency is 3.5 kHz? 2.14.
+[02:53.46]Orthogonal frequency-division multiplexing (OFDM) is a technique used for which types of amateur communication? Digital modes.
+[03:02.75]What describes orthogonal frequency-division multiplexing (OFDM)? A digital modulation technique using subcarriers at frequencies chosen to avoid intersymbol interference.
+[03:15.23]What is deviation ratio? The ratio of the maximum carrier frequency deviation to the highest audio modulating frequency.
+[03:23.80]What is frequency division multiplexing (FDM)? Dividing the transmitted signal into separate frequency bands that each carry a different data stream.
+[03:33.58]What is digital time division multiplexing? Two or more signals are arranged to share discrete time slots of a data transmission.
+[03:42.29]Group E8C.
+[03:44.18]What is Quadrature Amplitude Modulation or QAM? Transmission of data by modulating the amplitude of two carriers of the same frequency but 90 degrees out of phase.
+[03:55.73]What is the definition of symbol rate in a digital transmission? The rate at which the waveform changes to convey information.
+[04:03.87]Why should the phase of a PSK signal be changed at the zero crossing of the RF signal? To minimize bandwidth.
+[04:11.41]What technique minimizes the bandwidth of a PSK31 signal? Use of sinusoidal data pulses.
+[04:18.54]What is the approximate bandwidth of a 13-WPM International Morse Code transmission? 52 Hz.
+[04:25.83]What is the bandwidth of an FT8 signal? 50 Hz.
+[04:29.72]What is the bandwidth of a 4,800-Hz frequency shift, 9,600-baud ASCII FM transmission? 15.36 kHz.
+[04:40.55]How does ARQ accomplish error correction? If errors are detected, a retransmission is requested.
+[04:47.45]Which digital code allows only one bit to change between sequential code values? Gray code.
+[04:53.75]How can data rate be increased without increasing bandwidth? Using a more efficient digital code.
+[04:59.99]What is the relationship between symbol rate and baud? They are the same.
+[05:04.35]What factors affect the bandwidth of a transmitted CW signal? Keying speed and shape factor (rise and fall time).
+[05:12.19]What is described by the constellation diagram of a QAM or QPSK signal? The possible phase and amplitude states for each symbol.
+[05:21.80]What type of addresses do nodes have in a mesh network? Internet Protocol (IP).
+[05:27.29]What technique do individual nodes use to form a mesh network? Discovery and link establishment protocols.
+[05:34.99]Group E8D.
+[05:36.85]Why are received spread spectrum signals resistant to interference? Signals not using the spread spectrum algorithm are suppressed in the receiver.
+[05:46.58]What spread spectrum communications technique uses a high-speed binary bit stream to shift the phase of an RF carrier? Direct sequence.
+[05:55.47]Which describes spread spectrum frequency hopping? Rapidly varying the frequency of a transmitted signal according to a pseudorandom sequence.
+[06:04.29]What is the primary effect of extremely short rise or fall time on a CW signal? The generation of key clicks.
+[06:12.36]What is the most common method of reducing key clicks? Increase keying waveform rise and fall times.
+[06:18.90]What is the advantage of including parity bits in ASCII characters? Some types of errors can be detected.
+[06:25.43]What is a common cause of overmodulation of AFSK signals? Excessive transmit audio levels.
+[06:32.29]What parameter evaluates distortion of an AFSK signal caused by excessive input audio levels? Intermodulation Distortion (IMD).
+[06:42.58]What is considered an acceptable maximum IMD level for an idling PSK signal? -30 dB.
+[06:50.19]What are some of the differences between the Baudot digital code and ASCII? Baudot uses 5 data bits per character, ASCII uses 7 or 8; Baudot uses 2 characters as letters/figures shift codes, ASCII has no letters/figures shift code.
+[07:06.45]What is one advantage of using ASCII code for data communications? It is possible to transmit both uppercase and lowercase text.

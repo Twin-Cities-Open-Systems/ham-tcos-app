@@ -1,0 +1,44 @@
+[ar:HRV]
+[al:Technician Answers - 2026-2030]
+[ti:T2 - Operating Procedures]
+[00:00.40]Technician answers. T2 - Operating Procedures.
+[00:04.82]Group T2A.
+[00:06.67]What is a common repeater frequency offset in the 2-meter band? Plus or minus 600 kHz.
+[00:13.44]What is the national calling frequency for FM simplex operations in the 2-meter band? 146.520 MHz.
+[00:23.14]What is a common repeater frequency offset in the 70-centimeter band? Plus or minus 5 MHz.
+[00:30.36]What is an appropriate way to call another station on a repeater if you know the other station's call sign? Say the station's call sign, then identify with your call sign.
+[00:40.78]How should you respond to a station calling CQ? Transmit the other station’s call sign followed by your call sign.
+[00:48.06]What is an effective way to seek a call from any phone station when not using a repeater? Repeat “CQ” a few times, followed by “this is,” and your call sign, then pause to listen; repeat as necessary.
+[01:00.91]What does the term "repeater offset" mean? The difference between a repeater’s transmit and receive frequencies.
+[01:07.43]What is the meaning of the procedural signal “CQ”? Calling any station.
+[01:12.09]Which of the following is a customary way to indicate a station is listening on a repeater and looking for a contact? The station’s call sign followed by the word “listening”.
+[01:23.04]What is a band plan, beyond the privileges established by the FCC? A voluntary guideline for using different modes or activities within an amateur band.
+[01:33.59]What term describes an amateur station that is transmitting and receiving on the same frequency? Simplex.
+[01:40.87]Group T2B.
+[01:42.79]What is the purpose of the reverse function on a VHF/UHF transceiver? To listen on a repeater’s input frequency.
+[01:51.05]What term describes the use of a sub-audible tone transmitted along with normal voice audio to open the squelch of a receiver? CTCSS.
+[02:00.55]Which of the following describes a linked repeater network? A network of repeaters in which signals received by one repeater are transmitted by all the repeaters in the network.
+[02:11.27]Which of the following could be the reason you are unable to access a repeater whose output you can hear? Improper transceiver offset; You are using the wrong CTCSS tone; You are using the wrong DCS code; All these choices are correct.
+[02:27.01]Which of the following would cause your FM transmission audio to drop out on voice peaks? You are talking too loudly.
+[02:34.03]What type of signaling to a repeater uses two simultaneous audio tones? DTMF.
+[02:40.06]How can you join a digital repeater’s “talkgroup”? Program your radio with the group’s ID or code.
+[02:46.25]Which of the following applies when two stations transmitting on the same frequency interfere with each other? The stations should negotiate continued use of the frequency.
+[02:56.74]Why are simplex channels designated in the VHF/UHF band plans? So stations within range of each other can communicate without tying up a repeater.
+[03:07.39]Which Q signal indicates that you are receiving interference from other stations? QRM.
+[03:13.27]Which Q signal indicates that you are changing frequency? QSY.
+[03:17.87]What is the digital color code used on DMR repeater systems? An access code which must be programmed into a DMR transmitter to access a specific repeater.
+[03:29.10]What is the purpose of a squelch function? Mute the receiver audio when a signal is not present.
+[03:35.04]Which of the following is a “talkgroup”? An identifier used by DMR to organize radio traffic so that those who want to hear the group aren’t bothered by other radio traffic.
+[03:46.65]Group T2C.
+[03:48.58]When do the FCC Part 97 Amateur Radio Service rules NOT apply to the operation of an amateur station? FCC rules always apply.
+[03:58.92]Which of the following are typical duties of a Net Control Station? Call the net to order and direct communications between stations checking in.
+[04:07.74]What technique is used to ensure that voice messages containing unusual words are received correctly? Spell the words using a standard phonetic alphabet.
+[04:17.94]What is RACES? An FCC Part 97 amateur radio service for civil defense communications during national emergencies.
+[04:27.15]What does the term “traffic” refer to in net operation? Formal messages exchanged by net stations.
+[04:33.79]What is the Amateur Radio Emergency Service (ARES)? A group of licensed amateurs who have voluntarily registered their qualifications and equipment for communications duty in the public service.
+[04:46.67]Which of the following is standard practice when you participate in a net? Unless you are reporting an emergency, transmit only when directed by the net control station.
+[04:56.89]Which of the following relays messages using email addresses based on amateur callsigns? Winlink.
+[05:03.73]Are amateur station control operators ever permitted to operate outside the frequency privileges of their license class? Yes, but only in situations involving the immediate safety of human life or protection of property.
+[05:18.18]What information is contained in the preamble of a formal traffic message? Information needed to track the message.
+[05:25.42]What is meant by “check” in a radiogram header? The number of words or word equivalents in the text portion of the message.
+[05:33.05]Which of the following requires certification by a civil defense agency? RACES.

@@ -1,0 +1,40 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G7 - Practical Circuits]
+[00:00.40]General answers. G7 - Practical Circuits.
+[00:04.52]Group G7A.
+[00:06.54]What is the function of a power supply bleeder resistor? It discharges the filter capacitors when power is removed.
+[00:14.06]Which of the following components are used in a power supply filter network? Capacitors and inductors.
+[00:20.71]Which type of rectifier circuit uses two diodes and a center-tapped transformer? Full-wave.
+[00:26.71]What is characteristic of a half-wave rectifier in a power supply? Only one diode is required.
+[00:33.10]What portion of the AC cycle is converted to DC by a half-wave rectifier? 180 degrees.
+[00:40.51]What portion of the AC cycle is converted to DC by a full-wave rectifier? 360 degrees.
+[00:47.99]What is the output waveform of an unfiltered full-wave rectifier connected to a resistive load? A series of DC pulses at twice the frequency of the AC input.
+[00:59.15]Which of the following is characteristic of a switchmode power supply as compared to a linear power supply? High-frequency operation allows the use of smaller components.
+[01:10.38]Group G7B.
+[01:12.49]What is the purpose of neutralizing an amplifier? To eliminate self-oscillations.
+[01:17.81]Which of these classes of amplifiers has the highest efficiency? Class C.
+[01:22.51]Which of the following describes the function of a two-input AND gate? Output is high only when both inputs are high.
+[01:29.75]In a Class A amplifier, what percentage of the time does the amplifying device conduct? 100%.
+[01:36.82]How many states does a 3-bit binary counter have? 8.
+[01:40.82]What is a shift register? A clocked array of circuits that passes data in steps along the array.
+[01:46.85]Which of the following are basic components of a sine wave oscillator? A filter and an amplifier operating in a feedback loop.
+[01:55.07]How is the efficiency of an RF power amplifier determined? Divide the RF output power by the DC input power.
+[02:03.51]What determines the frequency of an LC oscillator? The inductance and capacitance in the tank circuit.
+[02:10.15]Which of the following describes a linear amplifier? An amplifier in which the output preserves the input waveform.
+[02:17.52]For which of the following modes is a Class C power stage appropriate for amplifying a modulated signal? FM.
+[02:25.67]Group G7C.
+[02:27.78]What circuit is used to select one of the sidebands from a balanced modulator? Filter.
+[02:33.51]What output is produced by a balanced modulator? Double-sideband modulated RF.
+[02:39.36]What is one reason to use an impedance matching transformer at a transmitter output? To present the desired impedance to the transmitter and feed line.
+[02:48.99]How is a product detector used? Used in a single sideband receiver to extract the modulated signal.
+[02:56.06]Which of the following is characteristic of a direct digital synthesizer (DDS)? Variable output frequency with the stability of a crystal oscillator.
+[03:06.16]Which of the following is an advantage of a digital signal processing (DSP) filter compared to an analog filter? A wide range of filter bandwidths and shapes can be created.
+[03:17.65]What term specifies a filter’s attenuation inside its passband? Insertion loss.
+[03:23.21]Which parameter affects receiver sensitivity? Input amplifier gain; Demodulator stage bandwidth; Input amplifier noise figure; All these choices are correct.
+[03:34.39]What is the phase difference between the I and Q RF signals that software-defined radio (SDR) equipment uses for modulation and demodulation? 90 degrees.
+[03:46.03]What is an advantage of using I-Q modulation with software-defined radios (SDRs)? All types of modulation can be created with appropriate processing.
+[03:56.75]Which of these functions is performed by software in a software-defined radio (SDR)? Filtering; Detection; Modulation; All these choices are correct.
+[04:07.36]What is the frequency above which a low-pass filter’s output power is less than half the input power? Cutoff frequency.
+[04:14.86]What term specifies a filter’s maximum ability to reject signals outside its passband? Ultimate rejection.
+[04:22.38]The bandwidth of a band-pass filter is measured between what two frequencies? Upper and lower half-power.

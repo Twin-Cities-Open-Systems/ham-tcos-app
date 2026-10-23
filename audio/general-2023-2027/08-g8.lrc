@@ -1,0 +1,49 @@
+[ar:HRV]
+[al:General Answers - 2023-2027]
+[ti:G8 - Signals and Emissions]
+[00:00.40]General answers. G8 - Signals and Emissions.
+[00:04.48]Group G8A.
+[00:06.35]How is direct binary FSK modulation generated? By changing an oscillator’s frequency directly with a digital control signal.
+[00:15.41]What is the name of the process that changes the phase angle of an RF signal to convey information? Phase modulation.
+[00:23.57]What is the name of the process that changes the instantaneous frequency of an RF wave to convey information? Frequency modulation.
+[00:32.79]What emission is produced by a reactance modulator connected to a transmitter RF amplifier stage? Phase modulation.
+[00:41.16]What type of modulation varies the instantaneous power level of the RF signal? Amplitude modulation.
+[00:48.51]Which of the following is characteristic of QPSK31? It is sideband sensitive; Its encoding provides error correction; Its bandwidth is approximately the same as BPSK31; All these choices are correct.
+[01:03.84]Which of the following phone emissions uses the narrowest bandwidth? Single sideband.
+[01:09.31]Which of the following is an effect of overmodulation? Excessive bandwidth.
+[01:14.31]What type of modulation is used by FT8? 8-tone frequency shift keying.
+[01:19.84]What is meant by the term “flat-topping,” when referring to an amplitude-modulated phone signal? Signal distortion caused by excessive drive or speech levels.
+[01:30.24]What is the modulation envelope of an AM signal? The waveform created by connecting the peak values of the modulated signal.
+[01:38.93]What is QPSK modulation? Modulation in which digital data is transmitted using 0-, 90-, 180- and 270-degrees phase shift to represent pairs of bits.
+[01:52.15]What is a link budget? The sum of transmit power and antenna gains minus system losses as seen at the receiver.
+[01:59.63]What is link margin? The difference between received power level and minimum required signal level at the input to the receiver.
+[02:07.89]Group G8B.
+[02:09.89]Which mixer input is varied or tuned to convert signals of different frequencies to an intermediate frequency (IF)? Local oscillator.
+[02:18.94]What is the term for interference from a signal at twice the IF frequency from the desired signal? Image response.
+[02:26.65]What is another term for the mixing of two RF signals? Heterodyning.
+[02:31.25]What is the stage in a VHF FM transmitter that generates a harmonic of a lower frequency signal to reach the desired operating frequency? Multiplier.
+[02:42.44]Which intermodulation products are closest to the original signal frequencies? Odd-order.
+[02:48.33]What is the total bandwidth of an FM phone transmission having 5 kHz deviation and 3 kHz modulating frequency? 16 kHz.
+[02:58.58]What is the frequency deviation for a 12.21 MHz reactance modulated oscillator in a 5 kHz deviation, 146.52 MHz FM phone transmitter? 416.7 Hz.
+[03:15.06]Why is it important to know the duty cycle of the mode you are using when transmitting? Some modes have high duty cycles that could exceed the transmitter’s average power rating.
+[03:26.21]Why is it good to match receiver bandwidth to the bandwidth of the operating mode? It results in the best signal-to-noise ratio.
+[03:34.05]What is the relationship between transmitted symbol rate and bandwidth? Higher symbol rates require wider bandwidth.
+[03:41.29]What combination of a mixer’s Local Oscillator (LO) and RF input frequencies is found in the output? The sum and difference.
+[03:50.04]What process combines two signals in a non-linear circuit to produce unwanted spurious outputs? Intermodulation.
+[03:57.88]Which of the following is an odd-order intermodulation product of frequencies F1 and F2? 2F1-F2.
+[04:06.01]Group G8C.
+[04:07.97]Which digital mode is used as a low-power beacon for assessing HF propagation? WSPR.
+[04:14.27]What part of a packet radio frame contains the routing and handling information? Header.
+[04:19.96]Which of the following describes Baudot code? A 5-bit code with additional start and stop bits.
+[04:26.33]In an ARQ mode, what is meant by a NAK response to a transmitted packet? Request retransmission of the packet.
+[04:33.76]What action results from a failure to exchange information due to excessive transmission attempts when using an ARQ mode? The connection is dropped.
+[04:43.90]Which of the following narrow-band digital modes can receive signals with very low signal-to-noise ratios? FT8.
+[04:51.74]Which of the following statements is true about PSK31? Upper case letters use longer Varicode bit sequences and thus slow down transmission.
+[05:01.29]Which is true of mesh network microwave nodes? If one node fails, a packet may still reach its target station via an alternate node.
+[05:10.11]How does forward error correction (FEC) allow the receiver to correct data errors? By transmitting redundant information with the data.
+[05:19.12]How are the two separate frequencies of a Frequency Shift Keyed (FSK) signal identified? Mark and space.
+[05:26.53]Which type of code is used for sending characters in a PSK31 signal? Varicode.
+[05:32.55]What is indicated on a waterfall display by one or more vertical lines on either side of a data mode or RTTY signal? Overmodulation.
+[05:42.68]Which of the following describes a waterfall display? Frequency is horizontal, signal strength is intensity, time is vertical.
+[05:51.13]What does an FT8 signal report of +3 mean? The signal-to-noise ratio is equivalent to +3dB in a 2.5 kHz bandwidth.
+[06:01.55]Which of the following provide digital voice modes? DMR, D-STAR, and SystemFusion.
