@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing since the last release._
 
+## [1.5.0] - 2026-10-23
+
+### Added
+
+- 2026-10-23 **listen**: the controls sit in a pill at the top right, beside the tracks pill ([#36](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/36))
+- 2026-10-23 **listen**: the Full player link continues where the flashcards' player is ([#34](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/34))
+- 2026-10-23 **listen**: albums up top as cover tiles, the tracklist a pill that names the playing track, the controls riding the line being read ([#32](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/32))
+- 2026-10-23 **listen**: Listen is a flashcard mode -- the card body is the player, the controls an overlay on the block being read, the pill gone ([#31](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/31))
+- 2026-10-23 **listen**: the spoken answer albums, playable with the guide -- a Listen page, a pill beside the flashcards, speed from quarter to double, read-along from the .lrc ([#28](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/28))
+
+### Fixed
+
+- 2026-10-23 **listen**: no HRV anywhere in the app -- the credit and the albums retagged to the site's name ([#35](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/35))
+- 2026-10-23 **listen**: the study page loads the player's stylesheet, the read-along keeps its line in view, the pill carries every tool, and answers read in green ([#29](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/29))
+- 2026-10-01 **ci**: pruning a lab payload that a concurrent build already pruned is not a failure ([#26](https://github.com/Twin-Cities-Open-Systems/ham-tcos-app/pull/26))
+
 ## [1.4.0] - 2026-10-01
 
 ### Added
