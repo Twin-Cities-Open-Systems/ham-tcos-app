@@ -199,6 +199,18 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     renderTracks();
     document.getElementById("hl-count").textContent = albums.length + " albums";
     window.HamListen && window.HamListen.init(mount, data, {});
+    /* Handed over from the study page's player (its Full player link):
+       #pool=..&n=..&t=..&play=1 continues that track at that second. The
+       fragment is dropped afterwards so a reload starts from the saved
+       position, not from the hand-over moment. */
+    var h = new URLSearchParams((window.location.hash || "").replace(/^#/, ""));
+    var hp = h.get("pool"), hn = parseInt(h.get("n"), 10);
+    if (window.HamListen && hp && albumByPool(hp) && hn > 0) {
+      chosenPool = hp; setAlbumPref(hp); renderAlbums(); renderTracks();
+      window.HamListen.open({ pool: hp, n: hn, t: parseFloat(h.get("t")) || 0, play: h.get("play") === "1" });
+      tracklist.open = false;
+      if (window.history && window.history.replaceState) { window.history.replaceState(null, "", window.location.pathname); }
+    }
   }).catch(function () {
     document.getElementById("hl-count").textContent = "unavailable";
   });

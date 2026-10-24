@@ -157,6 +157,11 @@
     var controlKids = [this.prevLineBtn, this.playBtn, this.nextLineBtn, this.prevTrackBtn, this.nextTrackBtn, this.speedSelect, this.titleEl];
     if (this.inline) {
       this.fullLink = el("a", { class: "hl-full", href: "/listen.html" }, [text("Full player")]);
+      /* The link continues where this player is: pool, track, second and
+         whether it was playing ride in the fragment, read by listen.html.
+         Set at click time so the href is always the current moment; the
+         default navigation then follows the updated href. */
+      this.on(this.fullLink, "click", function () { self.savePos(); self.fullLink.href = self.handoffUrl(); });
       controlKids.push(this.fullLink);
     }
     this.controls = el("div", { class: "hl-controls", id: "hl-controls" }, controlKids);
@@ -265,13 +270,17 @@
     if (!found) { this.setStatus("That track or question was not in the manifest."); return; }
 
     var sameTrack = this.track === found;
+    var at = (typeof opts.t === "number" && opts.t > 0) ? opts.t : null;
     this.pool = opts.pool;
-    if (!sameTrack) { this.loadTrack(found, opts.qid != null ? lineIndex : null); }
+    if (!sameTrack) { this.loadTrack(found, opts.qid != null ? lineIndex : null, at); }
+    else if (at != null) { this.seekTo(at); }
     else if (lineIndex >= 0) { this.seekTo(found.lines[lineIndex].t); }
 
     if (opts.play || this.userPlayed) { this.audio.play().catch(function () { /* autoplay blocked; leave it paused */ }); }
   };
-  Player.prototype.loadTrack = function (track, lineIndex) {
+  /* startAt, when given, wins over the line and the saved position: it is
+     the moment another page's player handed over (the Full player link). */
+  Player.prototype.loadTrack = function (track, lineIndex, startAt) {
     var self = this;
     this.savePos();
     this.track = track;
@@ -283,8 +292,9 @@
     this.audio.playbackRate = this.rate;
     this.renderTrack();
     this.setStatus("");
-    var startAt = 0;
-    if (lineIndex != null && lineIndex >= 0) { startAt = track.lines[lineIndex].t; }
+    if (startAt == null) { startAt = 0; }
+    if (startAt > 0) { /* handed over: keep it */ }
+    else if (lineIndex != null && lineIndex >= 0) { startAt = track.lines[lineIndex].t; }
     else {
       var saved = parseFloat(pref(posKey(this.pool, track.n), "0"));
       if (saved > 0) { startAt = saved; }
@@ -293,6 +303,11 @@
       this.on(this.audio, "loadedmetadata", function once() { self.audio.removeEventListener("loadedmetadata", once); self.audio.currentTime = startAt; self.tick(); });
     }
     this.startPosTimer();
+  };
+  Player.prototype.handoffUrl = function () {
+    if (!this.track) { return "/listen.html"; }
+    return "/listen.html#pool=" + encodeURIComponent(this.trackPool || this.pool) + "&n=" + encodeURIComponent(String(this.track.n)) +
+      "&t=" + encodeURIComponent(String(Math.floor((this.audio.currentTime || 0) * 10) / 10)) + "&play=" + (this.audio.paused ? "0" : "1");
   };
   Player.prototype.startPosTimer = function () {
     var self = this;
