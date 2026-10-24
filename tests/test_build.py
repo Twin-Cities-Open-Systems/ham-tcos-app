@@ -186,6 +186,20 @@ class Manifest(unittest.TestCase):
             self.assertEqual(len(warnings), 1)
             self.assertIn("01-t1.lrc", warnings[0])
 
+    def test_matched_line_carries_q_and_a_unmatched_carries_neither(self):
+        with tempfile.TemporaryDirectory() as d:
+            pool_dir = Path(d) / "technician-2026-2030"
+            pool_dir.mkdir()
+            (pool_dir / "01-t1.lrc").write_text(self.LRC, encoding="utf-8")
+            doc, _ = build.build_audio(self.DOC, audio_dir=Path(d))
+            lines = doc["albums"][0]["tracks"][0]["lines"]
+            matched = next(l for l in lines if l["qid"] == "T1A01")
+            self.assertEqual(matched["q"], self.DOC["questions"][0]["question"])
+            self.assertEqual(matched["a"], "Advancing skills in the technical and communication phases of the radio art.")
+            unmatched = next(l for l in lines if l["kind"] == "question" and l["qid"] is None)
+            self.assertNotIn("q", unmatched)
+            self.assertNotIn("a", unmatched)
+
 
 class Stage(unittest.TestCase):
     """build.stage_audio: the staging rename, from a temp DIR laid out like
