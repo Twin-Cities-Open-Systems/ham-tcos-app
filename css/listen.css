@@ -6,7 +6,7 @@
  * band and the same safe-area insets; shell.css itself is never edited here.
  *
  * .hl-player is shared by the standalone page and the pill (js/listen.js adds
- * .hl-compact for the pill's smaller build); the same ids and classes exist
+ * .hl-inline for the flashcards Listen mode); the same ids and classes exist
  * in both so this one sheet styles them without a second set of rules.
  */
 
@@ -62,11 +62,6 @@
 /* --- compact: the pill's own build -----------------------------------------
  * Same transport and speed controls as the full player, smaller, in two rows,
  * above the current and next line and a link out to the full player. */
-.hl-compact{gap:.35rem}
-.hl-compact .hl-title{font-size:.85rem}
-.hl-compact .hl-btn{min-width:38px;min-height:38px;font-size:.95rem}
-.hl-compact .hl-speed{gap:.15rem}
-.hl-compact .hl-seg-btn{padding:.15rem .4rem;min-height:30px;font-size:.68rem}
 .hl-now-line,.hl-next-line{margin:0;font-size:.82rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .hl-now-line{color:var(--ink);font-weight:600}
@@ -76,22 +71,44 @@
 .hl-full:hover{text-decoration:underline}
 .hl-full:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
-/* --- the pill: aside.hl-pill, the mirror of .tc-jump ------------------------
  * .tc-jump sits bottom-right; this sits bottom-left, same insets, same
  * z-index band (one below .tc-dock's 14... here the pill IS the dock-like
  * control, so it takes 14 itself), same hidden-by-attribute convention. */
-aside.hl-pill{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));
   z-index:14;max-width:min(28rem,calc(100vw - 24px));
   border:1px solid var(--edge);border-radius:14px;padding:.7rem .8rem;
   background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   box-shadow:var(--shadow);opacity:.96;transition:opacity .2s,transform .2s,visibility 0s}
-aside.hl-pill:hover,aside.hl-pill:focus-within{opacity:1}
-aside.hl-pill[data-show="false"]{opacity:0;visibility:hidden;transform:translateY(10px);pointer-events:none;
   transition:opacity .2s,transform .2s,visibility 0s .2s}
-@media(prefers-reduced-motion:reduce){aside.hl-pill,aside.hl-pill[data-show="false"]{transition:none}}
-@media print{aside.hl-pill{display:none!important}}
 
 @media(max-width:30rem){
-  aside.hl-pill{left:max(8px,env(safe-area-inset-left));bottom:max(8px,env(safe-area-inset-bottom));padding:.55rem .6rem}
   .hl-lines{max-height:40vh}
 }
+
+/* --- Listen as a flashcard mode: the card body is the player ----------------
+ * The question and its answer are the card's text; the controls are an
+ * overlay in the block's top-right corner that appears on hover or when a
+ * control has focus, and stays visible where there is no hover (touch).
+ * Operator, 2026-10-24: "the controls appear as hover over the block that is
+ * highlighted and being read. can free a lot of space". The job that built
+ * the mode (ham-audio-fixes-3) stopped at its ceiling before this file;
+ * the dispatcher wrote these rules. */
+.ham-flash.is-listen{position:relative;padding-top:.6rem}
+.ham-flash.is-listen .ham-flash-q{margin:0 0 .5rem;padding-right:2.6rem;font-size:1.05rem;line-height:1.45}
+.ham-flash.is-listen .ham-flash-a{margin:0;font-size:1.05rem;line-height:1.45;color:var(--good-ink);font-weight:600}
+.ham-flash-a .hl-vh{position:absolute;left:-9999px}
+/* The study page's mount div also carries .hl-inline: it forms no box of its own, the player root is the overlay. */
+.ham-flash.is-listen>.hl-inline:not(.hl-player){display:contents}
+.hl-player.hl-inline{position:absolute;top:.3rem;right:.3rem;z-index:2;display:flex;flex-direction:row;width:max-content;align-items:center;gap:.3rem;flex-wrap:wrap;justify-content:flex-end;
+  max-width:calc(100% - .6rem);padding:.25rem .35rem;border:1px solid var(--edge);border-radius:.6rem;background:var(--surface);box-shadow:var(--shadow);
+  opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .15s}
+.ham-flash.is-listen:hover .hl-player.hl-inline,.ham-flash.is-listen:focus-within .hl-player.hl-inline{opacity:1;transform:none}
+@media(hover:none){.hl-player.hl-inline{opacity:1;transform:none}.ham-flash.is-listen{padding-top:3.1rem}.ham-flash.is-listen .ham-flash-q{padding-right:0}}
+@media(prefers-reduced-motion:reduce){.hl-player.hl-inline{transition:none}}
+.hl-inline .hl-row{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;justify-content:flex-end}
+.hl-inline .hl-btn{min-width:34px;min-height:34px;padding:0 .35rem;font-size:.9rem}
+.hl-inline .hl-speed-select{font:inherit;font-size:.85rem;min-height:34px;padding:0 .3rem;color:var(--ink);background:var(--sunk);border:1px solid var(--edge);border-radius:.4rem}
+.hl-inline .hl-title{font-size:.8rem;font-weight:500;color:var(--muted);max-width:12rem}
+.hl-inline .hl-full{font-size:.8rem;white-space:nowrap}
+.hl-inline .hl-status{flex-basis:100%;margin:0;font-size:.78rem;color:var(--muted)}
+.hl-inline .hl-status:empty{display:none}
+@media(max-width:640px){.ham-flash.is-listen{padding-top:2.9rem}.hl-player.hl-inline{left:.3rem;right:.3rem;width:auto;max-width:none;justify-content:flex-start}.hl-inline .hl-title{display:none}}

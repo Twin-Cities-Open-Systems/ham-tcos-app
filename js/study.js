@@ -28,7 +28,6 @@
   var AUDIO_URL = "/data/ham-audio.json";
   var STORE = "ham-study-progress-v1";
   var SHOW_KEY = "ham-study-show-answer-v1";
-  var LISTEN_KEY = "ham.listen.flash";
   var ICON = { good: "✔", critical: "✖", neutral: "○", warning: "▲" };
 
   var GROUPBY_KEY = "ham-groupby-";
@@ -48,7 +47,7 @@
     groupBy: { glossary: "az", guide: "fam" }, cols: { glossary: 0, formulas: 0, guide: 0, browse: 0 },
     data: null, byId: {}, pool: "", mode: "guide", sub: "", group: "", q: "", missedOnly: false, glossQ: "", refs: {},
     deck: [], card: 0, shuffled: false, answered: null, exam: null, fmode: "memorize",
-    listenOn: pref(LISTEN_KEY, "") === "1", audioData: null
+    audioData: null
   };
 
   function esc(s) {
@@ -69,10 +68,11 @@
   }
   function saveProgress() { try { window.localStorage.setItem(STORE, JSON.stringify(progress)); } catch (e) { /* forgets */ } }
   var progress = loadProgress();
-  /* Flashcard mode: memorize (the answer is shown), quiz (pick one) or flip (the
-     question on the front, the answer on the back). Memorize unless the reader chose
-     otherwise; an older "0" in the key meant quiz. */
-  var FMODES = ["memorize", "quiz", "flip"];
+  /* Flashcard mode: memorize (the answer is shown), quiz (pick one), flip (the
+     question on the front, the answer on the back) or listen (the card is the
+     audio player, the question and answer its text). Memorize unless the
+     reader chose otherwise; an older "0" in the key meant quiz. */
+  var FMODES = ["memorize", "quiz", "flip", "listen"];
   function loadFmode() {
     try {
       var v = window.localStorage.getItem(SHOW_KEY);
@@ -617,45 +617,32 @@
       choicesHtml(q, null) + figureHtml(q) + (q.rule_ref ? '<p class="hint">FCC rule ' + esc(q.rule_ref) + "</p>" : ""));
   }
 
-  /* --- listen-along pill ---------------------------------------------------
-   * The flashcards toggle hands the current card to HamListen (js/listen.js,
+  /* --- listen flashcard mode -------------------------------------------------
+   * In "listen" mode the card body IS the player (HamListen, js/listen.js,
    * loaded after this file); every call is guarded, so a blocked or missing
-   * player script still leaves flashcards working. */
+   * player script still leaves flashcards working. The mount is created once
+   * and re-appended on every render, never rebuilt, so the <audio> element and
+   * its playback survive a card change. */
+  var listenMount = null;
+  var listenReady = false;
   function loadAudio(cb) {
     if (state.audioData) { cb(state.audioData); return; }
     fetch(AUDIO_URL, { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
       state.audioData = data;
       cb(data);
-    }).catch(function () { /* the pill just stays quiet */ });
+    }).catch(function () { /* the card just stays quiet */ });
   }
-  function openListenFor(q) {
+  function openListenFor(q, play) {
     if (!q) { return; }
-    window.HamListen && window.HamListen.open({ pool: state.pool, qid: q.id });
-  }
-  function hideListenPill() {
-    var pill = $("hl-pill");
-    if (pill) { pill.setAttribute("data-show", "false"); }
-  }
-  function showListenPill() {
-    var pill = $("hl-pill");
-    if (!pill) { return; }
-    loadAudio(function (data) {
-      /* Init once: every render in flashcard mode comes through here, and a
-         re-init tears the player down mid-track (CORRECTNESS-2, review of
-         2026-10-24). After the first, only the card to open changes. */
-      var first = !pill.hasAttribute("data-hl-ready");
-      if (first) {
-        window.HamListen && window.HamListen.init(pill, data, { compact: true });
-        pill.setAttribute("data-hl-ready", "1");
-      }
-      pill.setAttribute("data-show", "true");
-      /* renderFlash() already opened the card shown; only the first show
-         needs to catch up (the verifier's note, 2026-10-24). */
-      if (first && state.deck.length) { openListenFor(state.byId[state.deck[state.card]]); }
-    });
+    window.HamListen && window.HamListen.open({ pool: state.pool, qid: q.id, play: !!play });
   }
 
   /* --- flashcards --------------------------------------------------------- */
+  /* Set true by a deck action (Previous, Next, Shuffle, a card click, Listen
+     turning on) right before it calls renderFlash(); renderFlash() reads it
+     once and clears it, so a filter change or the audio-driven card jump
+     below (which sets state.card directly) never carries it forward. */
+  var wantsPlay = false;
   function shuffle(a) {
     for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
     return a;
@@ -667,7 +654,9 @@
     state.answered = null;
     $("hs-count").textContent = state.deck.length + " cards";
   }
-  function renderFlash() {
+  function renderFlash(skipListen) {
+    var play = wantsPlay;
+    wantsPlay = false;
     var box = $("hs-flash-body");
     if (!state.deck.length) {
       box.innerHTML = "<p>" + chip("neutral", ICON.neutral, "no questions in this filter") + "</p>";
@@ -675,13 +664,45 @@
       return;
     }
     var q = state.byId[state.deck[state.card]];
-    if (state.listenOn) { openListenFor(q); }
     /* Memorize and quiz look different at a glance: a solid green rail and a star
        versus a dashed blue rail and a question mark, each named in words. */
     Array.prototype.forEach.call(document.querySelectorAll("[data-fmode]"), function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-fmode") === state.fmode));
     });
     $("hs-flash-pos").textContent = (state.card + 1) + " / " + state.deck.length;
+    if (state.fmode === "listen") {
+      /* The card body IS the player: a mount for HamListen (never torn down
+         and rebuilt, so the <audio> element keeps playing across cards), then
+         the card's own text -- built with createElement, never innerHTML,
+         since innerHTML would destroy the mounted player. */
+      box.className = "ham-flash is-listen";
+      box.textContent = "";
+      if (!listenMount) { listenMount = document.createElement("div"); listenMount.className = "hl-inline"; }
+      box.appendChild(listenMount);
+      var qP = document.createElement("p");
+      qP.className = "ham-flash-q";
+      var qMono = document.createElement("span");
+      qMono.className = "mono";
+      qMono.textContent = q.id;
+      qP.appendChild(qMono);
+      qP.appendChild(document.createTextNode(" " + q.question));
+      box.appendChild(qP);
+      var aP = document.createElement("p");
+      aP.className = "ham-flash-a";
+      var vh = document.createElement("span");
+      vh.className = "hl-vh";
+      vh.textContent = "Answer: ";
+      aP.appendChild(vh);
+      aP.appendChild(document.createTextNode(q.answers ? q.answers.join("; ") : q.answer));
+      box.appendChild(aP);
+      if (!skipListen) {
+        loadAudio(function (data) {
+          if (!listenReady) { window.HamListen && window.HamListen.init(listenMount, data, { inline: true }); listenReady = true; }
+          openListenFor(q, play);
+        });
+      }
+      return;
+    }
     if (state.fmode === "flip") {
       box.className = "ham-flash is-flip";
       box.innerHTML = '<p class="ham-mode"><span aria-hidden="true">↻</span> Flip: question, then answer</p>' +
@@ -716,6 +737,7 @@
     var q = state.byId[state.deck[state.card]];
     state.answered = k;
     record(q.id, k === q.correct);
+    wantsPlay = true;
     renderFlash();
     renderProgress();
   }
@@ -723,6 +745,7 @@
     if (!state.deck.length) { return; }
     state.card = (state.card + d + state.deck.length) % state.deck.length;
     state.answered = null;
+    wantsPlay = true;
     renderFlash();
   }
 
@@ -871,8 +894,7 @@
     });
     if (state.mode === "guide") { renderGuide(); }
     if (state.mode === "browse") { renderBrowse(); }
-    if (state.mode === "flash") { buildDeck(); renderFlash(); if (state.listenOn) { showListenPill(); } }
-    if (state.mode !== "flash") { hideListenPill(); }
+    if (state.mode === "flash") { buildDeck(); renderFlash(); }
     if (state.mode === "exam") { renderExam(); }
     if (state.mode === "glossary") { renderGlossary(); }
     if (state.mode === "formulas") { renderFormulas(); }
@@ -940,9 +962,11 @@
     });
     Array.prototype.forEach.call(document.querySelectorAll("[data-fmode]"), function (b) {
       b.addEventListener("click", function () {
+        var leftListen = state.fmode === "listen";
         state.fmode = b.getAttribute("data-fmode");
         saveFmode(state.fmode);
         state.answered = null;
+        if (leftListen && state.fmode !== "listen") { window.HamListen && window.HamListen.pause(); }
         renderFlash();
       });
     });
@@ -952,16 +976,21 @@
       state.shuffled = !state.shuffled;
       this.setAttribute("aria-pressed", String(state.shuffled));
       buildDeck();
+      wantsPlay = true;
       renderFlash();
     });
-    var flashListenBtn = $("hs-flash-listen");
-    flashListenBtn.setAttribute("aria-pressed", String(state.listenOn));
-    flashListenBtn.addEventListener("click", function () {
-      state.listenOn = !state.listenOn;
-      flashListenBtn.setAttribute("aria-pressed", String(state.listenOn));
-      if (state.listenOn) { setPref(LISTEN_KEY, "1"); } else { clearPref(LISTEN_KEY); }
-      if (state.mode !== "flash") { return; }
-      if (state.listenOn) { showListenPill(); } else { hideListenPill(); }
+    /* The voice has moved on to a line whose question is in the current
+       deck: follow it, but don't re-open the track -- it is already
+       playing there, and open() would seek it and stutter. */
+    document.addEventListener("hamlisten:line", function (e) {
+      if (state.fmode !== "listen" || state.mode !== "flash") { return; }
+      var qid = e.detail && e.detail.qid;
+      if (!qid) { return; }
+      var idx = state.deck.indexOf(qid);
+      if (idx < 0 || idx === state.card) { return; }
+      state.card = idx;
+      state.answered = null;
+      renderFlash(true);
     });
     document.addEventListener("keydown", function (e) {
       if (state.mode !== "flash" || e.altKey || e.ctrlKey || e.metaKey) { return; }
