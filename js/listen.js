@@ -6,9 +6,9 @@
  * manifest already carries each line's {t, kind, text, qid[, q, a]}.
  *
  * Two renderings, one stylesheet: a full player (the standalone listen.html)
- * and a compact pill (the flashcards panel of study.html). Both build the
- * same DOM with createElement/textContent -- a line's text is read aloud from
- * NCVEC question text, so it is never trusted as markup.
+ * and an inline player (the Listen flashcard mode of study.html). Both build
+ * the same DOM with createElement/textContent -- a line's text is read aloud
+ * from NCVEC question text, so it is never trusted as markup.
  *
  * Nothing here ever scrolls the page: the read-along box scrolls itself to
  * keep the current line visible, by hand, never via scrollIntoView (which
@@ -62,19 +62,14 @@
     }
     return [text(line ? line.text : "")];
   }
-  function fillLine(container, line) {
-    container.textContent = "";
-    if (!line) { return; }
-    lineKids(line).forEach(function (k) { container.appendChild(k); });
-  }
 
   /* --- one player instance -------------------------------------------------
    * init() builds exactly one of these; a second init() call tears down the
    * first (its own listeners only -- never anything outside its container). */
-  function Player(container, manifest, compact) {
+  function Player(container, manifest, inline) {
     this.container = container;
     this.manifest = manifest;
-    this.compact = compact;
+    this.inline = inline;
     this.rate = (function () {
       var v = parseFloat(pref(SPEED_KEY, "1"));
       return RATES.indexOf(v) >= 0 ? v : 1;
@@ -122,10 +117,10 @@
   };
 
   /* --- shell DOM ------------------------------------------------------------
-   * Full and compact share the same ids and classes (prefixed hl-), so one
-   * stylesheet styles both; compact carries the same transport and speed
-   * controls, smaller, plus the current and next line and a link to the full
-   * player, instead of the full line list. */
+   * Full and inline share the same ids and classes (prefixed hl-), so one
+   * stylesheet styles both; inline carries the transport, speed (a select,
+   * not a segmented group) and the track title in one row, and a link to the
+   * full player, instead of the full line list. */
   Player.prototype.build = function () {
     var self = this;
     this.container.textContent = "";
@@ -139,26 +134,29 @@
     this.prevTrackBtn = el("button", { type: "button", class: "hl-btn", id: "hl-prevtrack", "aria-label": "Previous track", disabled: "disabled" }, [text("◄◄")]);
     this.nextTrackBtn = el("button", { type: "button", class: "hl-btn", id: "hl-nexttrack", "aria-label": "Next track", disabled: "disabled" }, [text("►►")]);
 
-    this.transport = el("div", { class: "hl-transport", id: "hl-transport", role: "group", "aria-label": "Playback" },
-      [this.prevTrackBtn, this.prevLineBtn, this.playBtn, this.nextLineBtn, this.nextTrackBtn]);
-
-    this.speedBtns = RATES.map(function (r) {
-      var b = el("button", { type: "button", class: "hl-seg-btn", "data-rate": String(r), "aria-pressed": String(r === self.rate) }, [text((r === 1 ? "1" : String(r)) + "×")]);
-      self.on(b, "click", function () { self.setSpeed(r); });
-      return b;
-    });
-    this.speedGroup = el("div", { class: "hl-speed", id: "hl-speed", role: "group", "aria-label": "Speed" }, this.speedBtns);
-
     this.statusEl = el("p", { class: "hl-status", id: "hl-status", "aria-live": "polite" }, []);
 
-    if (this.compact) {
-      this.nowEl = el("p", { class: "hl-line hl-now-line", id: "hl-now" }, []);
-      this.nextEl = el("p", { class: "hl-line hl-next-line", id: "hl-next" }, []);
-      this.fullLink = el("a", { class: "hl-full", href: "/listen.html" }, [text("Open the full player")]);
-      this.root = el("div", { class: "hl-player hl-compact", id: "hl-player" }, [
-        this.audio, this.titleEl, this.transport, this.speedGroup, this.nowEl, this.nextEl, this.statusEl, this.fullLink
-      ]);
+    if (this.inline) {
+      this.speedSelect = el("select", { class: "hl-speed-select", id: "hl-speed", "aria-label": "Speed" },
+        RATES.map(function (r) {
+          var o = el("option", { value: String(r) }, [text((r === 1 ? "1" : String(r)) + "×")]);
+          if (r === self.rate) { o.setAttribute("selected", "selected"); }
+          return o;
+        }));
+      this.on(this.speedSelect, "change", function () { self.setSpeed(parseFloat(self.speedSelect.value)); });
+      this.fullLink = el("a", { class: "hl-full", href: "/listen.html" }, [text("Full player")]);
+      this.row = el("div", { class: "hl-row", id: "hl-row" },
+        [this.prevLineBtn, this.playBtn, this.nextLineBtn, this.prevTrackBtn, this.nextTrackBtn, this.speedSelect, this.titleEl, this.fullLink]);
+      this.root = el("div", { class: "hl-player hl-inline", id: "hl-player" }, [this.audio, this.row, this.statusEl]);
     } else {
+      this.speedBtns = RATES.map(function (r) {
+        var b = el("button", { type: "button", class: "hl-seg-btn", "data-rate": String(r), "aria-pressed": String(r === self.rate) }, [text((r === 1 ? "1" : String(r)) + "×")]);
+        self.on(b, "click", function () { self.setSpeed(r); });
+        return b;
+      });
+      this.speedGroup = el("div", { class: "hl-speed", id: "hl-speedgroup", role: "group", "aria-label": "Speed" }, this.speedBtns);
+      this.transport = el("div", { class: "hl-transport", id: "hl-transport", role: "group", "aria-label": "Playback" },
+        [this.prevTrackBtn, this.prevLineBtn, this.playBtn, this.nextLineBtn, this.nextTrackBtn]);
       this.linesBox = el("ul", { class: "hl-lines", id: "hl-lines", "aria-label": "Read along" }, []);
       this.root = el("div", { class: "hl-player", id: "hl-player" }, [
         this.audio, this.titleEl, this.transport, this.speedGroup, this.linesBox, this.statusEl
@@ -204,6 +202,7 @@
     if (this.audio.paused) { this.audio.play().catch(function () { /* blocked; the button still reflects reality on the next event */ }); }
     else { this.audio.pause(); }
   };
+  Player.prototype.pause = function () { this.audio.pause(); };
   Player.prototype.stepLine = function (d) {
     if (!this.track || !this.track.lines.length) { return; }
     var idx = this.lineIndexAt(this.audio.currentTime);
@@ -238,7 +237,8 @@
     this.rate = rate;
     this.audio.playbackRate = rate;
     setPref(SPEED_KEY, String(rate));
-    this.speedBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(parseFloat(b.getAttribute("data-rate")) === rate)); });
+    if (this.speedBtns) { this.speedBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(parseFloat(b.getAttribute("data-rate")) === rate)); }); }
+    if (this.speedSelect) { this.speedSelect.value = String(rate); }
   };
   Player.prototype.bumpSpeed = function (d) {
     var i = RATES.indexOf(this.rate);
@@ -265,7 +265,7 @@
     if (!sameTrack) { this.loadTrack(found, opts.qid != null ? lineIndex : null); }
     else if (lineIndex >= 0) { this.seekTo(found.lines[lineIndex].t); }
 
-    if (this.userPlayed) { this.audio.play().catch(function () { /* autoplay blocked; leave it paused */ }); }
+    if (opts.play || this.userPlayed) { this.audio.play().catch(function () { /* autoplay blocked; leave it paused */ }); }
   };
   Player.prototype.loadTrack = function (track, lineIndex) {
     var self = this;
@@ -341,12 +341,11 @@
         });
         this.keepVisible(this.lineEls[idx]);
       }
-      if (this.nowEl) {
-        var now = idx >= 0 ? this.track.lines[idx] : null;
-        var next = idx >= 0 && idx + 1 < this.track.lines.length ? this.track.lines[idx + 1] : null;
-        fillLine(this.nowEl, now);
-        fillLine(this.nextEl, next);
-      }
+      var line = idx >= 0 ? this.track.lines[idx] : null;
+      this.container.dispatchEvent(new CustomEvent("hamlisten:line", {
+        bubbles: true,
+        detail: { pool: this.pool, n: this.track.n, index: idx, qid: line ? (line.qid || null) : null, t: this.audio.currentTime || 0 }
+      }));
     }
   };
   /* The box scrolls itself, by hand -- never scrollIntoView, which would also
@@ -381,10 +380,11 @@
   var HamListen = {
     init: function (container, manifest, opts) {
       if (active) { active.destroy(); }
-      active = new Player(container, manifest, !!(opts && opts.compact));
+      active = new Player(container, manifest, !!(opts && opts.inline));
       return HamListen;
     },
     open: function (opts) { if (active) { active.open(opts || {}); } },
+    pause: function () { if (active) { active.pause(); } },
     setSpeed: function (rate) { if (active) { active.setSpeed(rate); } },
     current: function () { return active ? active.current() : null; }
   };
