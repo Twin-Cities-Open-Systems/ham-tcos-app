@@ -10,6 +10,16 @@
  * the same DOM with createElement/textContent -- a line's text is read aloud
  * from NCVEC question text, so it is never trusted as markup.
  *
+ * Both modes share one .hl-controls element (previous line, play, next line,
+ * previous track, next track, the speed select, the title) -- css/listen.css
+ * styles it as a small overlay on the block being read, revealed on hover or
+ * focus. The inline player's .hl-controls never moves (it always overlays
+ * the flashcard). The full player's starts in the player root and, once a
+ * track is chosen, is moved into the current read-along line (li.is-now) on
+ * every tick() that changes the current line -- the operator's "controls
+ * appear as hover over the block that is highlighted and being read" rule,
+ * now in the full player too, not just the flashcards one.
+ *
  * Nothing here ever scrolls the page: the read-along box scrolls itself to
  * keep the current line visible, by hand, never via scrollIntoView (which
  * would walk every scrollable ancestor, including the window).
@@ -118,9 +128,9 @@
 
   /* --- shell DOM ------------------------------------------------------------
    * Full and inline share the same ids and classes (prefixed hl-), so one
-   * stylesheet styles both; inline carries the transport, speed (a select,
-   * not a segmented group) and the track title in one row, and a link to the
-   * full player, instead of the full line list. */
+   * stylesheet styles both; both build the same .hl-controls (transport,
+   * speed select, title); only inline adds a link to the full player. Full
+   * mode also builds the read-along list; inline does not. */
   Player.prototype.build = function () {
     var self = this;
     this.container.textContent = "";
@@ -136,31 +146,26 @@
 
     this.statusEl = el("p", { class: "hl-status", id: "hl-status", "aria-live": "polite" }, []);
 
+    this.speedSelect = el("select", { class: "hl-speed-select", id: "hl-speed", "aria-label": "Speed" },
+      RATES.map(function (r) {
+        var o = el("option", { value: String(r) }, [text((r === 1 ? "1" : String(r)) + "×")]);
+        if (r === self.rate) { o.setAttribute("selected", "selected"); }
+        return o;
+      }));
+    this.on(this.speedSelect, "change", function () { self.setSpeed(parseFloat(self.speedSelect.value)); });
+
+    var controlKids = [this.prevLineBtn, this.playBtn, this.nextLineBtn, this.prevTrackBtn, this.nextTrackBtn, this.speedSelect, this.titleEl];
     if (this.inline) {
-      this.speedSelect = el("select", { class: "hl-speed-select", id: "hl-speed", "aria-label": "Speed" },
-        RATES.map(function (r) {
-          var o = el("option", { value: String(r) }, [text((r === 1 ? "1" : String(r)) + "×")]);
-          if (r === self.rate) { o.setAttribute("selected", "selected"); }
-          return o;
-        }));
-      this.on(this.speedSelect, "change", function () { self.setSpeed(parseFloat(self.speedSelect.value)); });
       this.fullLink = el("a", { class: "hl-full", href: "/listen.html" }, [text("Full player")]);
-      this.row = el("div", { class: "hl-row", id: "hl-row" },
-        [this.prevLineBtn, this.playBtn, this.nextLineBtn, this.prevTrackBtn, this.nextTrackBtn, this.speedSelect, this.titleEl, this.fullLink]);
-      this.root = el("div", { class: "hl-player hl-inline", id: "hl-player" }, [this.audio, this.row, this.statusEl]);
+      controlKids.push(this.fullLink);
+    }
+    this.controls = el("div", { class: "hl-controls", id: "hl-controls" }, controlKids);
+
+    if (this.inline) {
+      this.root = el("div", { class: "hl-player hl-inline", id: "hl-player" }, [this.audio, this.controls, this.statusEl]);
     } else {
-      this.speedBtns = RATES.map(function (r) {
-        var b = el("button", { type: "button", class: "hl-seg-btn", "data-rate": String(r), "aria-pressed": String(r === self.rate) }, [text((r === 1 ? "1" : String(r)) + "×")]);
-        self.on(b, "click", function () { self.setSpeed(r); });
-        return b;
-      });
-      this.speedGroup = el("div", { class: "hl-speed", id: "hl-speedgroup", role: "group", "aria-label": "Speed" }, this.speedBtns);
-      this.transport = el("div", { class: "hl-transport", id: "hl-transport", role: "group", "aria-label": "Playback" },
-        [this.prevTrackBtn, this.prevLineBtn, this.playBtn, this.nextLineBtn, this.nextTrackBtn]);
       this.linesBox = el("ul", { class: "hl-lines", id: "hl-lines", "aria-label": "Read along" }, []);
-      this.root = el("div", { class: "hl-player", id: "hl-player" }, [
-        this.audio, this.titleEl, this.transport, this.speedGroup, this.linesBox, this.statusEl
-      ]);
+      this.root = el("div", { class: "hl-player", id: "hl-player" }, [this.audio, this.controls, this.linesBox, this.statusEl]);
     }
     this.container.appendChild(this.root);
     this.wire();
@@ -237,8 +242,7 @@
     this.rate = rate;
     this.audio.playbackRate = rate;
     setPref(SPEED_KEY, String(rate));
-    if (this.speedBtns) { this.speedBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(parseFloat(b.getAttribute("data-rate")) === rate)); }); }
-    if (this.speedSelect) { this.speedSelect.value = String(rate); }
+    this.speedSelect.value = String(rate);
   };
   Player.prototype.bumpSpeed = function (d) {
     var i = RATES.indexOf(this.rate);
@@ -315,6 +319,10 @@
     this.nextLineBtn.disabled = false;
 
     if (this.linesBox) {
+      /* .hl-controls may still be inside the previous track's current line;
+         bring it back to the player root before that line is thrown away, or
+         it would be detached from the document until the next line change. */
+      if (this.controls.parentNode !== this.root) { this.root.insertBefore(this.controls, this.linesBox); }
       this.linesBox.textContent = "";
       this.lineEls = this.track.lines.map(function (line) {
         var li = el("li", { class: "hl-line hl-line-" + line.kind }, lineKids(line));
@@ -340,6 +348,9 @@
           else { li.removeAttribute("aria-current"); li.classList.remove("is-now"); }
         });
         this.keepVisible(this.lineEls[idx]);
+        /* Move the one .hl-controls element into the block now being read --
+           never cloned, and only on a tick that actually changed the line. */
+        if (idx >= 0) { this.lineEls[idx].appendChild(this.controls); }
       }
       var line = idx >= 0 ? this.track.lines[idx] : null;
       this.container.dispatchEvent(new CustomEvent("hamlisten:line", {
