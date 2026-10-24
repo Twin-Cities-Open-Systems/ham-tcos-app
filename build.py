@@ -427,10 +427,12 @@ def split_question_line(line_text, question_text):
 def stage_audio(src_dir, audio_dir=AUDIO_DIR):
     """Copy the three albums' .mp3/.lrc from src_dir (laid out as the source
     disk has them, e.g. "Technician Answers - 2026-2030/01 - T1 - ....mp3")
-    into audio/<pool>/<nn>-<subelement>.{mp3,lrc}; returns the number of files
-    copied or already in place. Refuses (StageError, nothing copied) a src_dir
-    missing any of the three albums; other albums and files under src_dir
-    (e.g. cover.jpg) are ignored. Copying the same DIR again is a no-op."""
+    into audio/<pool>/<nn>-<subelement>.{mp3,lrc}, and each album's cover.jpg
+    (same art embedded in every track) to audio/<pool>/cover.jpg when present;
+    returns the number of files copied or already in place. Refuses
+    (StageError, nothing copied) a src_dir missing any of the three albums.
+    A missing cover.jpg is a WARNING, not a refusal: the page just shows no
+    art for that album. Copying the same DIR again is a no-op."""
     src_dir = Path(src_dir)
     missing = [a["dir"] for a in ALBUMS if not (src_dir / a["dir"]).is_dir()]
     if missing:
@@ -449,6 +451,15 @@ def stage_audio(src_dir, audio_dir=AUDIO_DIR):
             if not dest.is_file() or dest.read_bytes() != data:
                 write_atomic(dest, data)
             n += 1
+        cover_src = src_dir / album["dir"] / "cover.jpg"
+        if cover_src.is_file():
+            data = cover_src.read_bytes()
+            dest = dest_dir / "cover.jpg"
+            if not dest.is_file() or dest.read_bytes() != data:
+                write_atomic(dest, data)
+            n += 1
+        else:
+            print(f"WARNING {album['dir']} has no cover.jpg -- {album['pool']} ships with no album art", file=sys.stderr)
     return n
 
 
@@ -459,7 +470,10 @@ def build_audio(doc, audio_dir=AUDIO_DIR):
     pool. A matched question line also carries "q" (the stem, as the study
     data spells it) and "a" (the rest of the line, the spoken answer); a line
     with no qid carries neither. An unmatched line warns rather than
-    refusing. {"albums": []} when audio_dir does not exist at all."""
+    refusing. Each album also carries "cover" (/audio/<pool>/cover.jpg if
+    staged beside it, else None) and "minutes" (its tracks' seconds, summed
+    and rounded to the nearest minute). {"albums": []} when audio_dir does
+    not exist at all."""
     audio_dir = Path(audio_dir)
     if not audio_dir.is_dir():
         return {"schema": AUDIO_SCHEMA, "credit": AUDIO_CREDIT, "albums": []}, []
@@ -501,9 +515,13 @@ def build_audio(doc, audio_dir=AUDIO_DIR):
                            "mp3": f"{AUDIO_URL}/{pool}/{stem}.mp3", "lrc": f"{AUDIO_URL}/{pool}/{stem}.lrc",
                            "seconds": seconds, "lines": lines})
         if tracks:
+            tracks = sorted(tracks, key=lambda t: t["n"])
+            cover = pool_dir / "cover.jpg"
             albums.append({"pool": pool, "title": album_title,
                            "label": album_title.split()[0] if album_title else "",
-                           "tracks": sorted(tracks, key=lambda t: t["n"])})
+                           "cover": f"{AUDIO_URL}/{pool}/cover.jpg" if cover.is_file() else None,
+                           "minutes": round(sum(t["seconds"] for t in tracks) / 60),
+                           "tracks": tracks})
     return {"schema": AUDIO_SCHEMA, "credit": AUDIO_CREDIT, "albums": albums}, warnings
 
 

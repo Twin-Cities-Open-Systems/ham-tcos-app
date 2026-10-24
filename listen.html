@@ -55,8 +55,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
 <main class="wrap">
   <div>
     <h1>Listen</h1>
-    <p class="lede">The Technician, General and Extra question pools, read aloud track by track with the text
-      highlighted as it plays; the speed is adjustable from quarter speed to double.</p>
+    <p class="lede">Technician, General and Extra, read aloud and highlighted as they play, at quarter to double speed.</p>
   </div>
 
   <div class="cards">
@@ -67,12 +66,15 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
       <span class="count" id="hl-count">loading&hellip;</span>
     </header>
     <div class="body">
+      <div class="hl-albums" id="hl-albums"></div>
+      <details class="hl-tracklist" id="hl-tracklist" open>
+        <summary class="hl-pill"><span class="hl-pill-label">Tracks</span><span class="hl-now-track" id="hl-now-track">choose a track</span><span class="hl-pill-count" id="hl-pill-count"></span></summary>
+        <ol class="hl-tracks" id="hl-tracks"></ol>
+      </details>
       <div id="hl-player"></div>
       <p class="hint" id="hl-credit"></p>
     </div>
   </section>
-
-  <div class="cards" id="hl-albums"></div>
 
   </div>
 </main>
@@ -99,25 +101,104 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     var m = Math.floor(s / 60), r = s % 60;
     return m + ":" + (r < 10 ? "0" : "") + r;
   }
-  var box = document.getElementById("hl-albums");
-  box.addEventListener("click", function (e) {
+  var ALBUM_KEY = "ham.listen.album";
+  function getAlbumPref() { try { return window.localStorage.getItem(ALBUM_KEY); } catch (e) { return null; } }
+  function setAlbumPref(pool) { try { window.localStorage.setItem(ALBUM_KEY, pool); } catch (e) { /* forgets */ } }
+
+  var albumsBox = document.getElementById("hl-albums");
+  var tracksBox = document.getElementById("hl-tracks");
+  var tracklist = document.getElementById("hl-tracklist");
+  var nowTrack = document.getElementById("hl-now-track");
+  var pillCount = document.getElementById("hl-pill-count");
+  var mount = document.getElementById("hl-player");
+  var data = null, chosenPool = null;
+  var playing = { pool: null, n: null };
+
+  function albumByPool(pool) {
+    var albums = (data && data.albums) || [];
+    for (var i = 0; i < albums.length; i++) { if (albums[i].pool === pool) { return albums[i]; } }
+    return null;
+  }
+  function renderAlbums() {
+    albumsBox.innerHTML = ((data && data.albums) || []).map(function (a) {
+      var cover = a.cover
+        ? '<img class="hl-album-cover" src="' + esc(a.cover) + '" width="1400" height="1400" alt="" loading="lazy">'
+        : "";
+      return '<button type="button" class="hl-album" data-pool="' + esc(a.pool) + '" aria-pressed="' + (a.pool === chosenPool) + '">' +
+        cover +
+        '<span class="hl-album-title">' + esc(a.title) + "</span>" +
+        '<span class="hl-album-meta">' + a.tracks.length + " tracks &middot; " + (a.minutes || 0) + " min</span>" +
+        '<span class="hl-album-label">' + esc(a.label) + "</span>" +
+        "</button>";
+    }).join("");
+  }
+  /* The pill is the tracklist's summary: closed, it still names the track
+     that is playing (or says none is), and how many the album holds. */
+  function renderPill() {
+    var a = albumByPool(playing.pool), t = null;
+    if (a) { for (var i = 0; i < a.tracks.length; i++) { if (a.tracks[i].n === playing.n) { t = a.tracks[i]; } } }
+    nowTrack.textContent = t ? (t.n + " \u00b7 " + t.title + " \u00b7 " + fmtTime(t.seconds)) : "choose a track";
+    var shown = albumByPool(chosenPool);
+    pillCount.textContent = shown ? shown.tracks.length + " tracks" : "";
+  }
+  function renderTracks() {
+    renderPill();
+    var a = albumByPool(chosenPool);
+    if (!a) { tracksBox.innerHTML = ""; return; }
+    tracksBox.innerHTML = a.tracks.map(function (t) {
+      var current = a.pool === playing.pool && t.n === playing.n;
+      return "<li" + (current ? ' aria-current="true"' : "") + ">" +
+        '<button type="button" class="hl-track" data-pool="' + esc(a.pool) + '" data-n="' + t.n + '">' +
+        '<span class="mono">' + t.n + "</span>" +
+        '<span class="hl-track-title">' + esc(t.title) + "</span>" +
+        '<span class="hl-track-time">' + fmtTime(t.seconds) + "</span>" +
+        "</button></li>";
+    }).join("");
+  }
+
+  albumsBox.addEventListener("click", function (e) {
+    var b = e.target.closest(".hl-album");
+    if (!b) { return; }
+    chosenPool = b.getAttribute("data-pool");
+    setAlbumPref(chosenPool);
+    renderAlbums();
+    renderTracks();
+  });
+  tracksBox.addEventListener("click", function (e) {
     var b = e.target.closest(".hl-track");
     if (!b) { return; }
-    window.HamListen && window.HamListen.open({ pool: b.getAttribute("data-pool"), n: parseInt(b.getAttribute("data-n"), 10) });
+    window.HamListen && window.HamListen.open({ pool: b.getAttribute("data-pool"), n: parseInt(b.getAttribute("data-n"), 10), play: true });
+    tracklist.open = false;  /* the pill folds so the read-along gets the room; it reopens on a click */
   });
-  fetch("/data/ham-audio.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+  /* The player moving by itself (previous/next track, previous/next line
+     carrying past a track boundary) -- keep the tracklist and tiles in sync
+     without rebuilding the tiles (and reloading every cover.jpg) on every
+     read-along line change, only on an actual track change. */
+  mount.addEventListener("hamlisten:line", function (e) {
+    var d = e.detail || {};
+    var albumChanged = !!d.pool && d.pool !== chosenPool;
+    var trackChanged = d.pool !== playing.pool || d.n !== playing.n;
+    playing = { pool: d.pool, n: d.n };
+    if (albumChanged) {
+      chosenPool = d.pool;
+      setAlbumPref(chosenPool);
+      renderAlbums();
+      renderTracks();
+    } else if (trackChanged) {
+      renderTracks();
+    }
+  });
+
+  fetch("/data/ham-audio.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (d) {
+    data = d;
     document.getElementById("hl-credit").textContent = data.credit || "";
-    box.innerHTML = (data.albums || []).map(function (album) {
-      return '<section class="card" aria-labelledby="hl-' + esc(album.pool) + '-h">' +
-        '<header><h2 id="hl-' + esc(album.pool) + '-h">' + esc(album.title) + '</h2>' +
-        '<span class="count">' + album.tracks.length + " tracks</span></header>" +
-        '<div class="body"><ol class="hl-tracks">' + album.tracks.map(function (t) {
-          return '<li><button type="button" class="hl-track" data-pool="' + esc(album.pool) + '" data-n="' + t.n + '">' +
-            '<span class="mono">' + t.n + '</span> ' + esc(t.title) + ' <span class="hint">' + fmtTime(t.seconds) + "</span></button></li>";
-        }).join("") + "</ol></div></section>";
-    }).join("");
-    document.getElementById("hl-count").textContent = (data.albums || []).length + " albums";
-    window.HamListen && window.HamListen.init(document.getElementById("hl-player"), data, { compact: false });
+    var albums = data.albums || [];
+    var saved = getAlbumPref();
+    chosenPool = albums.some(function (a) { return a.pool === saved; }) ? saved : (albums[0] || {}).pool || null;
+    renderAlbums();
+    renderTracks();
+    document.getElementById("hl-count").textContent = albums.length + " albums";
+    window.HamListen && window.HamListen.init(mount, data, {});
   }).catch(function () {
     document.getElementById("hl-count").textContent = "unavailable";
   });

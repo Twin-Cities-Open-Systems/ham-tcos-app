@@ -1,3 +1,5 @@
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
@@ -200,6 +202,30 @@ class Manifest(unittest.TestCase):
             self.assertNotIn("q", unmatched)
             self.assertNotIn("a", unmatched)
 
+    def test_album_cover_is_the_staged_file_url_or_null(self):
+        with tempfile.TemporaryDirectory() as d:
+            pool_dir = Path(d) / "technician-2026-2030"
+            pool_dir.mkdir()
+            (pool_dir / "01-t1.lrc").write_text(self.LRC, encoding="utf-8")
+            doc, _ = build.build_audio(self.DOC, audio_dir=Path(d))
+            self.assertIsNone(doc["albums"][0]["cover"])  # no cover.jpg staged
+            (pool_dir / "cover.jpg").write_bytes(b"art")
+            doc, _ = build.build_audio(self.DOC, audio_dir=Path(d))
+            self.assertEqual(doc["albums"][0]["cover"], "/audio/technician-2026-2030/cover.jpg")
+
+    def test_album_minutes_sums_track_seconds_and_rounds(self):
+        with tempfile.TemporaryDirectory() as d:
+            pool_dir = Path(d) / "technician-2026-2030"
+            pool_dir.mkdir()
+            (pool_dir / "01-t1.lrc").write_text(self.LRC, encoding="utf-8")  # seconds: 17
+            (pool_dir / "02-t2.lrc").write_text(
+                "[00:00.40]Technician answers. T2 - Operating Procedures.\n[02:36.00]Group T2A.\n",
+                encoding="utf-8")  # seconds: 156
+            doc, _ = build.build_audio(self.DOC, audio_dir=Path(d))
+            seconds = [t["seconds"] for t in doc["albums"][0]["tracks"]]
+            self.assertEqual(seconds, [17, 156])
+            self.assertEqual(doc["albums"][0]["minutes"], round(sum(seconds) / 60))
+
 
 class Stage(unittest.TestCase):
     """build.stage_audio: the staging rename, from a temp DIR laid out like
@@ -211,12 +237,13 @@ class Stage(unittest.TestCase):
         "Extra Answers - 2024-2028": [("01", "E1", "Commission Rules")],
     }
 
-    def make_tree(self, root, albums=LISTING, extra_dirs=()):
+    def make_tree(self, root, albums=LISTING, extra_dirs=(), covers=True):
         root = Path(root)
         for album_dir, tracks in albums.items():
             d = root / album_dir
             d.mkdir(parents=True)
-            (d / "cover.jpg").write_bytes(b"not-audio")
+            if covers:
+                (d / "cover.jpg").write_bytes(b"not-audio")
             for nn, sub, title in tracks:
                 (d / f"{nn} - {sub} - {title}.mp3").write_bytes(f"mp3:{nn}{sub}".encode())
                 (d / f"{nn} - {sub} - {title}.lrc").write_text(f"lrc:{nn}{sub}")
@@ -230,10 +257,10 @@ class Stage(unittest.TestCase):
         with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as dst:
             self.make_tree(src)
             n = build.stage_audio(src, audio_dir=Path(dst))
-            self.assertEqual(n, 8)  # 4 tracks across 3 albums, mp3 + lrc each
+            self.assertEqual(n, 11)  # 4 tracks across 3 albums (mp3 + lrc each) + 3 covers
             self.assertEqual((Path(dst) / "technician-2026-2030" / "01-t1.mp3").read_bytes(), b"mp3:01T1")
             self.assertTrue((Path(dst) / "general-2023-2027" / "01-g1.lrc").is_file())
-            self.assertFalse((Path(dst) / "technician-2026-2030" / "cover.jpg").exists())
+            self.assertEqual((Path(dst) / "technician-2026-2030" / "cover.jpg").read_bytes(), b"not-audio")
 
     def test_idempotent(self):
         with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as dst:
@@ -241,7 +268,7 @@ class Stage(unittest.TestCase):
             build.stage_audio(src, audio_dir=Path(dst))
             before = (Path(dst) / "technician-2026-2030" / "01-t1.mp3").read_bytes()
             n = build.stage_audio(src, audio_dir=Path(dst))
-            self.assertEqual(n, 8)
+            self.assertEqual(n, 11)
             self.assertEqual((Path(dst) / "technician-2026-2030" / "01-t1.mp3").read_bytes(), before)
 
     def test_dir_missing_an_album_is_refused_and_nothing_copied(self):
@@ -259,6 +286,16 @@ class Stage(unittest.TestCase):
             build.stage_audio(src, audio_dir=Path(dst))
             self.assertEqual(sorted(p.name for p in Path(dst).iterdir()),
                              ["extra-2024-2028", "general-2023-2027", "technician-2026-2030"])
+
+    def test_missing_cover_warns_but_still_stages_tracks(self):
+        with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as dst:
+            self.make_tree(src, covers=False)
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                n = build.stage_audio(src, audio_dir=Path(dst))
+            self.assertEqual(n, 8)  # the 4 tracks' mp3 + lrc; no covers to count
+            self.assertFalse((Path(dst) / "technician-2026-2030" / "cover.jpg").exists())
+            self.assertEqual(err.getvalue().count("WARNING"), 3)  # one per album
 
 
 class CheckDrift(unittest.TestCase):
