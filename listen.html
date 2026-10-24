@@ -67,10 +67,13 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     </header>
     <div class="body">
       <div class="hl-albums" id="hl-albums"></div>
-      <details class="hl-tracklist" id="hl-tracklist" open>
-        <summary class="hl-pill"><span class="hl-pill-label">Tracks</span><span class="hl-now-track" id="hl-now-track">choose a track</span><span class="hl-pill-count" id="hl-pill-count"></span></summary>
-        <ol class="hl-tracks" id="hl-tracks"></ol>
-      </details>
+      <div class="hl-pills">
+        <details class="hl-tracklist" id="hl-tracklist" open>
+          <summary class="hl-pill"><span class="hl-pill-label">Tracks</span><span class="hl-now-track" id="hl-now-track">choose a track</span><span class="hl-pill-count" id="hl-pill-count"></span></summary>
+          <ol class="hl-tracks" id="hl-tracks"></ol>
+        </details>
+        <div class="hl-ctl-pill" id="hl-ctl-pill"></div>
+      </div>
       <div id="hl-player"></div>
       <p class="hint" id="hl-credit"></p>
     </div>
@@ -198,7 +201,7 @@ var t=localStorage.getItem("tc-theme");if(t&&t!=="auto"){d.setAttribute("data-th
     renderAlbums();
     renderTracks();
     document.getElementById("hl-count").textContent = albums.length + " albums";
-    window.HamListen && window.HamListen.init(mount, data, {});
+    window.HamListen && window.HamListen.init(mount, data, { controls: document.getElementById("hl-ctl-pill") });
     /* Handed over from the study page's player (its Full player link):
        #pool=..&n=..&t=..&play=1 continues that track at that second. The
        fragment is dropped afterwards so a reload starts from the saved

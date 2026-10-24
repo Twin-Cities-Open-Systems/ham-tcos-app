@@ -10,13 +10,10 @@
  * exist in both so this one sheet styles them without a second set of rules.
  *
  * .hl-controls is the one set of transport + speed + title controls both
- * modes build (js/listen.js): in the full player it starts in the player
- * root and is moved into the current read-along line once a track plays; in
- * the flashcards mode it never moves. Either way it ends up as a small
- * overlay on the block being read, revealed on hover or focus, always
- * visible where there is no hover (touch) -- the operator's "controls appear
- * as hover over the block that is highlighted and being read" rule, now in
- * both players instead of just the flashcards one.
+ * modes build (js/listen.js): in the flashcards mode it is a small overlay
+ * on the block being read, revealed on hover or focus, always visible where
+ * there is no hover (touch); on the Listen page it sits in a pill beside the
+ * tracks pill, top right, always visible.
  */
 
 .hl-player{display:flex;flex-direction:column;gap:.6rem;font:inherit;color:var(--ink)}
@@ -61,15 +58,8 @@
 .hl-line-group{font-weight:600;color:var(--ink);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
 .hl-line-question{color:var(--ink)}
 /* The current line: a filled rail, never color alone -- aria-current carries
- * the same state for anything not looking at pixels. position:relative and
- * the reserved right padding give .hl-controls (moved in here once a track
- * plays) somewhere to sit without covering the text underneath it. */
-.hl-line.is-now{background:var(--accent-soft);color:var(--accent);font-weight:600;box-shadow:inset 3px 0 0 var(--accent);
-  position:relative;padding-right:15rem;min-height:3.3rem}
-/* Inside a read-along line the controls drop the track title (the tracklist
- * above already names it), so the overlay stays narrower than the padding
- * the line reserves for it and never covers the words being read. */
-.hl-line.is-now .hl-controls .hl-title{display:none}
+ * the same state for anything not looking at pixels. */
+.hl-line.is-now{background:var(--accent-soft);color:var(--accent);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
 
 /* Question / answer: the answer in a contrasting, reserved status color (the
  * same --good-ink every status chip uses), never color alone -- the visually
@@ -95,10 +85,25 @@
 .hl-album-meta{margin:0;font-size:.8rem;color:var(--muted)}
 .hl-album-label{margin:0;font-size:.74rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
 
-/* --- the tracklist pill (listen.html): a <details> whose summary is a pill
- * that always names the playing track, open or closed; the rows fold away
- * under it once a track is chosen so the read-along has the room. */
-.hl-tracklist{margin:0}
+/* --- the pills row (listen.html): the tracklist pill on the left, the
+ * controls pill on the right, the open tracklist unfolding under the left
+ * one. Operator, 2026-10-24: "move the controls to the top in a pill just
+ * like the tracks pill, to the right". */
+.hl-pills{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem 1rem;align-items:start}
+.hl-ctl-pill{display:flex;justify-content:flex-end}
+.hl-ctl-pill .hl-controls{min-height:44px;padding:.3rem .6rem;border:1px solid var(--edge);border-radius:999px;background:var(--sunk);flex-wrap:nowrap}
+.hl-ctl-pill .hl-controls:hover{border-color:var(--accent)}
+.hl-ctl-pill .hl-title{display:none}
+.hl-ctl-pill .hl-speed-select{border-radius:999px}
+@media(max-width:640px){
+  .hl-pills{grid-template-columns:minmax(0,1fr)}
+  .hl-ctl-pill{justify-content:flex-start}
+}
+
+/* --- the tracklist pill: a <details> whose summary is a pill that always
+ * names the playing track, open or closed; the rows fold away under it once
+ * a track is chosen so the read-along has the room. */
+.hl-tracklist{margin:0;min-width:0}
 .hl-tracklist>summary{list-style:none;cursor:pointer}
 .hl-tracklist>summary::-webkit-details-marker{display:none}
 .hl-pill{display:inline-flex;align-items:center;gap:.6rem;max-width:100%;min-height:44px;padding:.3rem 1rem .3rem .8rem;
@@ -150,29 +155,21 @@
 /* The study page's mount div also carries .hl-inline: it forms no box of its own, the player root is the overlay. */
 .ham-flash.is-listen>.hl-inline:not(.hl-player){display:contents}
 
-/* The overlay itself: .hl-controls, whichever element currently holds it --
- * the inline player's root (flashcards/pill) or the full player's current
- * read-along line (.hl-line.is-now, once a track plays). */
-.hl-player.hl-inline .hl-controls,
-.hl-line.is-now .hl-controls{
+/* The overlay itself: the inline player's .hl-controls, on the flashcard. */
+.hl-player.hl-inline .hl-controls{
   position:absolute;top:.3rem;right:.3rem;z-index:2;width:max-content;
   max-width:calc(100% - .6rem);padding:.25rem .35rem;border:1px solid var(--edge);border-radius:.6rem;
   background:var(--surface);box-shadow:var(--shadow);
   opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .15s}
-.ham-flash.is-listen:hover .hl-controls,.ham-flash.is-listen:focus-within .hl-controls,
-.hl-line.is-now:hover .hl-controls,.hl-line.is-now:focus-within .hl-controls{opacity:1;transform:none}
+.ham-flash.is-listen:hover .hl-controls,.ham-flash.is-listen:focus-within .hl-controls{opacity:1;transform:none}
 @media(hover:none){
-  .hl-player.hl-inline .hl-controls,.hl-line.is-now .hl-controls{opacity:1;transform:none}
+  .hl-player.hl-inline .hl-controls{opacity:1;transform:none}
   .ham-flash.is-listen{padding-top:3.1rem}
   .ham-flash.is-listen .ham-flash-q{padding-right:0}
 }
-@media(prefers-reduced-motion:reduce){.hl-player.hl-inline .hl-controls,.hl-line.is-now .hl-controls{transition:none}}
+@media(prefers-reduced-motion:reduce){.hl-player.hl-inline .hl-controls{transition:none}}
 @media(max-width:640px){
   .ham-flash.is-listen{padding-top:2.9rem}
   .hl-player.hl-inline .hl-controls{left:.3rem;right:.3rem;width:auto;max-width:none;justify-content:flex-start}
   .hl-controls .hl-title{display:none}
-  /* A phone's read-along line is too narrow to share with the overlay: the
-   * controls sit above the words instead of beside them. */
-  .hl-line.is-now{padding-right:.5rem;padding-top:2.9rem}
-  .hl-line.is-now .hl-controls{left:.3rem;right:auto}
 }

@@ -11,14 +11,12 @@
  * from NCVEC question text, so it is never trusted as markup.
  *
  * Both modes share one .hl-controls element (previous line, play, next line,
- * previous track, next track, the speed select, the title) -- css/listen.css
- * styles it as a small overlay on the block being read, revealed on hover or
- * focus. The inline player's .hl-controls never moves (it always overlays
- * the flashcard). The full player's starts in the player root and, once a
- * track is chosen, is moved into the current read-along line (li.is-now) on
- * every tick() that changes the current line -- the operator's "controls
- * appear as hover over the block that is highlighted and being read" rule,
- * now in the full player too, not just the flashcards one.
+ * previous track, next track, the speed select, the title). The inline
+ * player's overlays the flashcard, revealed on hover or focus (css/listen.css).
+ * The full player's lives wherever opts.controls points -- listen.html passes
+ * the pill beside the tracks pill, top right (operator, 2026-10-24: "move the
+ * controls to the top in a pill just like the tracks pill, to the right") --
+ * and the player root when no mount is given.
  *
  * Nothing here ever scrolls the page: the read-along box scrolls itself to
  * keep the current line visible, by hand, never via scrollIntoView (which
@@ -76,10 +74,11 @@
   /* --- one player instance -------------------------------------------------
    * init() builds exactly one of these; a second init() call tears down the
    * first (its own listeners only -- never anything outside its container). */
-  function Player(container, manifest, inline) {
+  function Player(container, manifest, opts) {
     this.container = container;
     this.manifest = manifest;
-    this.inline = inline;
+    this.opts = opts || {};
+    this.inline = !!this.opts.inline;
     this.rate = (function () {
       var v = parseFloat(pref(SPEED_KEY, "1"));
       return RATES.indexOf(v) >= 0 ? v : 1;
@@ -171,6 +170,7 @@
     } else {
       this.linesBox = el("ul", { class: "hl-lines", id: "hl-lines", "aria-label": "Read along" }, []);
       this.root = el("div", { class: "hl-player", id: "hl-player" }, [this.audio, this.controls, this.linesBox, this.statusEl]);
+      if (this.opts.controls) { this.opts.controls.appendChild(this.controls); }
     }
     this.container.appendChild(this.root);
     this.wire();
@@ -334,10 +334,6 @@
     this.nextLineBtn.disabled = false;
 
     if (this.linesBox) {
-      /* .hl-controls may still be inside the previous track's current line;
-         bring it back to the player root before that line is thrown away, or
-         it would be detached from the document until the next line change. */
-      if (this.controls.parentNode !== this.root) { this.root.insertBefore(this.controls, this.linesBox); }
       this.linesBox.textContent = "";
       this.lineEls = this.track.lines.map(function (line) {
         var li = el("li", { class: "hl-line hl-line-" + line.kind }, lineKids(line));
@@ -363,9 +359,6 @@
           else { li.removeAttribute("aria-current"); li.classList.remove("is-now"); }
         });
         this.keepVisible(this.lineEls[idx]);
-        /* Move the one .hl-controls element into the block now being read --
-           never cloned, and only on a tick that actually changed the line. */
-        if (idx >= 0) { this.lineEls[idx].appendChild(this.controls); }
       }
       var line = idx >= 0 ? this.track.lines[idx] : null;
       this.container.dispatchEvent(new CustomEvent("hamlisten:line", {
@@ -406,7 +399,7 @@
   var HamListen = {
     init: function (container, manifest, opts) {
       if (active) { active.destroy(); }
-      active = new Player(container, manifest, !!(opts && opts.inline));
+      active = new Player(container, manifest, opts || {});
       return HamListen;
     },
     open: function (opts) { if (active) { active.open(opts || {}); } },
