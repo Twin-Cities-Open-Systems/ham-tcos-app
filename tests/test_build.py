@@ -85,14 +85,14 @@ class Lrc(unittest.TestCase):
     the "Group <id>." pattern."""
 
     def test_header_lines_are_skipped(self):
-        text = ("[ar:HRV]\n[al:Technician Answers - 2026-2030]\n[ti:T1 - Commission's Rules]\n"
+        text = ("[ar:Just Another Ham Study]\n[al:Technician Answers - 2026-2030]\n[ti:T1 - Commission's Rules]\n"
                 "[00:00.40]Technician answers. T1 - Commission's Rules.\n")
         rows = build.parse_lrc(text)
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["text"], "Technician answers. T1 - Commission's Rules.")
 
     def test_blank_lines_are_skipped(self):
-        rows = build.parse_lrc("[ar:HRV]\n\n[00:00.40]A.\n\n")
+        rows = build.parse_lrc("[ar:Just Another Ham Study]\n\n[00:00.40]A.\n\n")
         self.assertEqual(len(rows), 1)
 
     def test_timestamps_to_seconds(self):
@@ -152,7 +152,7 @@ class Manifest(unittest.TestCase):
              "question": "Which of the following is part of the Basis and Purpose of the Amateur Radio Service?"},
         ],
     }
-    LRC = ("[ar:HRV]\n[al:Technician Answers - 2026-2030]\n[ti:T1 - Commission's Rules]\n"
+    LRC = ("[ar:Just Another Ham Study]\n[al:Technician Answers - 2026-2030]\n[ti:T1 - Commission's Rules]\n"
            "[00:00.40]Technician answers. T1 - Commission's Rules.\n"
            "[00:04.37]Group T1A.\n"
            "[00:06.20]Which of the following is part of the Basis and Purpose of the Amateur Radio Service?"

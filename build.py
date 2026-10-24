@@ -79,7 +79,7 @@ AUDIO_DIR = ROOT / "audio"
 AUDIO_URL = "/audio"
 AUDIO_JSON_OUT = ROOT / "data" / "ham-audio.json"
 AUDIO_SCHEMA = "ham-audio/1"
-AUDIO_CREDIT = ("Spoken by HRV with Kokoro from the answers-only guide; "
+AUDIO_CREDIT = ("Spoken by Kokoro from the answers-only guide; "
                 "question pools NCVEC, public domain.")
 # The three source albums as the dispatcher's disk names them (CONTRACT.md
 # section 1) and the pool each stages into, matching data/ham-study.json.
