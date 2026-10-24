@@ -3,7 +3,7 @@
  * The thirty tracks (one per subelement part, spoken answers-only) and their
  * timed lines come from /data/ham-audio.json, which build.py writes from the
  * committed .lrc files and ham-study.json. Nothing here parses an .lrc: the
- * manifest already carries each line's {t, kind, text, qid}.
+ * manifest already carries each line's {t, kind, text, qid[, q, a]}.
  *
  * Two renderings, one stylesheet: a full player (the standalone listen.html)
  * and a compact pill (the flashcards panel of study.html). Both build the
@@ -44,6 +44,29 @@
     return n;
   }
   function text(s) { return document.createTextNode(esc(s)); }
+
+  /* A line's content: a question line with a matched qid carries {q, a}
+     (build.py's split of the stem from the spoken answer) and renders as two
+     spans so the answer can carry a contrasting color; everything else (and
+     an unmatched question line) is one text node, as before. */
+  function lineKids(line) {
+    if (line && line.q && line.a) {
+      return [
+        el("span", { class: "hl-q" }, [text(line.q)]),
+        text(" "),
+        el("span", { class: "hl-a" }, [
+          el("span", { class: "hl-vh" }, [text("Answer: ")]),
+          text(line.a)
+        ])
+      ];
+    }
+    return [text(line ? line.text : "")];
+  }
+  function fillLine(container, line) {
+    container.textContent = "";
+    if (!line) { return; }
+    lineKids(line).forEach(function (k) { container.appendChild(k); });
+  }
 
   /* --- one player instance -------------------------------------------------
    * init() builds exactly one of these; a second init() call tears down the
@@ -100,8 +123,9 @@
 
   /* --- shell DOM ------------------------------------------------------------
    * Full and compact share the same ids and classes (prefixed hl-), so one
-   * stylesheet styles both; compact simply omits the speed group and the
-   * full line list, carrying only the current and next line. */
+   * stylesheet styles both; compact carries the same transport and speed
+   * controls, smaller, plus the current and next line and a link to the full
+   * player, instead of the full line list. */
   Player.prototype.build = function () {
     var self = this;
     this.container.textContent = "";
@@ -115,10 +139,8 @@
     this.prevTrackBtn = el("button", { type: "button", class: "hl-btn", id: "hl-prevtrack", "aria-label": "Previous track", disabled: "disabled" }, [text("◄◄")]);
     this.nextTrackBtn = el("button", { type: "button", class: "hl-btn", id: "hl-nexttrack", "aria-label": "Next track", disabled: "disabled" }, [text("►►")]);
 
-    var transportKids = this.compact
-      ? [this.prevLineBtn, this.playBtn, this.nextLineBtn]
-      : [this.prevTrackBtn, this.prevLineBtn, this.playBtn, this.nextLineBtn, this.nextTrackBtn];
-    this.transport = el("div", { class: "hl-transport", id: "hl-transport", role: "group", "aria-label": "Playback" }, transportKids);
+    this.transport = el("div", { class: "hl-transport", id: "hl-transport", role: "group", "aria-label": "Playback" },
+      [this.prevTrackBtn, this.prevLineBtn, this.playBtn, this.nextLineBtn, this.nextTrackBtn]);
 
     this.speedBtns = RATES.map(function (r) {
       var b = el("button", { type: "button", class: "hl-seg-btn", "data-rate": String(r), "aria-pressed": String(r === self.rate) }, [text((r === 1 ? "1" : String(r)) + "×")]);
@@ -132,8 +154,9 @@
     if (this.compact) {
       this.nowEl = el("p", { class: "hl-line hl-now-line", id: "hl-now" }, []);
       this.nextEl = el("p", { class: "hl-line hl-next-line", id: "hl-next" }, []);
+      this.fullLink = el("a", { class: "hl-full", href: "/listen.html" }, [text("Open the full player")]);
       this.root = el("div", { class: "hl-player hl-compact", id: "hl-player" }, [
-        this.audio, this.titleEl, this.transport, this.nowEl, this.nextEl, this.statusEl
+        this.audio, this.titleEl, this.transport, this.speedGroup, this.nowEl, this.nextEl, this.statusEl, this.fullLink
       ]);
     } else {
       this.linesBox = el("ul", { class: "hl-lines", id: "hl-lines", "aria-label": "Read along" }, []);
@@ -294,7 +317,7 @@
     if (this.linesBox) {
       this.linesBox.textContent = "";
       this.lineEls = this.track.lines.map(function (line) {
-        var li = el("li", { class: "hl-line hl-line-" + line.kind }, [text(line.text)]);
+        var li = el("li", { class: "hl-line hl-line-" + line.kind }, lineKids(line));
         li.dataset.t = String(line.t);
         if (line.qid) { li.dataset.qid = line.qid; }
         return li;
@@ -321,17 +344,24 @@
       if (this.nowEl) {
         var now = idx >= 0 ? this.track.lines[idx] : null;
         var next = idx >= 0 && idx + 1 < this.track.lines.length ? this.track.lines[idx + 1] : null;
-        this.nowEl.textContent = now ? now.text : "";
-        this.nextEl.textContent = next ? next.text : "";
+        fillLine(this.nowEl, now);
+        fillLine(this.nextEl, next);
       }
     }
   };
   /* The box scrolls itself, by hand -- never scrollIntoView, which would also
-     walk the page looking for a scrollable ancestor to move. */
+     walk the page looking for a scrollable ancestor to move. Both rects are
+     read with getBoundingClientRect, never offsetTop: offsetTop is measured
+     from the nearest positioned ancestor, which may not be the box at all,
+     so a static .hl-lines (or one nested inside other positioned elements)
+     made keepVisible scroll to the wrong place. */
   Player.prototype.keepVisible = function (li) {
     var box = this.linesBox;
     if (!box || !li) { return; }
-    var top = li.offsetTop, bottom = top + li.offsetHeight;
+    var boxRect = box.getBoundingClientRect();
+    var liRect = li.getBoundingClientRect();
+    var top = liRect.top - boxRect.top + box.scrollTop;
+    var bottom = top + liRect.height;
     if (top < box.scrollTop) { box.scrollTop = top; }
     else if (bottom > box.scrollTop + box.clientHeight) { box.scrollTop = bottom - box.clientHeight; }
   };

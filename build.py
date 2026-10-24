@@ -413,6 +413,17 @@ def match_qid(line_text, questions):
     return max(hits)[1]
 
 
+def split_question_line(line_text, question_text):
+    """(q, a): question_text exactly as the study data spells it (the stem),
+    and the rest of line_text after the matched stem, whitespace-trimmed (the
+    spoken answer). Both inputs are already known to match via match_qid's
+    whitespace-collapsed prefix comparison, so the same collapse is used here
+    to find the split point."""
+    stem = collapse_ws(question_text)
+    rest = collapse_ws(line_text)[len(stem):].strip()
+    return question_text, rest
+
+
 def stage_audio(src_dir, audio_dir=AUDIO_DIR):
     """Copy the three albums' .mp3/.lrc from src_dir (laid out as the source
     disk has them, e.g. "Technician Answers - 2026-2030/01 - T1 - ....mp3")
@@ -445,8 +456,10 @@ def build_audio(doc, audio_dir=AUDIO_DIR):
     """(manifest document, warnings) for data/ham-audio.json: every
     audio/<pool>/*.lrc present, albums ordered as doc["pools"] (license
     order), each question line matched against doc["questions"] for the same
-    pool. An unmatched line warns rather than refusing. {"albums": []} when
-    audio_dir does not exist at all."""
+    pool. A matched question line also carries "q" (the stem, as the study
+    data spells it) and "a" (the rest of the line, the spoken answer); a line
+    with no qid carries neither. An unmatched line warns rather than
+    refusing. {"albums": []} when audio_dir does not exist at all."""
     audio_dir = Path(audio_dir)
     if not audio_dir.is_dir():
         return {"schema": AUDIO_SCHEMA, "credit": AUDIO_CREDIT, "albums": []}, []
@@ -459,6 +472,7 @@ def build_audio(doc, audio_dir=AUDIO_DIR):
         pool_dir = audio_dir / pool
         if not pool_dir.is_dir():
             continue
+        by_id = {q["id"]: q for q in by_pool.get(pool, [])}
         tracks, album_title = [], None
         for lrc_path in sorted(pool_dir.glob("*.lrc")):
             m = AUDIO_TRACK_RE.fullmatch(lrc_path.stem)
@@ -477,7 +491,10 @@ def build_audio(doc, audio_dir=AUDIO_DIR):
                     qid = match_qid(row["text"], by_pool.get(pool, []))
                     if qid is None:
                         warnings.append(f"{pool}/{lrc_path.name} [{row['t']}]: no question matches {row['text']!r}")
-                lines.append({"t": row["t"], "kind": row["kind"], "text": row["text"], "qid": qid})
+                line = {"t": row["t"], "kind": row["kind"], "text": row["text"], "qid": qid}
+                if qid is not None and qid in by_id:
+                    line["q"], line["a"] = split_question_line(row["text"], by_id[qid]["question"])
+                lines.append(line)
             seconds = math.ceil(max((r["t"] for r in lines), default=0.0))
             stem = lrc_path.stem
             tracks.append({"n": int(m.group(1)), "subelement": subelement, "title": title,

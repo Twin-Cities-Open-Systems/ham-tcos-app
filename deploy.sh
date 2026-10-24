@@ -20,7 +20,7 @@ PAGES=(index.html study.html callsign.html listen.html)
 ASSET_DIRS=(css js data audio)
 ASSET_FILES=(robots.txt sitemap.xml og.jpg)
 HOST=ham.tcos.app
-LAB_HOST=ham-app.lab.tcos.us
+LAB_HOST=ham.lab.tcos.us
 
 cd "$HERE"
 if [ "$cmd" = promote ]; then
